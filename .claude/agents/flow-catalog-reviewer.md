@@ -28,6 +28,13 @@ Review the Flow definition(s) named in the request. Decide: REGISTER / NEEDS WOR
 - Do two existing flows overlap with the proposed one in trigger space? If yes, the Situation Classifier will be ambiguous — redesign the triggers first.
 - Is this flow doing two unrelated jobs? Split it before registering.
 
+## Integrity checks (per engineering-rules R15)
+
+- Every node has a real implementation. Stubbed nodes (returning hardcoded values, throwing `NotImplemented`, silently succeeding) are rejected unless the PR title explicitly says "PLACEHOLDER" and an ADR or Linear issue tracks completion.
+- No naked `TODO`/`FIXME` in the flow definition without an issue link.
+- No silent error swallowing in node implementations — all caught errors are logged, transformed, rethrown, or surfaced via `escalation`.
+- No commented-out nodes or edges.
+
 ## Budget sanity
 
 - `maxTokens` declared and proportional to tier binding (T1 alone should rarely exceed 8k; T1+T2 rarely exceeds 60k; T4 scheduled can be higher).

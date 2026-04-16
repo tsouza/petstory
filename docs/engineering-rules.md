@@ -277,12 +277,91 @@ Hook stages:
 
 **How to apply:** the scaffold includes the config files listed above with sensible defaults from day one. Adding or removing a tool is an ADR-level change.
 
+### R15 — No placeholders, no silent fallbacks, no hidden state
+
+Code that ships to `main` does what it claims end-to-end. If something is incomplete, it is **explicitly** flagged and the flagging is intentional.
+
+Specifically forbidden unless explicitly requested and confirmed:
+
+- **Placeholder implementations.** Functions that return hardcoded mock data, stubs that silently succeed, types that exist without runtime backing. If a function signature is in `main`, it works.
+- **`TODO` / `FIXME` / `XXX` comments without a tracked issue link.** A naked `TODO` is a lie that says "this is fine." A TODO with `// TODO(LINEAR-123): description` is a commitment with an owner and a date.
+- **Silent error swallowing.** Empty `catch {}`. `catch (e) { return null }`. `.catch(() => undefined)` without a comment. Every caught error is logged, transformed into a typed error, rethrown, or surfaced as a user-visible degradation path. Global framework default of returning `null` on failure is also forbidden — wrap with a typed `Result` instead.
+- **Commented-out code.** Git history is the archive. If the code might come back, it's a new PR when it does.
+- **Hidden fallbacks.** Silent default values that paper over missing data (`user.name || 'User'` where a missing name should be a bug, not a "friendly default"). Fallbacks that exist are named, explicit, and have a comment explaining the invariant they protect.
+- **Dead exports kept "just in case."** Knip catches these in CI.
+- **Fake data that looks real.** Fixtures are labeled (e.g. `fixtureUser.brutus`), seed data lives under a `seed/` directory, and no test prop ever appears in production code paths.
+
+**Explicit exceptions are OK.** If a placeholder is required (e.g. staging a screen before its backend is ready, parking a flag-gated code path behind `assertNeverCalled()`), the PR title says so, the ADR records why, and the code has a visible marker (`/* PLACEHOLDER(issue): ... */`). Explicit > implicit, always.
+
+**The confirmation rule:** when Claude (or any collaborator) is considering producing a placeholder — any stub, any fallback, any "we'll fill this in later" — the rule is **ask first**, don't assume. Produce the real thing, or surface the gap and get a direction, never the half-implementation that looks complete but isn't.
+
+**Why:** placeholders and silent fallbacks compound. The app passes review because the happy path works, then falls over in production because the unhappy path was fake. In a clinical-adjacent context, a swallowed error can mean a missed escalation. Honesty about incompleteness is cheaper than mystery about incorrectness.
+
+**How to apply:** Biome's `noUselessCatch`, `noCommentedCode` (where available), and `noDeadCode` rules on. Knip catches unused exports. A custom `rg '^\s*(TODO|FIXME|XXX)(?!\(.+\))'` check in pre-commit blocks untracked TODOs. Code review rejects any catch block that doesn't handle the error meaningfully. The PR template includes: "No placeholders, stubs, or silent fallbacks — or: which ones, why, and where tracked?"
+
+### R16 — YAGNI and scope fidelity
+
+Build for the requirement in front of you, not the requirement you imagine six months out.
+
+- **No premature abstraction.** Three similar lines is cheaper than a configurable abstraction that's wrong in two ways. A shared helper is extracted at the third or fourth use, not the second, and never on the first.
+- **No config options nobody asked for.** Every flag, every override, every strategy pattern is paying rent. If it's not wired to a real use case, it's not written.
+- **No "for flexibility" designs.** Adapters, plugins, and interfaces exist when there are two implementations or a clearly roadmapped second one. A single-implementation interface is a sign of speculative design.
+- **Scope fidelity in PRs.** A PR does what its title says and nothing else. Drive-by reformatting, unrelated refactors, opportunistic cleanup — all go in separate PRs. A "while I was here…" is a code smell.
+- **No half-finished implementations.** If you start a thing, finish it in the same PR or defer the whole thing. Partial work hidden behind a not-yet-called code path is the worst kind of placeholder.
+- **Features stay scoped to the user story.** A user story for "record meal" doesn't grow into "record meal + portion tracking + calorie estimation" without going back through user-stories.md.
+
+**Explicit exceptions are OK.** Architectural work that's deliberately laying groundwork for a named upcoming feature is flagged in the ADR with the feature + timeline. "Building the abstraction now because the second implementation lands next sprint" is valid; "building the abstraction now because someday we might have a second implementation" is not.
+
+**Why:** every line of code has a maintenance tail. Speculative code is worst-of-both: carrying cost now, not helping now, and usually wrong when the real requirement arrives. YAGNI isn't laziness, it's discipline.
+
+**How to apply:** PR reviewers ask "is this requirement real right now?" of every new abstraction, config option, and flag. ESLint `complexity` + `max-lines-per-function` (reasonable caps: 15 and 50 respectively) flag over-built functions. `architecture-guardian` flags interfaces with zero or one implementation that aren't on the pack-boundary.
+
+### R17 — Honesty in naming, comments, and interfaces
+
+Names, comments, and signatures are part of the contract. If they lie, the code lies.
+
+- **Names describe what the thing does.** `getUser` reads; it doesn't write. `calculateTotal` returns a number, not a Promise. `isValid` returns a boolean. A mismatch between name and behavior is a bug — fix the name or fix the behavior.
+- **No misleading abstractions.** A function called `sanitize` that doesn't actually sanitize is worse than no function at all.
+- **Comments explain WHY, not WHAT.** `// increment counter` above `i++` is noise. `// Clamp to 60 so we stay inside Anthropic's cache TTL window` is signal.
+- **No decorative comments.** Banner comments, section dividers made of `//////////////////////`, and ASCII art do not exist. File structure + function names are the divider.
+- **Signatures don't surprise.** A function that takes a config object doesn't secretly read from a global. A "pure" function has no side effects. An async function doesn't return before its side effect completes. If something is surprising, the name makes the surprise visible (`readConfigAndWriteCache`).
+- **Public API surfaces are documented honestly.** JSDoc on every public export includes the edge cases: what it returns on empty input, which errors it can throw, what state it mutates.
+- **Types are not lies.** A function that can return `undefined` is typed to return `T | undefined`, not `T` with a runtime check. `as` assertions must be justified with `// reason:` per R5.
+
+**Why:** the single fastest way to slow a codebase is to train readers to distrust what they read. When names lie, every reader has to verify by reading the implementation. Multiply by every read, every onboarding, every AI agent pass.
+
+**How to apply:** code review rejects any name/comment/signature that doesn't match the implementation. Biome's `useNamingConvention` enforces casing rules. JSDoc presence on public exports is linted (`eslint-plugin-jsdoc` under the narrow allowlist). `architecture-guardian` flags interface/implementation name mismatches.
+
+### R18 — Rule of Three for layer promotion (DRY vs simplicity)
+
+Code moving up the layer stack (L3 → L2 → L1 → L0) requires evidence, not intuition. The heuristic that gates every "should this move up" decision, three gates, **all** must pass:
+
+1. **Three or more SIMILAR cases exist** in the lower layer. Two cases can coexist; three is the signal a pattern might be real.
+2. **The generalization is obvious**, not invented. If designing the abstraction is hard, it's too early — the right shape emerges from the three concrete cases; you don't engineer toward it.
+3. **The promoted version covers all cases cleanly**, no "almost, with a few flags." Flags-to-paper-over-mismatch means the cases were never actually similar.
+
+If any gate fails, the code stays local. Revisit when a fourth similar case appears.
+
+**Direction goes both ways:** demote code back down when maintaining the abstraction costs more than the duplication it prevents. An L1 primitive with only one real consumer is worse than clean duplication inside an L2 pack — move it down.
+
+**Layer-specific calibration:**
+
+- **L0 (kernel) has the highest bar.** Kernel code pays maintenance tax in every pack. Promote L1 → L0 only when the pattern appears across **multiple packs**, not within one.
+- **L1 primitives.** Promote L2 → L1 when the rule of three passes *and* the abstraction is domain-agnostic (no pack-specific vocabulary). If it only makes sense for pet-health, it stays in the pack.
+- **L2 pack internals** factor freely — duplication *between* packs is information about separate domains, not debt.
+- **The pack boundary itself is designed, not emergent.** Don't apply the rule of three to the pack contract — that's fixed in ADR-002 (eight required exports).
+
+**Why:** DRY is a tool, not a goal. Copy-paste of 5 lines across 2 files is cheaper than an abstraction that's wrong in one way; copy-paste of 50 lines across 5 files is real debt. Premature abstractions lock in the wrong interface shape; late abstractions accumulate pain. Applied to our specific layered architecture, the rule prevents kernel bloat driven by speculation and pack sprawl driven by false "this is general" moves.
+
+**How to apply:** before moving a utility, type, or function up a layer, **count concrete uses and write the count in the PR description**. Fewer than three → stays local. Three or more → verify the abstraction is obvious and covers cleanly. `architecture-guardian` rejects any addition to L0 or L1 that doesn't cite ≥3 concrete lower-layer uses. Demotions (moving code down a layer) are celebrated, not resisted — the cost function has two directions.
+
 ## Enforcement
 
-- `architecture-guardian` covers R5 (type safety at layer boundaries), R8 (license + secret checks), R9 (i18n layer leaks).
-- `flow-catalog-reviewer` covers R4 (flow evals + UI coverage for flow-facing screens), R12 (flag-gated flows), R13 (flow-level SLOs).
-- The R14 toolchain enforces R1–R12 automatically once the scaffold graduates into a real repo. CI runs every check on every PR.
+- `architecture-guardian` covers R5 (type safety at layer boundaries), R8 (license + secret checks), R9 (i18n layer leaks), R16 (speculative abstractions across layer boundaries), R17 (naming + signature lies), R18 (layer promotions require ≥3 concrete lower-layer uses; also flags abstractions that could be demoted down a layer).
+- `flow-catalog-reviewer` covers R4 (flow evals + UI coverage for flow-facing screens), R12 (flag-gated flows), R13 (flow-level SLOs), R15 (no placeholder flows; stubbed nodes rejected).
+- The R14 toolchain enforces R1–R12 and the automatable parts of R15–R17 (Biome rules, Knip, size budgets, TODO checker, JSDoc linting) once the scaffold graduates into a real repo. CI runs every check on every PR.
 - R13 reliability rules are enforced by on-call discipline + the error-budget policy + runbook requirements per alert. Not purely automatable.
+- R15's confirmation rule is specifically enforced in every AI-assisted edit: before producing any placeholder, stub, or silent fallback, ask the user — don't assume.
 - PR template references each rule as a checklist.
 
 ## Exceptions

@@ -32,13 +32,19 @@ Engineering-rule violations (see [docs/engineering-rules.md](../../docs/engineer
 - R5 — `any` used without a `// reason:` comment; `as` assertion without justification; missing Zod validation at a boundary (user input, LLM output, MCP tool I/O, network, Convex document).
 - R8 — secret committed, env file with non-placeholders checked in, raw user message reaching Sentry, license in the GPL/AGPL family imported by app code.
 - R9 — hardcoded user-facing string in L2 or L3 that bypasses the translation layer; date/number/plural formatted without locale awareness.
+- R15 — placeholder implementation, naked `TODO`/`FIXME` without an issue reference, empty catch block, `catch(e) { return null }` without a comment, commented-out code.
+- R16 — a new interface with zero or one concrete implementation that isn't a declared pack boundary (speculative abstraction); a PR doing significant work outside its stated scope.
+- R17 — function/variable/file name contradicts the implementation; JSDoc comment that lies about behavior; type signature that doesn't match actual return shape.
+- R18 — a new L0 or L1 addition with fewer than 3 concrete lower-layer uses cited in the PR description; an L1 → L0 promotion where the pattern appears in only one pack; an abstraction with "a few flags" papering over mismatches (the cases were not actually similar); an L1 primitive with one real consumer that should be demoted into that consumer's pack.
 
 ## Soft flags (discuss, don't auto-reject)
 
 - A field name in L1 feels domain-leaning (e.g. `patientId` instead of `subjectId`). Confirm with the user whether to generalize or keep.
-- A pack adds a new MCP tool that overlaps in shape with existing primitives in L1 — could this be a primitive instead?
+- A pack adds a new MCP tool that overlaps in shape with existing primitives in L1 — could this be a primitive instead? Apply R18 — is there evidence of ≥3 cases?
 - A proposal introduces a new external vendor. Confirm which L0 port will own it.
 - A Flow proposes a node type that isn't in the current DSL. Route to `flow-catalog-reviewer`.
+- A PR promotes code up a layer citing exactly 2 uses. Under the R18 threshold — ask the author if a third case is real and near-term, or if it should stay local.
+- A "reusable" L1 utility has only one current consumer in review history. Candidate for demotion under R18.
 
 ## Naming checks
 
