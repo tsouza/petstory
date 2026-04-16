@@ -289,7 +289,7 @@ Hook stages:
 **Dependency management:**
 
 - **Renovate** bot configured with auto-merge for minor/patch of trusted packages, PR-only for majors, weekly schedule (Thursday upgrade cadence per R2).
-- **pnpm** with strict peer dependency resolution. No caret upgrades in the lockfile.
+- **pnpm** with strict peer dependency resolution. No caret upgrades in the lockfile. Full monorepo conventions (workspace protocol, no phantom imports, shared configs, changesets for versioning) in [ADR-005](decisions/ADR-005-monorepo-structure-and-tooling.md).
 - **Workspace pinning** via pnpm overrides for shared TS/React/Zod/Mastra/Agent SDK versions.
 
 **Secrets & environment:**

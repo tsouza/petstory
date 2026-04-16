@@ -18,6 +18,8 @@ Decisions deliberately deferred. Revisit when the timing is right.
 
 **Recommendation when revisiting:** pick option 2, but only when we have a second pack on the roadmap or when the kernel is about to ship to a first external consumer. Don't name for naming's sake.
 
+**Downstream impact:** [ADR-005](decisions/ADR-005-monorepo-structure-and-tooling.md) uses `@petstory/…` as the interim package scope. When Q2 resolves to a new kernel name, that scope is a one-line rename (codemod + lockfile regen). No blocking dependency; the two decisions are coupled but not sequential.
+
 ---
 
 ## Q1 — Interaction specs missing from user stories

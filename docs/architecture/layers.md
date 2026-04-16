@@ -71,7 +71,7 @@ The kernel's public name is open — see [open-questions.md Q2](../open-question
 
 ## Reference repo layout (target)
 
-Not built yet. When the monorepo lands (pnpm + Turborepo per 2026 consensus):
+Canonical layout in [ADR-005](../decisions/ADR-005-monorepo-structure-and-tooling.md) — pnpm + Turborepo + Changesets, `apps/` and `packages/` split, shared base configs in `packages/config/`. The architectural layers (L0–L3) map to workspaces as follows; see ADR-005 for tooling, naming, versioning, and CI details.
 
 ```
 apps/
@@ -86,6 +86,8 @@ packages/
   packs/
     pet-health/              # L2
   ui/                        # L3 primitives (brand-aware, vertical-swappable)
+  config/                    # shared base configs
+  test-utils/                # shared test helpers
 ```
 
 ## Anti-patterns that block merge

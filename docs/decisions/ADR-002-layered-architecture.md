@@ -92,8 +92,9 @@ None are pet-specific. ADR-001 stands.
 
 - [ADR-003](ADR-003-three-level-agent-framework.md): Three-level agent framework (Spine + Flow Catalog + Situation Classifier) — operationalizes how L0 runs L2 flows.
 
+- **Done:** [ADR-005](ADR-005-monorepo-structure-and-tooling.md) — Monorepo layout, tooling (pnpm + Turborepo + Changesets), and boundary-lint configuration.
+
 Future ADRs (numbers assigned when the work begins; listed here to keep the work visible):
 
 - Kernel public name — when a second pack is roadmapped or a first external consumer approaches.
-- Monorepo layout and boundary-lint configuration — when the first L2 pack starts being built.
 - `DomainSchema` parameterization strategy — how generic the event extractor should be before pack specializations bind concrete types.
