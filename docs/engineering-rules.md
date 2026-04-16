@@ -503,9 +503,56 @@ Small steps surface problems early. A 1,000-line commit defers every failure unt
 - **Atomic operations** (large renames across a code surface, schema migrations, breaking interface changes) must land in one commit for correctness. When they must, they're still planned as a sequence (prep commit → atomic commit → follow-up commit) with a feature flag (R12) hiding intermediate state from users.
 - **Docs-only commits** may batch related small edits if they share one conceptual change (e.g. a single engineering-rules amendment touching the rule file + architecture-guardian + CLAUDE.md).
 
+### R22 — GRASP core principles + Open/Closed for reusable layers
+
+Two connected disciplines. Part A names four GRASP patterns already lived in this architecture (and explicitly declines the other five). Part B operationalizes the Open/Closed Principle on the layers that are meant to be reused across packs.
+
+**Part A — GRASP: four patterns adopted, five declined.**
+
+GRASP (Larman) is a common vocabulary for responsibility assignment. Four patterns are load-bearing here and adopted as named discipline in code review:
+
+- **Low Coupling** — minimize dependencies between modules. ADR-002's strict inward dependency rule enforces this structurally. At code-review level the question is: "Does this introduce a new cross-layer import or a hidden coupling?"
+- **High Cohesion** — a module has tightly related responsibilities. Flow DSL (one flow per situation), MCP tool scope, the 9-artifact pack contract already embody this. Code-review level: "Does this module have one reason to change?"
+- **Information Expert** — assign responsibility to the module that has the information needed. When deciding "which layer owns this logic?" the answer is "which layer has the data?" Prevents domain logic drifting upward into the kernel.
+- **Protected Variations** — interfaces that insulate the rest of the system from expected change. Our thin-wrapper-over-Mastra Flow DSL IS this pattern; L0 vendor ports are this pattern. Named so code review can spell it.
+
+**Declined:** Creator, Controller, Polymorphism, Pure Fabrication, Indirection. Either idiomatic in TS + functional + Zod code (need no name) or duplicated by what we already named (Indirection ≈ Protected Variations in our idiom). Invoking these by name in PRs adds noise, not clarity.
+
+**Part B — OCP for reusable layers (L0 Kernel, L1 Primitives, Flow DSL, Flow runtime wrapper).**
+
+Reusable layers are **closed for modification, open for extension**:
+
+- **Grow by extension, not by edit.** New capability is added through a registered extension slot: MCP tool, Skill, Hook, Flow node type, Critic rule, Situation classifier, Domain Event, Glossary term. Adding a one-off function to the kernel for a specific pack's edge case is a violation.
+- **Extension-point signatures are public API, semver'd.** Once exposed, changing them breaks all packs. Major bump + migration notes required (see R2).
+- **Public kernel API shrinks by deprecation, not silent removal.** Deprecate in one release, warn in the next, remove in a major after grace period.
+- **Kernel PR gate — answer these three in order.** (1) Could this be expressed as a pack using an existing extension slot? (2) If not, can it be a new extension slot (closed API for future packs)? (3) If neither, why is a direct kernel edit necessary? Answer 3 requires an ADR.
+
+**L2 (Domain Pack) and L3 (Product Shell) are exempt** — they are the extension. Packs edit their own code freely.
+
+**Why OCP is load-bearing here specifically.** If pet-health required kernel edits to work, human-health would require more kernel edits, and the brand-neutral kernel decays into a multi-domain-tainted middle. OCP is how we preserve ADR-002's cross-domain-reuse promise under maintenance pressure.
+
+**How to apply:**
+
+- `architecture-guardian` flags kernel and primitive (L0/L1) PRs that aren't expressed as extension slots — or that add a slot without documenting its signature as public API.
+- Kernel PR descriptions must include the three-question gate above.
+- Extension-slot signatures are documented centrally once the monorepo lands (target: `packs/REGISTRY.md` or the kernel's public API export file).
+- Shared review vocabulary: "Low Coupling," "High Cohesion," "Information Expert," "Protected Variations," "extension slot," "kernel edit."
+
+**Related rules:**
+
+- **R18** (Rule of Three for layer promotion) — R18 says *when* code promotes up a layer; R22 says *how* it's consumed once it's there (via extension slots, not kernel edits).
+- **R16** (YAGNI + scope fidelity) — extension slots are earned by ≥3 concrete uses per R18, not speculative.
+- **R2** (Latest stable) — extension-point signatures follow semver; once exposed, versioning applies.
+- **ADR-002 + ADR-004** — R22 names what the layered architecture has always been: OCP applied to agent-app architecture.
+
+**Exceptions:**
+
+- **Bug fixes in kernel/primitive code** are allowed as edits. The edit isn't "adding a new capability," it's "restoring correctness."
+- **Kernel plumbing changes with no public-API change** (refactor, type-safety, performance) are allowed when the exposed signatures stay stable.
+
 ## Enforcement
 
-- `architecture-guardian` covers R5 (type safety at layer boundaries), R8 (license + secret checks), R9 (i18n layer leaks), R16 (speculative abstractions across layer boundaries), R17 (naming + signature lies), R18 (layer promotions require ≥3 concrete lower-layer uses; also flags abstractions that could be demoted down a layer), R19 (cross-doc duplication of rules or definitions), R20 (new dependency added without evaluation rationale in PR body).
+- `architecture-guardian` covers R5 (type safety at layer boundaries), R8 (license + secret checks), R9 (i18n layer leaks), R16 (speculative abstractions across layer boundaries), R17 (naming + signature lies), R18 (layer promotions require ≥3 concrete lower-layer uses; also flags abstractions that could be demoted down a layer), R19 (cross-doc duplication of rules or definitions), R20 (new dependency added without evaluation rationale in PR body), R22 (kernel / primitive PR that isn't an extension-slot addition without justifying the three-question gate).
 - `flow-catalog-reviewer` covers R4 (flow evals + UI coverage for flow-facing screens), R12 (flag-gated flows), R13 (flow-level SLOs), R15 (no placeholder flows; stubbed nodes rejected).
 - The R14 toolchain enforces R1–R12 and the automatable parts of R15–R17 (Biome rules, Knip, size budgets, TODO checker, JSDoc linting) once the scaffold graduates into a real repo. CI runs every check on every PR.
 - R13 reliability rules are enforced by on-call discipline + the error-budget policy + runbook requirements per alert. Not purely automatable.

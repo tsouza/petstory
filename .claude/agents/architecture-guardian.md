@@ -38,6 +38,7 @@ Engineering-rule violations (see [docs/engineering-rules.md](../../docs/engineer
 - R18 — a new L0 or L1 addition with fewer than 3 concrete lower-layer uses cited in the PR description; an L1 → L0 promotion where the pattern appears in only one pack; an abstraction with "a few flags" papering over mismatches (the cases were not actually similar); an L1 primitive with one real consumer that should be demoted into that consumer's pack.
 - R19 — cross-doc duplication: a rule, definition, or claim restated in a second doc instead of linked; an identical 20+ word phrase appearing in two separate docs (CLAUDE.md index pointers exempted); broken Markdown links or references to non-existent files.
 - R20 — a new entry in `dependencies` or `devDependencies` without the required evaluation rationale in the PR body: at least 2 candidates considered, each with stars / weekly downloads / last-commit / license / reason accepted-or-rejected, plus why the chosen one is the best fit. Exempted: tier-zero deps already adopted via ADR (React, TypeScript, Node, Zod, Mastra, Agent SDK, Convex client, Clerk, etc.).
+- R22 — a PR that edits kernel (L0) or primitive (L1) code without either (a) adding a new extension slot documented as public API, or (b) answering the three-question gate in the PR description: "Could this be expressed as a pack using an existing slot? If not, can it be a new slot? If neither, why is a direct kernel edit necessary?" Bug fixes and no-public-API-change refactors are exempt.
 
 ## Soft flags (discuss, don't auto-reject)
 
