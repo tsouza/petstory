@@ -45,9 +45,9 @@ If no → replace charts with **text + emoji + color**. Replace sparklines with 
 
 This file is the *operational* companion to [data-humanism.md](data-humanism.md):
 
-- R1 (text first) is enforced by the two-second test
-- R6 (progressive disclosure) allows charts only in Layer 2/3
-- R7 (no chart without a story) — every title must be the insight
+- DH1 (text first) is enforced by the two-second test
+- DH6 (progressive disclosure) allows charts only in Layer 2/3
+- DH7 (no chart without a story) — every title must be the insight
 
 ## Enforcement
 

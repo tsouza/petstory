@@ -36,6 +36,7 @@ Engineering-rule violations (see [docs/engineering-rules.md](../../docs/engineer
 - R16 — a new interface with zero or one concrete implementation that isn't a declared pack boundary (speculative abstraction); a PR doing significant work outside its stated scope.
 - R17 — function/variable/file name contradicts the implementation; JSDoc comment that lies about behavior; type signature that doesn't match actual return shape.
 - R18 — a new L0 or L1 addition with fewer than 3 concrete lower-layer uses cited in the PR description; an L1 → L0 promotion where the pattern appears in only one pack; an abstraction with "a few flags" papering over mismatches (the cases were not actually similar); an L1 primitive with one real consumer that should be demoted into that consumer's pack.
+- R19 — cross-doc duplication: a rule, definition, or claim restated in a second doc instead of linked; an identical 20+ word phrase appearing in two separate docs (CLAUDE.md index pointers exempted); broken Markdown links or references to non-existent files.
 
 ## Soft flags (discuss, don't auto-reject)
 

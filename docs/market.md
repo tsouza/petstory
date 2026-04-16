@@ -7,7 +7,7 @@ Pet health tech.
 - TAM: ~$4.4B
 - CAGR: ~17%
 
-Detailed financing analysis: [`../financiamento-petstory.md`](../financiamento-petstory.md).
+Detailed financing analysis: [`../financing-petstory.md`](../financing-petstory.md).
 
 ## Business model
 
@@ -35,7 +35,7 @@ PetStory's differentiator — "prontuário vivo" built from natural chat — rem
 
 Medical advice is a legal risk. Mitigations:
 
-- AI suggests, never diagnoses (Data Humanism R9)
+- AI suggests, never diagnoses (Data Humanism DH9)
 - Medical KB is curated from vetted sources only (AAHA, AVMA, licensed vet content)
 - Any mention of a red-flag symptom must escalate to "consulte um veterinário"
 - Sub-agent `clinical-safety-reviewer` gates user-facing medical text

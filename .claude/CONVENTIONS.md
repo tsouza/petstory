@@ -41,7 +41,7 @@ For any non-trivial task, end with a verification pass. Read back the diff, run 
 
 ## Tone in product copy
 
-See [docs/data-humanism.md](../docs/data-humanism.md) R10 — conversational, warm, about the pet. Never clinical. Use "você e o Brutus," never "o usuário."
+See [docs/data-humanism.md](../docs/data-humanism.md) DH10 — conversational, warm, about the pet. Never clinical. Use "você e o Brutus," never "o usuário."
 
 ## On disagreement
 

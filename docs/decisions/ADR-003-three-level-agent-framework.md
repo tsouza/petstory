@@ -20,15 +20,13 @@ The research converges on a three-level abstraction: a universal execution subst
 
 ## Decision
 
-Adopt a three-level agent framework.
+Adopt a three-level agent framework:
 
-**Level 1 — Execution Spine.** Universal, kernel-owned. Four tiers define when work happens and at what cost: T1 Fast Path (Haiku, sync, ~80% path), T2 Deep Path (Sonnet orchestrator + workers, async), T3 Critic Gate (Haiku, every user-facing string), T4 Long-Horizon (Managed Agents, scheduled). Cost tiers are enforced by the Flow runtime.
+- **Level 1 — Execution Spine.** Universal, kernel-owned. Four tiers (T1 Fast Path, T2 Deep Path, T3 Critic Gate, T4 Long-Horizon) with model-class and timing constraints enforced by the Flow runtime.
+- **Level 2 — Flow Catalog.** Per Domain Pack. Named, versioned, typed Flow definitions with pack-level invariants (tier binding, mandatory T3 critic, one-clarifier-per-turn, no cross-pack state, Opus gated on premium). Hand-authored, not auto-generated. Compiled to Mastra workflows at boot.
+- **Level 3 — Situation Classifier.** Per Domain Pack. Fast Haiku call on every inbound event picks which Flow runs. Confidence-tiered (`>= 0.85` run; `0.60–0.85` run with soft confirmation; `< 0.60` route to `clarify-flow`).
 
-**Level 2 — Flow Catalog.** Per Domain Pack. A catalog of named, versioned, typed Flow definitions. Hand-authored, testable, diffable. Flows are TypeScript objects interpreted by a small kernel runtime. Each Flow declares trigger, tier binding, budget, shared state schema, node graph, stop condition, and escalation policy. Invariants: every user-facing output routes through the critic gate; one clarification per turn; no cross-pack state access; Opus gated on premium + T2/T4.
-
-**Level 3 — Situation Classifier.** Per Domain Pack. A fast Haiku call on every inbound event picks which Flow runs. Deterministic where possible, LLM-routed only when fuzzy. Confidence tiered: `>= 0.85` run; `0.60 – 0.85` run with soft confirmation; `< 0.60` route to `clarify-flow`.
-
-The Flow DSL and the full spec live in [../architecture/flow-catalog.md](../architecture/flow-catalog.md).
+Full spec — tier table, Flow DSL shape, invariants, catalog lifecycle — in [../architecture/flow-catalog.md](../architecture/flow-catalog.md).
 
 ## Rationale
 
@@ -103,6 +101,8 @@ Anthropic reports multi-agent systems consume ~15× the tokens of chat. For a fr
 
 ## Follow-ups
 
-- ADR-004 (future): Braintrust eval structure for Flow Catalog — how golden prompts map to flows and nodes.
-- ADR-005 (future): Flow migration strategy — how in-flight runs survive Flow version bumps.
-- ADR-006 (future): When to revisit auto-generation (MetaAgent / FlowReasoner). Trigger: catalog exceeds ~30 flows or flow authoring becomes a bottleneck.
+Future ADRs (numbers assigned when the work begins; listed here to keep the work visible):
+
+- Braintrust eval structure for the Flow Catalog — how golden prompts map to flows and nodes.
+- Flow migration strategy — how in-flight runs survive Flow version bumps.
+- When to revisit auto-generation (MetaAgent / FlowReasoner) — trigger: catalog exceeds ~30 flows or flow authoring becomes a bottleneck.

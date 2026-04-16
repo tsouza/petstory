@@ -20,7 +20,7 @@ Validated 2026-04-16. North star for every UX, copy, and feature decision.
 
 | Decision | Rationale |
 |---|---|
-| No traditional charts for basic users | See [viz-rules.md](viz-rules.md). Charts only in progressive disclosure for power users (R6). |
+| No traditional charts for basic users | See [viz-rules.md](viz-rules.md). Charts only in progressive disclosure for power users (DH6). |
 | Text first, always | Every data display opens with a sentence that IS the insight. |
 | Gaps shown honestly | Missing days = `?` + dashed border + warm note ("tudo bem, acontece!"). |
 | Titles = insights | "O Brutus comeu bem 5 de 7 dias" not "Alimentação semanal." |
@@ -32,10 +32,6 @@ Validated 2026-04-16. North star for every UX, copy, and feature decision.
 ## Design rules
 
 All UI follows the 10 Data Humanism rules in [data-humanism.md](data-humanism.md).
-
-## Mockup reference
-
-Interactive React mockup at `mockup-chat-dashboard.jsx` (repo root) — animated chat flow + diary screen with all patterns applied.
 
 ## Why this concept was chosen
 

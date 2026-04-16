@@ -9,7 +9,7 @@ Turn raw events into a warm, personal diary entry that feels like a friend notic
 
 ## Prerequisites
 
-- [docs/data-humanism.md](../../../docs/data-humanism.md) (R1, R2, R5, R9, R10 especially)
+- [docs/data-humanism.md](../../../docs/data-humanism.md) (DH1, DH2, DH5, DH9, DH10 especially)
 - [docs/ux-concept.md](../../../docs/ux-concept.md)
 
 ## Input shape
@@ -41,12 +41,12 @@ Turn raw events into a warm, personal diary entry that feels like a friend notic
 
 ## Writing rules
 
-- **R1** — The opening sentence IS the insight. Never "Alimentação semanal" — always "O Brutus comeu bem 5 de 7 dias."
-- **R2** — Use the pet's name. Every entry.
-- **R5** — Context over counts. "3 coceiras" is wrong. "3 coceiras em 2 semanas, sempre depois do parque" is right.
-- **R8** — Preserve individual moments. "Ontem o Brutus não quis brincar" > "atividade 72%".
-- **R9** — Suggest, never diagnose. "Pode indicar…"
-- **R10** — Warm voice. "Você e o Brutus" not "o usuário."
+- **DH1** — The opening sentence IS the insight. Never "Alimentação semanal" — always "O Brutus comeu bem 5 de 7 dias."
+- **DH2** — Use the pet's name. Every entry.
+- **DH5** — Context over counts. "3 coceiras" is wrong. "3 coceiras em 2 semanas, sempre depois do parque" is right.
+- **DH8** — Preserve individual moments. "Ontem o Brutus não quis brincar" > "atividade 72%".
+- **DH9** — Suggest, never diagnose. "Pode indicar…"
+- **DH10** — Warm voice. "Você e o Brutus" not "o usuário."
 
 ## Never
 

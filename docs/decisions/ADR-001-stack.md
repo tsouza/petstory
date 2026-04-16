@@ -104,5 +104,9 @@ Negative / risks:
 
 ## Follow-ups
 
-- ADR-002: Convex vs Supabase revisit trigger (e.g. at 10k MAU or if data portability becomes a customer demand).
-- ADR-003: SEO strategy (RN Web vs split Next.js marketing site).
+Future ADRs (numbers assigned when the work begins):
+
+- Convex vs Supabase revisit trigger — e.g. at 10k MAU or if data portability becomes a customer demand.
+- SEO strategy — RN Web vs split Next.js marketing site.
+
+(ADR-002 and ADR-003 ended up going to different topics: layered architecture and three-level agent framework. Future ADRs claim the next free number when authored.)

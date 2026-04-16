@@ -35,34 +35,36 @@ Based on Giorgia Lupi's *Data Humanism — a manifesto for a new data world* (gi
 
 ## The 10 rules
 
-**R1 — Text first, visuals second.**
+These rules use the `DH` prefix to stay distinct from Engineering Rules (R1–R19 in [engineering-rules.md](engineering-rules.md)) and User Story writing rules (WR1–WR8 in [user-stories.md](user-stories.md)).
+
+**DH1 — Text first, visuals second.**
 Lead every data display with a plain-language sentence that IS the insight. "O Brutus comeu bem 5 de 7 dias." Then (if useful) the visual.
 
-**R2 — Data is about Brutus, not about numbers.**
+**DH2 — Data is about Brutus, not about numbers.**
 Every metric must connect to the pet's story. Not "feeding: 85%" but "O Brutus tá comendo bem, só pulou o jantar de segunda."
 
-**R3 — Color-code feelings, not magnitudes.**
+**DH3 — Color-code feelings, not magnitudes.**
 Use the palette semantically: `teal-400` = "tudo bem", `gold` = "atenção", `danger` = "vale investigar." Users read emotion from color without interpreting scales.
 
-**R4 — Show gaps honestly.**
+**DH4 — Show gaps honestly.**
 Missing data is information. Blank days appear as "?" with dashed border + warm note ("tudo bem, acontece!"). No smoothing.
 
-**R5 — Context over counts.**
+**DH5 — Context over counts.**
 When the AI detects a pattern, it narrates the context: what else was happening, what might be related, what changed. Raw frequency alone is never enough.
 
-**R6 — Progressive disclosure, not progressive complexity.**
+**DH6 — Progressive disclosure, not progressive complexity.**
 Layer 1: text + color + icons. Layer 2 (on tap): richer detail, mini-visualizations. Layer 3 (optional): full data, exportable to vet. Never force users past Layer 1.
 
-**R7 — No chart without a story.**
+**DH7 — No chart without a story.**
 If we use a chart, the title IS the insight ("Brutus come menos nas segundas"), not a label ("Alimentação semanal"). The chart illustrates the story, not vice versa.
 
-**R8 — Small data > Big data.**
+**DH8 — Small data > Big data.**
 Individual moments matter more than aggregates. "Ontem o Brutus não quis brincar" is more valuable than "atividade média: 72%." Preserve the small, personal observations.
 
-**R9 — Invite interpretation, don't dictate.**
+**DH9 — Invite interpretation, don't dictate.**
 The AI suggests, doesn't diagnose. "Isso pode indicar…" not "Isso é…" Respect the tutor's knowledge of their own pet.
 
-**R10 — Make data feel warm.**
+**DH10 — Make data feel warm.**
 Conversational, never clinical. Use the pet's name. "Você e o Brutus" not "o usuário." Data should feel like a caring friend observing alongside you, not a medical report.
 
 ## Decision litmus test
@@ -71,4 +73,4 @@ When in doubt, ask: *"Would Giorgia Lupi show it this way, or would she tell a s
 
 ## Enforcement
 
-Sub-agent `viz-judge` applies R1–R10 to any visualization proposal. Sub-agent `clinical-safety-reviewer` applies R9 (and medical guardrails) to any AI-generated user-facing text.
+Sub-agent `viz-judge` applies DH1–DH10 to any visualization proposal. Sub-agent `clinical-safety-reviewer` applies DH9 (and medical guardrails) to any AI-generated user-facing text.

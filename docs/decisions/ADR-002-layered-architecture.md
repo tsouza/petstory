@@ -18,16 +18,16 @@ The question: adopt the constraint on day one or accept a rewrite later.
 
 ## Decision
 
-Adopt a four-layer architecture with a strict inward dependency rule:
+Adopt a four-layer architecture with strict inward dependencies:
 
-- **L0 — Agent Kernel.** Domain-agnostic runtime. Agent SDK harness wrapper, model router, prompt-cache manager, auth port, storage port, channel ports, observability ports, hook bus, Flow runtime, critic harness.
-- **L1 — Conversation & Narrative Primitives.** Domain-agnostic interaction shape. Chat-first loop, event extractor parameterized over a `DomainSchema`, diary generator, nudge scheduler, shared-access primitive, export/vault primitive.
-- **L2 — Domain Pack.** Vertical-specific, pluggable. Event schema, KB, Skills, MCP tools, critic rules, Flow Catalog, Situation Classifier, copy bundle.
-- **L3 — Product Shell.** Vertical-specific UI + brand.
+- **L0 — Agent Kernel** (domain-agnostic runtime)
+- **L1 — Conversation & Narrative Primitives** (domain-agnostic interaction shape)
+- **L2 — Domain Pack** (vertical-specific, pluggable)
+- **L3 — Product Shell** (vertical-specific UI + brand)
 
-Dependencies flow strictly `L3 → L2 → L1 → L0`. No package in L0 or L1 imports from L2 or L3. Enforced in CI via import-boundary linting.
+Dependencies flow strictly `L3 → L2 → L1 → L0`. No package in L0 or L1 imports from L2 or L3. Enforced in CI via import-boundary linting. `petstory` labels only the Product Shell and the Domain Pack; the kernel is brand-neutral.
 
-`petstory` labels the Product Shell and the Domain Pack only. The kernel is brand-neutral.
+Full spec — layer contents, Domain Pack contract (eight required exports), anti-patterns — in [../architecture/layers.md](../architecture/layers.md).
 
 ## Rationale
 
@@ -85,7 +85,10 @@ None are pet-specific. ADR-001 stands.
 
 ## Follow-ups
 
-- ADR-003: Three-level agent framework (Spine + Flow Catalog + Situation Classifier) — operationalizes how L0 runs L2 flows.
-- ADR-004 (future): Kernel public name.
-- ADR-005 (future): Monorepo layout and boundary-lint configuration (triggered when the first L2 pack starts being built).
-- ADR-006 (future): `DomainSchema` parameterization strategy — how generic the event extractor should be before pack specializations bind concrete types.
+- [ADR-003](ADR-003-three-level-agent-framework.md): Three-level agent framework (Spine + Flow Catalog + Situation Classifier) — operationalizes how L0 runs L2 flows.
+
+Future ADRs (numbers assigned when the work begins; listed here to keep the work visible):
+
+- Kernel public name — when a second pack is roadmapped or a first external consumer approaches.
+- Monorepo layout and boundary-lint configuration — when the first L2 pack starts being built.
+- `DomainSchema` parameterization strategy — how generic the event extractor should be before pack specializations bind concrete types.

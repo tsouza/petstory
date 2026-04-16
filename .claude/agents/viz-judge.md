@@ -28,15 +28,15 @@ Can a non-technical pet owner understand the primary insight in 2 seconds?
 - Yes → continue
 - No → NEEDS WORK. Recommend replacing charts with text + emoji + color, or sparklines with trend arrows (↑↓→) / words ("melhorando").
 
-## Data Humanism checklist (R1–R10)
+## Data Humanism checklist (DH1–DH10)
 
 Run through each rule in [docs/data-humanism.md](../../docs/data-humanism.md) and call out violations. Especially:
 
-- R1 text first
-- R3 color-codes feelings, not magnitudes
-- R4 gaps shown honestly (missing days aren't smoothed)
-- R7 title IS the insight
-- R9 AI suggests, doesn't diagnose
+- DH1 text first
+- DH3 color-codes feelings, not magnitudes
+- DH4 gaps shown honestly (missing days aren't smoothed)
+- DH7 title IS the insight
+- DH9 AI suggests, doesn't diagnose
 
 ## Approved patterns
 
@@ -65,11 +65,11 @@ Hard rules:
 - [ ] 2-second test passes
 
 Data Humanism notes:
-- R1: …
-- R3: …
-- R4: …
-- R7: …
-- R9: …
+- DH1: …
+- DH3: …
+- DH4: …
+- DH7: …
+- DH9: …
 
 Recommendation:
 <concrete change, or "ship it">

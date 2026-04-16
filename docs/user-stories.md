@@ -24,16 +24,16 @@ Acceptance criteria format: **Checklist by default**, **Given-When-Then for cond
 
 ## The writing rules (summary)
 
-Full rules in [`../user-story-guidelines.md`](../user-story-guidelines.md). TL;DR:
+Full rules in [`../user-story-guidelines.md`](../user-story-guidelines.md). Prefixed `WR` (Writing Rule) to stay distinct from Engineering Rules (R1–R19 in [engineering-rules.md](engineering-rules.md)) and Data Humanism rules (DH1–DH10 in [data-humanism.md](data-humanism.md)). TL;DR:
 
-- **R1** — Real situation, not a feature in disguise.
-- **R2** — Include emotional context when relevant.
-- **R3** — One motivation per story (no "and").
-- **R4** — Outcome must be measurable/observable.
-- **R5** — Don't prescribe UI in the story.
-- **R6** — Include multi-actor context when applicable.
-- **R7** — Name the anxiety when it exists.
-- **R8** — Different contexts → separate stories.
+- **WR1** — Real situation, not a feature in disguise.
+- **WR2** — Include emotional context when relevant.
+- **WR3** — One motivation per story (no "and").
+- **WR4** — Outcome must be measurable/observable.
+- **WR5** — Don't prescribe UI in the story.
+- **WR6** — Include multi-actor context when applicable.
+- **WR7** — Name the anxiety when it exists.
+- **WR8** — Different contexts → separate stories.
 
 ## Enforcement
 
@@ -53,4 +53,4 @@ The tagging is a thinking aid, not a rename. It informs which packages the story
 
 ## Known gap
 
-User stories deliberately don't include interaction flows or screen maps (per R5). That leaves a gap between US and code. See [open-questions.md](open-questions.md).
+User stories deliberately don't include interaction flows or screen maps (per WR5). That leaves a gap between US and code. See [open-questions.md](open-questions.md).

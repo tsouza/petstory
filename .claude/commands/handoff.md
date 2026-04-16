@@ -14,7 +14,7 @@ The spec must cover:
 5. **Component props / API** — typed interface
 6. **Interaction states** — default, loading, empty, error, pressed, disabled
 7. **Responsive breakpoints** — mobile-first, then tablet, then web
-8. **Edge cases** — empty data, offline, gaps (shown honestly per Data Humanism R4)
+8. **Edge cases** — empty data, offline, gaps (shown honestly per Data Humanism DH4)
 9. **Animation** — entry, transitions, haptics (if any)
 10. **Copy** — PT-BR, warm tone, pet-named, hedged if medical (invoke `clinical-safety-reviewer` on any medical string)
 11. **Accessibility** — contrast ratios, tap-target size, screen-reader labels

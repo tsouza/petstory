@@ -2,8 +2,6 @@
 
 Established 2026-04-09. This file is the single source of truth — never invent values.
 
-Visual reference: `brand_audit.png` in repo root.
-
 ## Brand Teal
 
 | Token | Hex | Use |

@@ -23,9 +23,9 @@ Ask (or derive from the request):
 2. What small moment from the pet's life is being surfaced?
 3. Is this Layer 1 (chat/summary), Layer 2 (diary detail), or Layer 3 (vet export)?
 
-If the answer is "show them the aggregate," go back. Data Humanism R8: small > big.
+If the answer is "show them the aggregate," go back. Data Humanism DH8: small > big.
 
-## Step 2 — Write the insight as a sentence (R1, R7)
+## Step 2 — Write the insight as a sentence (DH1, DH7)
 
 Draft the plain-language sentence FIRST. It IS the insight. Example:
 
@@ -49,17 +49,17 @@ Match the story to:
 | Daily summary | Pulso Diário (emoji + chips) |
 | Trend inline | Trend arrow (↑↓→) or word, NOT a sparkline |
 
-If none fit, invent a pattern that still respects the dimension rule (≤ 1+1) and R3 (color-codes feelings, not magnitudes).
+If none fit, invent a pattern that still respects the dimension rule (≤ 1+1) and DH3 (color-codes feelings, not magnitudes).
 
 ## Step 4 — Check dimension count
 
 Count the distinct pieces of information in the viz. Must be **≤ 2** (1 primary + 1 secondary). If 3+, cut.
 
-## Step 5 — Show gaps honestly (R4)
+## Step 5 — Show gaps honestly (DH4)
 
 If the underlying data has missing days, represent them with `?` + dashed border + warm note ("tudo bem, acontece!"). Do NOT smooth.
 
-## Step 6 — Color = feeling, not magnitude (R3)
+## Step 6 — Color = feeling, not magnitude (DH3)
 
 Map palette semantically:
 
@@ -69,7 +69,7 @@ Map palette semantically:
 
 No gradients, no continuous color scales on magnitude.
 
-## Step 7 — Write the AI framing (R9, R10)
+## Step 7 — Write the AI framing (DH9, DH10)
 
 Any AI-generated text around the viz must:
 
@@ -90,6 +90,6 @@ Ship only after both pass.
 
 - Reaching for a chart library because "it's easy"
 - Smoothing gaps to make the viz "look clean"
-- Using color to encode magnitude (kills R3)
+- Using color to encode magnitude (kills DH3)
 - Writing the chart title as a label instead of the insight
 - Inventing a health score number that hides real texture

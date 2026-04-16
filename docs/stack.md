@@ -35,7 +35,7 @@ Operationalized by the three-level framework in [architecture/flow-catalog.md](a
 
 ### Flow runtime choice
 
-**Mastra** runs the Flow graphs; **Claude Agent SDK** runs each node's agent harness. Rejected alternatives: LangGraph.js (heavier, competes with Agent SDK), Vercel AI SDK + Workflow (primitives lower-level than Flow graphs), Inngest AgentKit (platform overlaps with Convex schedules), DSPy (optimizer-first, wrong shape). Rejected building custom (validated Mastra covers runtime; our value-add is the pack-level Flow contract, not graph execution). See ADR-003 for rationale.
+**Mastra** runs the Flow graphs; **Claude Agent SDK** runs each node's agent harness. Full rationale including rejected alternatives (LangGraph.js, Vercel AI SDK + Workflow, Inngest AgentKit, DSPy, custom build) lives in [ADR-003](decisions/ADR-003-three-level-agent-framework.md).
 
 ## Model routing
 

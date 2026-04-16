@@ -26,9 +26,9 @@ Decisions deliberately deferred. Revisit when the timing is right.
 
 **Context:** The 123 user stories in `user-stories/` have no interaction flows, screen maps, or step-by-step "how the user goes through this" documentation.
 
-**Why it's deliberate:** [`../user-story-guidelines.md`](../user-story-guidelines.md) R5 says "Don't prescribe UI in the story." Job Stories (JTBD) keep stories at situation/motivation/outcome level. Acceptance criteria describe *behavior* ("≤ 2 taps"), never *interaction* ("user taps X, then sees Y").
+**Why it's deliberate:** [`../user-story-guidelines.md`](../user-story-guidelines.md) WR5 says "Don't prescribe UI in the story." Job Stories (JTBD) keep stories at situation/motivation/outcome level. Acceptance criteria describe *behavior* ("≤ 2 taps"), never *interaction* ("user taps X, then sees Y").
 
-**The gap:** when building, there's no artifact between US and code that says "this is the flow." Currently only `mockup-chat-dashboard.jsx` and `viz-library-mockups.jsx` hint at the *how*.
+**The gap:** when building, there's no artifact between US and code that says "this is the flow." Currently no interaction spec format has been chosen.
 
 **Options surfaced (not chosen):**
 

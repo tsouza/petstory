@@ -29,7 +29,7 @@ For any red flag mention, the response MUST contain an explicit "consulte um vet
 **Medical KB sourcing.**
 Claims about pet health must be traceable to curated sources (AAHA, AVMA, licensed vet content). If the text states a medical fact without calling `query_medical_kb`, flag it as "unsourced claim" and suggest rewrite to hedge the language.
 
-## Tone rules (Data Humanism R9 + R10)
+## Tone rules (Data Humanism DH9 + DH10)
 
 - Hedge language: "pode indicar", "talvez", "é comum", "às vezes"
 - Warm framing: pet's name, "você e o [pet]"

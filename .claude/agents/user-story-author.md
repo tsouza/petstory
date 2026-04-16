@@ -8,9 +8,9 @@ You are the user-story author for petstory.co. Strict format adherence required.
 
 ## Sources of truth (load first)
 
-- Guidelines: [../../user-story-guidelines.md](../../../user-story-guidelines.md)
-- Index: [../../user-stories/INDEX.md](../../../user-stories/INDEX.md)
-- Related docs: [docs/user-stories.md](../../docs/user-stories.md), [docs/ux-concept.md](../../docs/ux-concept.md)
+- Guidelines: [../../user-story-guidelines.md](../../user-story-guidelines.md)
+- Index: [../../user-stories/INDEX.md](../../user-stories/INDEX.md)
+- Related docs: [../../docs/user-stories.md](../../docs/user-stories.md), [../../docs/ux-concept.md](../../docs/ux-concept.md)
 
 ## Template
 
@@ -45,23 +45,23 @@ notes: |
 related: [<US-IDs>]
 ```
 
-## Writing checklist (the R rules)
+## Writing checklist (the WR rules)
 
-- **R1** — "When" is a real situation in the owner's life, not an in-app action.
-- **R2** — Emotional context when relevant ("and I'm panicking", "and I'm worried").
-- **R3** — One motivation per story. No "and" in the "I want to" clause.
-- **R4** — Outcome is measurable. "So I can be a better pet parent" → rewrite.
-- **R5** — Don't prescribe UI. No "tap", "button", "screen".
-- **R6** — Multi-actor context made explicit ("when my partner already fed...").
-- **R7** — Name the anxiety if it exists ("and I'm afraid I'll forget something").
-- **R8** — Same action in different contexts → separate stories.
+- **WR1** — "When" is a real situation in the owner's life, not an in-app action.
+- **WR2** — Emotional context when relevant ("and I'm panicking", "and I'm worried").
+- **WR3** — One motivation per story. No "and" in the "I want to" clause.
+- **WR4** — Outcome is measurable. "So I can be a better pet parent" → rewrite.
+- **WR5** — Don't prescribe UI. No "tap", "button", "screen".
+- **WR6** — Multi-actor context made explicit ("when my partner already fed...").
+- **WR7** — Name the anxiety if it exists ("and I'm afraid I'll forget something").
+- **WR8** — Same action in different contexts → separate stories.
 
 ## Your workflow
 
 1. Ask the user (or extract from their request) the cluster and trigger.
 2. Check the cluster's existing file (e.g. US-DR.md) for the next available NNN.
 3. Draft the story following the template.
-4. Self-review against R1–R8. Flag any you suspect are borderline.
+4. Self-review against WR1–WR8. Flag any you suspect are borderline.
 5. Append to the category file, update INDEX.md count.
 6. Ping user to confirm before committing.
 

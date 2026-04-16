@@ -355,9 +355,45 @@ If any gate fails, the code stays local. Revisit when a fourth similar case appe
 
 **How to apply:** before moving a utility, type, or function up a layer, **count concrete uses and write the count in the PR description**. Fewer than three → stays local. Three or more → verify the abstraction is obvious and covers cleanly. `architecture-guardian` rejects any addition to L0 or L1 that doesn't cite ≥3 concrete lower-layer uses. Demotions (moving code down a layer) are celebrated, not resisted — the cost function has two directions.
 
+### R19 — DRY for documentation
+
+Every fact, decision, rule, or definition lives in exactly **one canonical location**. Other docs link to it; they never restate it.
+
+**Canonical sources (declared):**
+
+| Topic | Canonical home |
+|---|---|
+| Vision | `docs/vision.md` |
+| Market, financing, competition | `docs/market.md` |
+| Stack choices | `docs/stack.md` + `docs/decisions/ADR-001` |
+| Layered architecture | `docs/architecture/layers.md` + `ADR-002` |
+| Agent framework, tiers, Flow DSL | `docs/architecture/flow-catalog.md` + `ADR-003` |
+| Engineering rules | `docs/engineering-rules.md` (this file) |
+| Brand tokens | `docs/brand.md` |
+| Data Humanism pillars + 10 rules | `docs/data-humanism.md` |
+| Viz simplicity rules | `docs/viz-rules.md` |
+| UX concept (chat-first + diary + nudges) | `docs/ux-concept.md` |
+| User stories (individual) | `user-stories/US-*.md` |
+| User stories (how-to-write) | `docs/user-stories.md` |
+| Open questions | `docs/open-questions.md` |
+| How Thiago works | `.claude/CONVENTIONS.md` |
+
+**The rules:**
+
+- A new claim lives in exactly one file — its canonical home.
+- Every other mention is a Markdown link, never a restatement.
+- Short contextual paraphrases that introduce a link are fine ("Per the layered architecture, …" with the link). Two or more restated sentences count as duplication.
+- `CLAUDE.md` is the explicit exception: as the auto-loaded index it carries one-sentence-plus-link pointers for each non-negotiable.
+- ADRs restate their own **Decision** in the Decision section. They must not restate Context, Rationale, or Consequences that live elsewhere.
+- Audit round on every significant doc addition: read adjacent docs for overlap before merging.
+
+**Why:** two copies drift. Readers (and AI agents loading context) don't know which is authoritative. The doc set loses its mathematical cleanliness and every future author has to grep for the truth.
+
+**How to apply:** PR review rejects any restatement of an existing rule instead of a link. `architecture-guardian` gains a doc-duplication check: any identical 20+ word phrase appearing in two docs is flagged for consolidation (CLAUDE.md index entries exempted). Cross-doc links verified on every docs PR.
+
 ## Enforcement
 
-- `architecture-guardian` covers R5 (type safety at layer boundaries), R8 (license + secret checks), R9 (i18n layer leaks), R16 (speculative abstractions across layer boundaries), R17 (naming + signature lies), R18 (layer promotions require ≥3 concrete lower-layer uses; also flags abstractions that could be demoted down a layer).
+- `architecture-guardian` covers R5 (type safety at layer boundaries), R8 (license + secret checks), R9 (i18n layer leaks), R16 (speculative abstractions across layer boundaries), R17 (naming + signature lies), R18 (layer promotions require ≥3 concrete lower-layer uses; also flags abstractions that could be demoted down a layer), R19 (cross-doc duplication of rules or definitions).
 - `flow-catalog-reviewer` covers R4 (flow evals + UI coverage for flow-facing screens), R12 (flag-gated flows), R13 (flow-level SLOs), R15 (no placeholder flows; stubbed nodes rejected).
 - The R14 toolchain enforces R1–R12 and the automatable parts of R15–R17 (Biome rules, Knip, size budgets, TODO checker, JSDoc linting) once the scaffold graduates into a real repo. CI runs every check on every PR.
 - R13 reliability rules are enforced by on-call discipline + the error-budget policy + runbook requirements per alert. Not purely automatable.

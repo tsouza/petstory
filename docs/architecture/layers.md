@@ -12,7 +12,7 @@ petstory.co is the first vertical built on a brand-neutral agent kernel. The nam
 |---|---|---|---|
 | L0 — Agent Kernel | Domain-agnostic runtime | Agent SDK harness wrapper, model router, prompt-cache manager, auth port, storage port, channel ports, observability ports, hook bus, Flow runtime, critic harness | No |
 | L1 — Conversation & Narrative Primitives | Domain-agnostic interaction shape | Chat-first loop, event extraction parameterized over a `DomainSchema`, auto-generated diary, proactive nudge scheduler, shared-access primitive, export/vault primitive | No |
-| L2 — Domain Pack | Vertical-specific, pluggable | Event schema, curated KB, domain Skills, domain MCP tools, critic rules, Flow Catalog, Situation Classifier, copy fragments | Yes |
+| L2 — Domain Pack | Vertical-specific, pluggable | Event schema, curated KB, domain Skills, domain MCP tools, critic rules, Flow Catalog, Situation Classifier, copy bundle | Yes |
 | L3 — Product Shell | Vertical-specific UI + brand | Brand tokens, screens, flows, product copy, pricing | Yes |
 
 L0 and L1 together are the **kernel** — brand-neutral, reusable across domains. L2 and L3 together are **the vertical** — petstory today, potentially many more tomorrow.
@@ -47,7 +47,7 @@ A pack with any artifact missing is refused at startup.
 
 Generic packages have generic names. `conversation`, `diary`, `nudges`, `kernel` — never `pet-conversation` or `petstory-kernel`. Domain Packs are named after the vertical: `pet-health`, `human-health`, `tripstory-trips`.
 
-The kernel's public name is open — see [open-questions.md Q2](../open-questions.md).
+The kernel's public name is open — see [open-questions.md Q2](../open-questions.md) (what should the kernel be called publicly).
 
 ## Reference repo layout (target)
 

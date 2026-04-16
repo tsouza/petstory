@@ -15,7 +15,7 @@ Read these before proposing anything:
 - **Viz simplicity** — [`docs/viz-rules.md`](docs/viz-rules.md). Max 1+1 dimensions. No line charts. Cute/light/simple only.
 - **UX concept** — [`docs/ux-concept.md`](docs/ux-concept.md). Chat-first + auto-generated diary + proactive nudges.
 - **Clinical safety** — AI suggests, never diagnoses. Always recommend vet escalation on red-flag symptoms. Never output dosage/prescription language. Lives as pack-registered critic rules (not hard-coded in kernel).
-- **Engineering rules** — [`docs/engineering-rules.md`](docs/engineering-rules.md). Rules covering research discipline, version policy, modern patterns, testing (incl. vanguard UI stack + agent evals + targeted mutation), type safety, observability, perf budgets, security, a11y + i18n, Conventional Commits, PR gates, feature flags, reliability/SLOs + error budgets, and the standardized toolchain (Biome, Lefthook, commitlint, Knip, gitleaks, etc.). Exceptions require an ADR.
+- **Engineering rules** — [`docs/engineering-rules.md`](docs/engineering-rules.md). Rules covering research discipline, version policy, modern patterns, testing (incl. vanguard UI stack + agent evals + targeted mutation), type safety, observability, perf budgets, security, a11y + i18n, Conventional Commits, PR gates, feature flags, reliability/SLOs + error budgets, the standardized toolchain (Biome, Lefthook, commitlint, Knip, gitleaks, etc.), code integrity (no placeholders / no silent fallbacks), YAGNI + scope fidelity, naming honesty, layer-promotion rule of three, and doc DRY. Exceptions require an ADR ([§ Exceptions](docs/engineering-rules.md)).
 
 ## Stack
 
@@ -59,7 +59,7 @@ See [`.claude/CONVENTIONS.md`](.claude/CONVENTIONS.md). Highlights:
 
 - `brand-apply` — inject tokens, pick warm/cool background, color the logo.
 - `data-humanism-viz` — guided creation flow for a new viz following the 10 rules.
-- `prontuario-vivo-entry` — format a diary entry consistently (tone, structure, R1–R10).
+- `prontuario-vivo-entry` — format a diary entry consistently (tone, structure, DH1–DH10).
 - `new-user-story` — scaffold a US-*.md with correct frontmatter and AC format.
 
 ## When in doubt

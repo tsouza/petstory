@@ -61,16 +61,16 @@ related: [<US-IDs>]
 
 For stories with conditional logic or multi-path behavior, use Given-When-Then scenarios instead of / in addition to the checklist. See [user-story-guidelines.md](../../../user-story-guidelines.md) Format 2.
 
-### 4. Self-review against R1–R8
+### 4. Self-review against WR1–WR8
 
-- R1 — Situation is real, not a feature
-- R2 — Emotional context included when relevant
-- R3 — Single motivation (no "and")
-- R4 — Measurable outcome
-- R5 — No UI prescription
-- R6 — Multi-actor context explicit
-- R7 — Anxiety named when present
-- R8 — Different contexts are different stories
+- WR1 — Situation is real, not a feature
+- WR2 — Emotional context included when relevant
+- WR3 — Single motivation (no "and")
+- WR4 — Measurable outcome
+- WR5 — No UI prescription
+- WR6 — Multi-actor context explicit
+- WR7 — Anxiety named when present
+- WR8 — Different contexts are different stories
 
 ### 5. INVEST+ quality gate
 
