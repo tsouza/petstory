@@ -2,6 +2,24 @@
 
 Decisions deliberately deferred. Revisit when the timing is right.
 
+## Q2 — Kernel's public name
+
+**Raised:** 2026-04-16 during the layered architecture amendment ([ADR-002](decisions/ADR-002-layered-architecture.md)).
+
+**Context:** `petstory` labels the Product Shell (L3) and the Domain Pack (L2) only. The kernel (L0) and the narrative primitives (L1) are brand-neutral by rule — no pet concepts, no PT-BR strings. But the kernel still needs a name: for package scoping (`@???/kernel`, `@???/conversation`), for internal doc references, and eventually for any case where the kernel surfaces as its own product.
+
+**Why it matters:** Vertical SaaS 2.0 data from 2026 shows platforms that later monetize the core are the ones that kept the brand detached from day one. If the kernel is `@petstory/kernel` forever, spinning it out is a rename-plus-migration; if it has its own identity, it's a package publish.
+
+**Options surfaced (not chosen):**
+
+1. Anonymous under petstory scope (`@petstory/kernel`, `@petstory/conversation`). Cheapest, loses future optionality.
+2. Pick a brand-neutral internal name now (e.g. `storyline`, `narrativa`, `livevault`, `cortex`). Options open, tiny naming cost.
+3. Defer until a second pack is actually in motion.
+
+**Recommendation when revisiting:** pick option 2, but only when we have a second pack on the roadmap or when the kernel is about to ship to a first external consumer. Don't name for naming's sake.
+
+---
+
 ## Q1 — Interaction specs missing from user stories
 
 **Raised:** 2026-04-16 during MVP prototype work.

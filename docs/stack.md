@@ -2,6 +2,10 @@
 
 Decided April 2026. See [decisions/ADR-001-stack.md](decisions/ADR-001-stack.md) for rationale and alternatives considered.
 
+## Layering note (read this first)
+
+Per [ADR-002](decisions/ADR-002-layered-architecture.md), every choice below is a **kernel-level adapter** (L0), not a pet-health-specific decision. Swapping domains later means swapping the Domain Pack (L2) and Product Shell (L3); the stack table below stays. Convex, Clerk, the Agent SDK, Anthropic models, Managed Agents, Stripe/RevenueCat, Braintrust/Sentry/PostHog, and Vercel are portable across `pet-health`, `human-health`, future `tripstory-trips`, or any other vertical we ship.
+
 ## Summary
 
 | Layer | Choice |
@@ -9,7 +13,8 @@ Decided April 2026. See [decisions/ADR-001-stack.md](decisions/ADR-001-stack.md)
 | Client (mobile + web) | Expo SDK 52+ (React Native New Architecture) + Expo Router; RN Web for browser |
 | Auth | Clerk |
 | Backend / DB / realtime / storage / vector | Convex |
-| Agent orchestration | Claude Agent SDK (TypeScript), in-process MCP tools |
+| Agent orchestration (per-node) | Claude Agent SDK (TypeScript), in-process MCP tools |
+| Flow runtime (graph execution) | Mastra (TS-native workflows, MCP-first) |
 | Models | Haiku 4.5 default, Sonnet 4.6 for insights, Opus 4.6 for premium correlations |
 | Long-running async | Claude Managed Agents (public beta, April 2026) |
 | Prompt caching | 1-hour extended cache on pet profile + medical KB + skills |
@@ -21,10 +26,16 @@ Decided April 2026. See [decisions/ADR-001-stack.md](decisions/ADR-001-stack.md)
 
 ## Agent architecture
 
-- **Custom in-process MCP tools** as domain API: `record_event`, `get_pet_timeline`, `query_medical_kb`, `schedule_nudge`, `flag_clinical_anomaly`, `generate_vet_report`.
-- **Skills** (versionable prompt assets): `diario-narrativo`, `triagem-sintomas`, `correlacao-comportamento`, `relatorio-veterinario`.
-- **Sub-agents**: `diary-writer` (Haiku, fast), `clinical-analyzer` (Sonnet, extended thinking), `nudge-scheduler` (background).
-- **Hooks** for guardrails: no prescription language, always escalate red-flag symptoms.
+Operationalized by the three-level framework in [architecture/flow-catalog.md](architecture/flow-catalog.md). Kernel owns the Execution Spine and the Flow runtime; the pet-health Domain Pack owns the Flow Catalog, Situation Classifier, MCP tools, Skills, and critic rules.
+
+- **Custom in-process MCP tools** (pack-level, L2 pet-health): `record_event`, `get_pet_timeline`, `query_medical_kb`, `schedule_nudge`, `flag_clinical_anomaly`, `generate_vet_report`.
+- **Skills** (pack-level prompt assets): `diario-narrativo`, `triagem-sintomas`, `correlacao-comportamento`, `relatorio-veterinario`.
+- **Sub-agents registered as Flow node types** (pack-level): `diary-writer` (Haiku), `clinical-analyzer` (Sonnet, extended thinking), `nudge-scheduler` (background).
+- **Critic rules** (pack-level hooks into kernel harness): no prescription language, red-flag escalation. Never hard-coded in the kernel.
+
+### Flow runtime choice
+
+**Mastra** runs the Flow graphs; **Claude Agent SDK** runs each node's agent harness. Rejected alternatives: LangGraph.js (heavier, competes with Agent SDK), Vercel AI SDK + Workflow (primitives lower-level than Flow graphs), Inngest AgentKit (platform overlaps with Convex schedules), DSPy (optimizer-first, wrong shape). Rejected building custom (validated Mastra covers runtime; our value-add is the pack-level Flow contract, not graph execution). See ADR-003 for rationale.
 
 ## Model routing
 

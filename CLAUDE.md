@@ -6,13 +6,16 @@ This file is auto-loaded by Claude Code. Keep it short; point to `docs/` for dep
 
 ## Non-negotiables
 
-Read these before proposing anything user-facing:
+Read these before proposing anything:
 
+- **Layered architecture** — [`docs/architecture/layers.md`](docs/architecture/layers.md). petstory is the first vertical on a brand-neutral kernel. Strict inward dependency: `shell → pack → primitives → kernel`. No pet concepts in kernel or primitives. See [`ADR-002`](docs/decisions/ADR-002-layered-architecture.md).
+- **Agent framework** — [`docs/architecture/flow-catalog.md`](docs/architecture/flow-catalog.md). Three-level model: Execution Spine (kernel) + Flow Catalog (pack) + Situation Classifier (pack). No bespoke loops outside the Flow DSL. See [`ADR-003`](docs/decisions/ADR-003-three-level-agent-framework.md).
 - **Brand tokens** — [`docs/brand.md`](docs/brand.md). Never invent colors; use the single source of truth.
 - **Data Humanism rules** — [`docs/data-humanism.md`](docs/data-humanism.md). The 4 pillars + 10 rules govern every data display and AI response.
 - **Viz simplicity** — [`docs/viz-rules.md`](docs/viz-rules.md). Max 1+1 dimensions. No line charts. Cute/light/simple only.
 - **UX concept** — [`docs/ux-concept.md`](docs/ux-concept.md). Chat-first + auto-generated diary + proactive nudges.
-- **Clinical safety** — AI suggests, never diagnoses. Always recommend vet escalation on red-flag symptoms. Never output dosage/prescription language.
+- **Clinical safety** — AI suggests, never diagnoses. Always recommend vet escalation on red-flag symptoms. Never output dosage/prescription language. Lives as pack-registered critic rules (not hard-coded in kernel).
+- **Engineering rules** — [`docs/engineering-rules.md`](docs/engineering-rules.md). Rules covering research discipline, version policy, modern patterns, testing (incl. vanguard UI stack + agent evals + targeted mutation), type safety, observability, perf budgets, security, a11y + i18n, Conventional Commits, PR gates, feature flags, reliability/SLOs + error budgets, and the standardized toolchain (Biome, Lefthook, commitlint, Knip, gitleaks, etc.). Exceptions require an ADR.
 
 ## Stack
 
@@ -38,6 +41,8 @@ See [`.claude/CONVENTIONS.md`](.claude/CONVENTIONS.md). Highlights:
 
 ## Sub-agents available
 
+- `architecture-guardian` — flags cross-layer leaks and dependency-rule violations.
+- `flow-catalog-reviewer` — reviews any proposed new Flow against the DSL and catalog invariants.
 - `brand-guardian` — refuses/flags brand-token violations.
 - `viz-judge` — enforces [`docs/viz-rules.md`](docs/viz-rules.md) on any viz proposal.
 - `ux-concept-keeper` — checks features against [`docs/ux-concept.md`](docs/ux-concept.md).
@@ -59,7 +64,9 @@ See [`.claude/CONVENTIONS.md`](.claude/CONVENTIONS.md). Highlights:
 
 ## When in doubt
 
+- Architecture / layer question → [`docs/architecture/layers.md`](docs/architecture/layers.md)
+- Agent loop / flow question → [`docs/architecture/flow-catalog.md`](docs/architecture/flow-catalog.md)
 - Frontend design question → [`docs/ux-concept.md`](docs/ux-concept.md) + [`docs/data-humanism.md`](docs/data-humanism.md)
-- Backend/agent question → [`docs/stack.md`](docs/stack.md)
+- Backend / stack question → [`docs/stack.md`](docs/stack.md)
 - Writing a user story → [`docs/user-stories.md`](docs/user-stories.md) + template in `.claude/skills/new-user-story/`
 - Can't find it → ask before inventing.
