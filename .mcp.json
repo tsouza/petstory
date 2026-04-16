@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json.schemastore.org/mcp",
+  "mcpServers": {
+    "expo": {
+      "command": "npx",
+      "args": ["-y", "@expo/mcp-server"],
+      "description": "Expo/EAS — builds, workflows, project introspection. See https://docs.expo.dev/eas/ai/mcp/"
+    },
+    "convex": {
+      "command": "npx",
+      "args": ["-y", "@convex-dev/mcp-server"],
+      "description": "Convex backend — schemas, functions, data inspection. Enable once Convex project is initialized.",
+      "disabled": true
+    },
+    "sentry": {
+      "command": "npx",
+      "args": ["-y", "@sentry/mcp-server"],
+      "description": "Sentry — issues, releases, release-health. Enable once Sentry project exists.",
+      "disabled": true
+    },
+    "posthog": {
+      "command": "npx",
+      "args": ["-y", "@posthog/mcp-server"],
+      "description": "PostHog — events, cohorts, feature flags. Enable once PostHog project exists.",
+      "disabled": true
+    }
+  }
+}
