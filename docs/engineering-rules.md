@@ -455,6 +455,54 @@ Picking the wrong library is the second-most expensive decision in a codebase, b
 - R16 (YAGNI) — don't pull in a library "just in case."
 - R18 (Rule of Three, internal abstractions) — R18 governs when *internal* code promotes up a layer; R20 governs when *external* code enters the dependency tree. Both answer "should this abstraction exist?" with evidence instead of intuition.
 
+### R21 — Small-step iteration: plan, apply, commit, push, test, re-evaluate
+
+Non-trivial work is broken into the smallest coherent units at **planning time**, and each unit runs through the full cycle before the next begins:
+
+1. **Apply** the change.
+2. **Commit** with a Conventional Commit subject (per R10).
+3. **Push** to remote.
+4. **Test** — CI runs the verification appropriate to the change, per R4 (unit, integration, component, visual, e2e, agent eval).
+5. **Re-evaluate** the plan — does the next step still make sense, or has something changed?
+
+Then the next unit. Never skip steps. Never batch two unrelated units into one commit.
+
+**What counts as a "small step":**
+
+- A single conceptual change with a clear boundary.
+- Describable in one Conventional Commit subject (≤ 72 chars).
+- Revertable independently without dragging unrelated changes.
+- Ideally < 100 lines of diff; hard cap at 400 per PR (R10).
+
+**Planning output:**
+
+Before writing code, list the commits you intend to produce, in order. Each entry is the Conventional Commit subject you'll write. If the list has fewer than 2 entries for non-trivial work, the plan isn't granular enough — break it down more. Plans with one 500-line commit are a failure mode of R21.
+
+**Why:**
+
+Small steps surface problems early. A 1,000-line commit defers every failure until the end; a 50-line commit fails fast and cheap. Re-evaluation is where learning happens — after each step, reality might differ from the plan, and forcing a pause catches drift. `git bisect` only works when history is atomic; messy commits disable the cheapest debugging tool Git has. AI-assisted edits stay on-scope at ~50 lines and drift at 500.
+
+**How to apply:**
+
+- Treat the planning output (Plan tool, ADR, design doc) as a commit list, not a narrative paragraph.
+- Run local verification before push when practical; CI is the source of truth after push.
+- After each push, read the test output. Don't assume green. Don't start the next step while CI on the current one is still running, unless the next step is on an independent surface.
+- Use `git commit --amend` for local typo fixes within the current step; never amend a pushed commit.
+- Don't couple unrelated changes into one commit for convenience. Drive-by one-liners get their own commit.
+
+**Related rules:**
+
+- **R10** (Conventional Commits + trunk-based + small PRs) — R21 specifies the *cycle* that runs within R10's PR-size bound.
+- **R4** (testing pyramid) — the test step picks from R4's layers based on what the change touches.
+- **R15** (no placeholders, no silent fallbacks) — each step ships complete; no "finish in the next commit" stubs.
+- **R16** (YAGNI + scope fidelity) — each step does one thing, not five speculative ones.
+- **R12** (feature flag risky changes) — when a large change must land as a sequence of commits but the intermediate state would be user-visible, the flag hides it until complete.
+
+**Exceptions:**
+
+- **Atomic operations** (large renames across a code surface, schema migrations, breaking interface changes) must land in one commit for correctness. When they must, they're still planned as a sequence (prep commit → atomic commit → follow-up commit) with a feature flag (R12) hiding intermediate state from users.
+- **Docs-only commits** may batch related small edits if they share one conceptual change (e.g. a single engineering-rules amendment touching the rule file + architecture-guardian + CLAUDE.md).
+
 ## Enforcement
 
 - `architecture-guardian` covers R5 (type safety at layer boundaries), R8 (license + secret checks), R9 (i18n layer leaks), R16 (speculative abstractions across layer boundaries), R17 (naming + signature lies), R18 (layer promotions require ≥3 concrete lower-layer uses; also flags abstractions that could be demoted down a layer), R19 (cross-doc duplication of rules or definitions), R20 (new dependency added without evaluation rationale in PR body).
