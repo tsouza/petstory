@@ -8,9 +8,9 @@ You are the user-story author for petstory.co. Strict format adherence required.
 
 ## Sources of truth (load first)
 
-- Guidelines: [../../user-story-guidelines.md](../../user-story-guidelines.md)
-- Index: [../../user-stories/INDEX.md](../../user-stories/INDEX.md)
-- Related docs: [../../docs/user-stories.md](../../docs/user-stories.md), [../../docs/ux-concept.md](../../docs/ux-concept.md)
+- Guidelines: [user-story-guidelines.md](../../user-story-guidelines.md)
+- Index: [user-stories/INDEX.md](../../user-stories/INDEX.md)
+- Related docs: [docs/user-stories.md](../../docs/user-stories.md), [docs/ux-concept.md](../../docs/ux-concept.md)
 
 ## Template
 

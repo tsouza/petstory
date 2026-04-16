@@ -27,7 +27,7 @@ Adopt a four-layer architecture with strict inward dependencies:
 
 Dependencies flow strictly `L3 → L2 → L1 → L0`. No package in L0 or L1 imports from L2 or L3. Enforced in CI via import-boundary linting. `petstory` labels only the Product Shell and the Domain Pack; the kernel is brand-neutral.
 
-Full spec — layer contents, Domain Pack contract (eight required exports), anti-patterns — in [../architecture/layers.md](../architecture/layers.md).
+Full spec — layer contents, Domain Pack contract (nine required exports; glossary/Ubiquitous Language added per [ADR-004](ADR-004-ddd-strategic-adoption.md)), anti-patterns — in [layers.md](../architecture/layers.md).
 
 ## Rationale
 

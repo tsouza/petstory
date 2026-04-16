@@ -27,6 +27,8 @@ R0 sits above every other rule in this document. When any rule — including the
 - Six-level-deep layering where three would do.
 - "This is the right pattern" without a concrete pain it currently solves.
 
+**R0 vs R22 — how they cooperate, not conflict.** R0 gates **whether** to extend the kernel at all (reject if no concrete consumer). R22 gates **how** to extend it **when you legitimately need to** (extension slot, not direct edit). A proposal that passes R0 — "yes, this third pack genuinely needs this capability" — then faces R22 — "and the right way to add it is a new extension slot, not editing the kernel." Both rules active, no conflict.
+
 **R0 does NOT override:**
 
 - **Clinical safety** (DH9, no-dosage, red-flag escalation) — patient harm is not a tradeoff.
@@ -45,10 +47,12 @@ Many rules below are written for the production system we'll have, not the pre-c
 | Phase | Live |
 |---|---|
 | Pre-code (now) | R0, R1, R2, R5, R8 (baseline), R10, R15, R16, R17, R19, R21 |
-| Code exists | R3, R4 (unit + integration + agent-eval golden path), R7, R9 (i18n layer in code), R20, R22 |
+| Code exists | R3, R4 (baseline: unit + integration + agent-eval golden path), R7, R9 (i18n layer in code), R20, R22 |
 | Beta (first real users) | R6 (full Braintrust + Sentry + PostHog), R11 (CI-enforced gates), R12 (rollout %) |
-| Scale (real traffic) | R4 full (visual regression + mutation + mobile e2e), R13 (SLOs + error budgets + on-call), R14 full toolchain |
+| Scale (real traffic) | R4 (full: + visual regression + mutation + mobile e2e), R13 (SLOs + error budgets + on-call), R14 (full toolchain) |
 | ≥2 packs | R18 (layer promotion) |
+
+R4 and R14 appear twice because they phase in their own coverage: R4 starts with the testing essentials and expands at scale; R14 starts with the minimum toolchain (Biome, Vitest, Gitleaks, basic CI) and expands to the full R14 list at scale. Listing once per phase keeps the scope each phase brings visible.
 
 R0 applies at every phase. A rule listed as "live later" can be adopted earlier when a concrete pain argues for it; likewise, a rule "live now" can be relaxed by ADR if it's producing ceremony.
 
@@ -114,9 +118,11 @@ Every PR ships with tests appropriate to its layer. The UI stack below is resear
 
 Every LLM call tagged to Braintrust with flow + node + pack + cost metadata. Sentry for errors with PII redacted before send. PostHog for product events. Structured JSON logs with a correlation ID per conversation turn. A cost-per-DAU dashboard runs from day one. Alert thresholds for each tier (T1 latency, T2 failure rate, T3 critic reject rate, T4 cost drift) are declared in the ADR that introduced the tier.
 
-**Operationalized at the Flow level.** The Flow DSL carries per-flow observability fields (`expectedCostPerMessage`, `braintrustDataset`, `perNodeLatencyBudgetMs`) — see [flow-catalog.md](../docs/architecture/flow-catalog.md). Observability is not a parallel system, it's a Flow contract element.
+**Operationalized at the Flow level.** The Flow DSL carries per-flow observability fields (`expectedCostPerMessage`, `braintrustDataset`, `perNodeLatencyBudgetMs`) — see [architecture/flow-catalog.md](architecture/flow-catalog.md). Observability is not a parallel system, it's a Flow contract element. The Situation Classifier (per-message LLM call that picks a Flow) is itself T1 cost and is tagged with the same Braintrust flow+node+pack+cost metadata as a regular Flow node.
 
 **Why:** observability added later never catches up. Cost drift in an LLM app is how startups die quietly.
+
+**Phased enforcement.** `observability.expectedCostPerMessage` is a **hard requirement** for T2+ flows — `flow-catalog-reviewer` rejects without it. `observability.braintrustDataset` is **strongly recommended** for all flows with ≥3 nodes but not hard-enforced (soft flag) until the first real eval failure costs us. Basic Braintrust flow+node+pack+cost tags on every LLM call remain hard-required from day one.
 
 **How to apply:** a PR that adds a new flow or node without Braintrust tags is rejected. Sentry.init runs with a `beforeSend` hook that strips user messages by default. `flow-catalog-reviewer` rejects new T2+ flows that don't declare `observability.expectedCostPerMessage`.
 
@@ -140,8 +146,8 @@ Secrets live in Infisical or Doppler, never in code, lockfiles, env files checke
 
 **Operationalized at the Flow and Event levels.** Security is not siloed in this rule — it threads through:
 
-- **Every Domain Event** declares its PII class (`'none' | 'behavioral' | 'health' | 'contact' | 'payment'`) — see [layers.md](../docs/architecture/layers.md) Domain Pack contract artifact 1.
-- **Every Flow** declares `piiHandling` (contains + logsRedacted) — see [flow-catalog.md](../docs/architecture/flow-catalog.md).
+- **Every Domain Event** declares its PII class (`'none' | 'behavioral' | 'health' | 'contact' | 'payment'`) — see [architecture/layers.md](architecture/layers.md) Domain Pack contract artifact 1.
+- **Every Flow** declares `piiHandling` (contains + logsRedacted) — see [architecture/flow-catalog.md](architecture/flow-catalog.md).
 - Log redactors, Sentry `beforeSend`, Convex schema tags all read from these declarations. R8 is the principle; the Flow/Event fields are the operational surface.
 
 **Why:** petstory.co handles health data. The regulatory posture (LGPD in Brazil, broader compliance as we expand) demands this baseline. Getting it right at day zero is ~10× cheaper than retrofitting.
@@ -401,7 +407,7 @@ If any gate fails, the code stays local. Revisit when a fourth similar case appe
 - **L0 (kernel) has the highest bar.** Kernel code pays maintenance tax in every pack. Promote L1 → L0 only when the pattern appears across **multiple packs**, not within one.
 - **L1 primitives.** Promote L2 → L1 when the rule of three passes *and* the abstraction is domain-agnostic (no pack-specific vocabulary). If it only makes sense for pet-health, it stays in the pack.
 - **L2 pack internals** factor freely — duplication *between* packs is information about separate domains, not debt.
-- **The pack boundary itself is designed, not emergent.** Don't apply the rule of three to the pack contract — that's fixed in ADR-002 (eight required exports).
+- **The pack boundary itself is designed, not emergent.** Don't apply the rule of three to the pack contract — that's fixed in ADR-002 (nine required exports after the Ubiquitous Language glossary was added in ADR-004).
 
 **Why:** DRY is a tool, not a goal. Copy-paste of 5 lines across 2 files is cheaper than an abstraction that's wrong in one way; copy-paste of 50 lines across 5 files is real debt. Premature abstractions lock in the wrong interface shape; late abstractions accumulate pain. Applied to our specific layered architecture, the rule prevents kernel bloat driven by speculation and pack sprawl driven by false "this is general" moves.
 

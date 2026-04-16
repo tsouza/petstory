@@ -26,7 +26,7 @@ Adopt a three-level agent framework:
 - **Level 2 — Flow Catalog.** Per Domain Pack. Named, versioned, typed Flow definitions with pack-level invariants (tier binding, mandatory T3 critic, one-clarifier-per-turn, no cross-pack state, Opus gated on premium). Hand-authored, not auto-generated. Compiled to Mastra workflows at boot.
 - **Level 3 — Situation Classifier.** Per Domain Pack. Fast Haiku call on every inbound event picks which Flow runs. Confidence-tiered (`>= 0.85` run; `0.60–0.85` run with soft confirmation; `< 0.60` route to `clarify-flow`).
 
-Full spec — tier table, Flow DSL shape, invariants, catalog lifecycle — in [../architecture/flow-catalog.md](../architecture/flow-catalog.md).
+Full spec — tier table, Flow DSL shape, invariants, catalog lifecycle — in [flow-catalog.md](../architecture/flow-catalog.md).
 
 ## Rationale
 

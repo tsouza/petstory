@@ -1,6 +1,6 @@
 # Layered architecture
 
-Non-negotiable. Established 2026-04-16 as the core architectural rule for petstory.co. See [../decisions/ADR-002-layered-architecture.md](../decisions/ADR-002-layered-architecture.md) for the decision record.
+Non-negotiable. Established 2026-04-16 as the core architectural rule for petstory.co. See [ADR-002](../decisions/ADR-002-layered-architecture.md) for the decision record.
 
 ## The thesis
 
@@ -10,7 +10,7 @@ petstory.co is the first vertical built on a brand-neutral agent kernel. The nam
 
 | Layer | Scope | Examples | Knows about pets? |
 |---|---|---|---|
-| L0 — Agent Kernel | Domain-agnostic runtime | Agent SDK harness wrapper, model router, prompt-cache manager, auth port, storage port, channel ports, observability ports, hook bus, Flow runtime, critic harness | No |
+| L0 — Agent Kernel | Domain-agnostic runtime | Agent SDK harness wrapper, model router, prompt-cache manager, auth port, storage port, channel ports, observability ports, hook bus, Flow runtime, critic harness. The kernel's public surface consists of the **extension slots** packs register into (MCP tools, Skills, Hooks, Flow node types, Critic rules, Situation classifiers, Domain Events, Glossary terms — per R22). "Hook" in this context is one extension-slot type, specifically for callback-style registration into the hook bus. | No |
 | L1 — Conversation & Narrative Primitives | Domain-agnostic interaction shape | Chat-first loop, event extraction parameterized over a `DomainSchema`, auto-generated diary, proactive nudge scheduler, shared-access primitive, export/vault primitive | No |
 | L2 — Domain Pack | Vertical-specific, pluggable (a Bounded Context in DDD terms) | Event schema, curated KB, domain Skills, domain MCP tools, critic rules, Flow Catalog, Situation Classifier, copy bundle, Ubiquitous Language glossary | Yes |
 | L3 — Product Shell | Vertical-specific UI + brand | Brand tokens, screens, flows, product copy, pricing | Yes |

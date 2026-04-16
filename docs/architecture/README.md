@@ -9,8 +9,8 @@ Canonical architectural rules for petstory.co. Non-negotiable.
 
 ## Decision records
 
-- [../decisions/ADR-002-layered-architecture.md](../decisions/ADR-002-layered-architecture.md)
-- [../decisions/ADR-003-three-level-agent-framework.md](../decisions/ADR-003-three-level-agent-framework.md)
+- [ADR-002 — Layered architecture](../decisions/ADR-002-layered-architecture.md)
+- [ADR-003 — Three-level agent framework](../decisions/ADR-003-three-level-agent-framework.md)
 
 ## Enforcement
 

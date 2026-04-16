@@ -15,7 +15,7 @@ Relevant DDD dimensions:
 - **Strategic DDD** — Bounded Contexts, Subdomains (Core/Supporting/Generic), Ubiquitous Language, Context Mapping, Anti-Corruption Layer. About boundaries, language, and relationships.
 - **Tactical DDD** — Aggregates, Entities, Value Objects, Repositories, Domain Services, Factories. About code-level patterns, historically OO-heavy.
 
-The honest assessment: ADR-002's four-layer model already maps to strategic DDD concepts under different names. Our Domain Pack ≈ Bounded Context. L0 ports ≈ Anti-Corruption Layer. L0+L1 ≈ Generic Subdomain. L2 ≈ Core Subdomain. The Domain Pack contract (eight exports) is a Context Map in all but name. Strategic DDD is where the payoff is; tactical DDD's OO patterns fight our TS + Convex + Zod + Mastra stack.
+The honest assessment: ADR-002's four-layer model already maps to strategic DDD concepts under different names. Our Domain Pack ≈ Bounded Context. L0 ports ≈ Anti-Corruption Layer. L0+L1 ≈ Generic Subdomain. L2 ≈ Core Subdomain. The Domain Pack contract (eight exports at the time of this ADR; this ADR adds the glossary as the ninth) is a Context Map in all but name. Strategic DDD is where the payoff is; tactical DDD's OO patterns fight our TS + Convex + Zod + Mastra stack.
 
 ## Decision
 

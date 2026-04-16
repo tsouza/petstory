@@ -1,6 +1,6 @@
 # Three-level agent framework
 
-Non-negotiable complement to [layers.md](layers.md). Established 2026-04-16. Decision record in [../decisions/ADR-003-three-level-agent-framework.md](../decisions/ADR-003-three-level-agent-framework.md).
+Non-negotiable complement to [layers.md](layers.md). Established 2026-04-16. Decision record in [ADR-003](../decisions/ADR-003-three-level-agent-framework.md).
 
 ## The thesis
 
@@ -103,7 +103,7 @@ type FlowEdge = {
 
 Per Domain Pack. A fast Haiku call on every inbound event that picks which Flow runs.
 
-Deterministic where possible (keyword hit on a red-flag symptom → `red-flag-flow` immediately, no LLM) and LLM-routed only when the situation is fuzzy. The classifier output is typed:
+Deterministic where possible (keyword hit on a red-flag symptom → `red-flag-flow` immediately, no LLM) and LLM-routed only when the situation is fuzzy. The LLM-routed path is itself a T1 cost and is tagged with the same Braintrust flow+node+pack+cost metadata as any Flow node — observability is not optional on this hot path. The classifier output is typed:
 
 ```ts
 interface SituationClassification {
