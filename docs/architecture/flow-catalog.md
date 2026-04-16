@@ -50,6 +50,19 @@ interface Flow {
 
   stopCondition: StopCondition;
   escalation: EscalationPolicy;
+
+  // Cross-cutting concerns — security (R8) and observability (R6) operationalized
+  // at the Flow level. Not siloed; these fields are read by log redactors,
+  // Braintrust eval harness, Sentry scrubbers, and cost-per-DAU dashboards.
+  piiHandling?: {
+    contains: Array<'petName' | 'tutorContact' | 'health' | 'behavioral' | 'payment'>;
+    logsRedacted: true;               // R8 — raw values never reach Sentry/logs
+  };
+  observability?: {
+    expectedCostPerMessage?: number;  // USD; feeds cost-per-DAU dashboard (R6)
+    braintrustDataset?: string;       // eval dataset this flow belongs to (R4)
+    perNodeLatencyBudgetMs?: Record<string, number>;  // override tier default (R13)
+  };
 }
 
 type FlowNode =

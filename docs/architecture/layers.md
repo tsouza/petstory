@@ -33,6 +33,8 @@ Practically this means:
 A Domain Pack must export these nine artifacts. The kernel validates the contract at boot.
 
 1. **Event schema** — the `DomainSchema` the kernel's event extractor is parameterized over. Event types are **Domain Events** in DDD terms (e.g. `MealRefused`, `SymptomObserved`, `MedicationAdministered` for pet-health). The timeline IS the event log; diary and correlations are read projections over this stream. See [ADR-004](../decisions/ADR-004-ddd-strategic-adoption.md).
+
+   Each Domain Event **must declare a PII class** — `'none' | 'behavioral' | 'health' | 'contact' | 'payment'`. Log redactors, Convex schema tags, and Sentry `beforeSend` hooks read from this. This is R8 (security baseline) operationalized at the event level — not siloed, threaded through every event the pack emits.
 2. **Knowledge base** — curated structured data queryable via an MCP tool.
 3. **Skills** — markdown prompt assets for pack-specific workflows (`triagem-sintomas`, `correlacao-comportamento`).
 4. **MCP tools** — the domain API surface (`record_meal`, `flag_clinical_anomaly`, `query_medical_kb`).

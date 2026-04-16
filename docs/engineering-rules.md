@@ -6,7 +6,51 @@ Non-negotiable. Established 2026-04-16. Every PR, every code review, every ADR l
 
 Two meta-principles underneath every rule. First, we are building a consumer clinical-adjacent chat app; "good enough" is calibrated to that. A missed clinical guardrail is worse than a slow ship. Second, this is a layered architecture (ADR-002) with a brand-neutral kernel — rules that constrain the kernel are stricter than rules for the shell.
 
+**Security (R8) and observability (R6) are cross-cutting concerns.** They aren't siloed in their rules — read every rule, ADR, and architectural decision through both lenses. A Flow without observability tags, a pack without PII classification, a kernel PR that widens the trust boundary — these are violations regardless of which numbered rule catches them first.
+
 ## The rules
+
+### R0 — No over-engineering (the veto rule)
+
+R0 sits above every other rule in this document. When any rule — including the canonical architectural patterns of ADR-002, ADR-003, or ADR-004 — would produce a solution disproportionate to the problem, R0 vetoes it.
+
+**The R0 question.** Before applying any rule, pattern, or abstraction, answer: *"What's the cheapest thing that fixes the current problem? If we pick anything heavier, what concrete pain earns the weight?"* If you can't name the pain, R0 rejects the proposal.
+
+**R0 specifically rejects:**
+
+- Correct pattern application that adds ceremony without proportional benefit.
+- New extension slots, rules, artifacts, or sub-agents with zero current consumers.
+- Contract requirements (artifacts, metadata files) required before any instance exists.
+- Automation for problems that happen twice a year.
+- Abstractions whose value lives in the future, paid for now.
+- Process ceremony (on-call rotation, formal postmortems, error-budget policies) at zero users.
+- Six-level-deep layering where three would do.
+- "This is the right pattern" without a concrete pain it currently solves.
+
+**R0 does NOT override:**
+
+- **Clinical safety** (DH9, no-dosage, red-flag escalation) — patient harm is not a tradeoff.
+- **Security baseline** (R8 — secrets management, license allowlist, PII redaction) — table-stakes, not ceremony.
+- **Type safety** (R5) — cheap to keep, expensive to add back.
+- **The layered dependency rule** (ADR-002) — without it, the cross-domain-reuse promise collapses.
+
+These are the irreducible floor. Everything else bends under R0.
+
+**R0 enforcement:** every PR and ADR faces the R0 question in review. `architecture-guardian` flags proposals that look like over-engineering (new extension slots with zero current consumers, new pack artifacts required before any pack exists, etc.).
+
+## Phasing — when each rule goes live
+
+Many rules below are written for the production system we'll have, not the pre-code scaffold we have now. Under R0, **minimum viable enforcement** beats **full enforcement** until there's pain to justify the upgrade.
+
+| Phase | Live |
+|---|---|
+| Pre-code (now) | R0, R1, R2, R5, R8 (baseline), R10, R15, R16, R17, R19, R21 |
+| Code exists | R3, R4 (unit + integration + agent-eval golden path), R7, R9 (i18n layer in code), R20, R22 |
+| Beta (first real users) | R6 (full Braintrust + Sentry + PostHog), R11 (CI-enforced gates), R12 (rollout %) |
+| Scale (real traffic) | R4 full (visual regression + mutation + mobile e2e), R13 (SLOs + error budgets + on-call), R14 full toolchain |
+| ≥2 packs | R18 (layer promotion) |
+
+R0 applies at every phase. A rule listed as "live later" can be adopted earlier when a concrete pain argues for it; likewise, a rule "live now" can be relaxed by ADR if it's producing ceremony.
 
 ### R1 — Research-first engineering
 
@@ -70,9 +114,11 @@ Every PR ships with tests appropriate to its layer. The UI stack below is resear
 
 Every LLM call tagged to Braintrust with flow + node + pack + cost metadata. Sentry for errors with PII redacted before send. PostHog for product events. Structured JSON logs with a correlation ID per conversation turn. A cost-per-DAU dashboard runs from day one. Alert thresholds for each tier (T1 latency, T2 failure rate, T3 critic reject rate, T4 cost drift) are declared in the ADR that introduced the tier.
 
+**Operationalized at the Flow level.** The Flow DSL carries per-flow observability fields (`expectedCostPerMessage`, `braintrustDataset`, `perNodeLatencyBudgetMs`) — see [flow-catalog.md](../docs/architecture/flow-catalog.md). Observability is not a parallel system, it's a Flow contract element.
+
 **Why:** observability added later never catches up. Cost drift in an LLM app is how startups die quietly.
 
-**How to apply:** a PR that adds a new flow or node without Braintrust tags is rejected. Sentry.init runs with a `beforeSend` hook that strips user messages by default.
+**How to apply:** a PR that adds a new flow or node without Braintrust tags is rejected. Sentry.init runs with a `beforeSend` hook that strips user messages by default. `flow-catalog-reviewer` rejects new T2+ flows that don't declare `observability.expectedCostPerMessage`.
 
 ### R7 — Performance budgets enforced in CI
 
@@ -92,9 +138,15 @@ Regressions block merge. Budgets revisited per major release. Lighthouse CI on w
 
 Secrets live in Infisical or Doppler, never in code, lockfiles, env files checked into the repo, or CI logs. PII tagged at the Convex schema level (`{ piiClass: "health" | "contact" | "behavioral" }`). Health data encrypted at rest (Convex default) + in transit (TLS 1.3). Raw user messages never reach Sentry — redaction/hashing runs in `beforeSend`. Gitleaks + Socket.dev + `npm audit` run on every CI. License allowlist excludes GPL/AGPL from app-shipped code. Clerk configured with PKCE + session rotation.
 
+**Operationalized at the Flow and Event levels.** Security is not siloed in this rule — it threads through:
+
+- **Every Domain Event** declares its PII class (`'none' | 'behavioral' | 'health' | 'contact' | 'payment'`) — see [layers.md](../docs/architecture/layers.md) Domain Pack contract artifact 1.
+- **Every Flow** declares `piiHandling` (contains + logsRedacted) — see [flow-catalog.md](../docs/architecture/flow-catalog.md).
+- Log redactors, Sentry `beforeSend`, Convex schema tags all read from these declarations. R8 is the principle; the Flow/Event fields are the operational surface.
+
 **Why:** petstory.co handles health data. The regulatory posture (LGPD in Brazil, broader compliance as we expand) demands this baseline. Getting it right at day zero is ~10× cheaper than retrofitting.
 
-**How to apply:** any secret leak in git history is a P0 rotation + post-mortem. A new dep that fails the license check is rejected in CI.
+**How to apply:** any secret leak in git history is a P0 rotation + post-mortem. A new dep that fails the license check is rejected in CI. A new Flow touching clinical-adjacent nodes without `piiHandling` declared is rejected. A new Domain Event without its PII class is rejected.
 
 ### R9 — Accessibility + i18n from day one
 
@@ -552,7 +604,7 @@ Reusable layers are **closed for modification, open for extension**:
 
 ## Enforcement
 
-- `architecture-guardian` covers R5 (type safety at layer boundaries), R8 (license + secret checks), R9 (i18n layer leaks), R16 (speculative abstractions across layer boundaries), R17 (naming + signature lies), R18 (layer promotions require ≥3 concrete lower-layer uses; also flags abstractions that could be demoted down a layer), R19 (cross-doc duplication of rules or definitions), R20 (new dependency added without evaluation rationale in PR body), R22 (kernel / primitive PR that isn't an extension-slot addition without justifying the three-question gate).
+- `architecture-guardian` covers R0 (proposals adding ceremony without concrete pain to earn it — the veto), R5 (type safety at layer boundaries), R8 (license + secret checks), R9 (i18n layer leaks), R16 (speculative abstractions across layer boundaries), R17 (naming + signature lies), R18 (layer promotions require ≥3 concrete lower-layer uses; also flags abstractions that could be demoted down a layer), R19 (cross-doc duplication of rules or definitions), R20 (new dependency added without evaluation rationale in PR body), R22 (kernel / primitive PR that isn't an extension-slot addition without justifying the three-question gate).
 - `flow-catalog-reviewer` covers R4 (flow evals + UI coverage for flow-facing screens), R12 (flag-gated flows), R13 (flow-level SLOs), R15 (no placeholder flows; stubbed nodes rejected).
 - The R14 toolchain enforces R1–R12 and the automatable parts of R15–R17 (Biome rules, Knip, size budgets, TODO checker, JSDoc linting) once the scaffold graduates into a real repo. CI runs every check on every PR.
 - R13 reliability rules are enforced by on-call discipline + the error-budget policy + runbook requirements per alert. Not purely automatable.

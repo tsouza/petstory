@@ -99,6 +99,11 @@ Anthropic reports multi-agent systems consume ~15× the tokens of chat. For a fr
 - **Mastra vendor risk.** Mastra is TS-first, Apache-2.0 core, Y Combinator-backed, $22M Series A in April 2026 led by Spark Capital (total raised $35M), 23k GitHub stars, 220k+ weekly npm downloads, production at Replit/PayPal/Adobe/Docker/SoftBank/Marsh McLennan. v1.0 stable since January 2026. The team's Gatsby lineage is a double-edged reference — strong JS-framework chops, but Gatsby itself ended in Netlify acquisition and maintenance mode. **Mitigation:** Flow DSL is a thin typed wrapper over Mastra workflows, not direct Mastra API usage scattered through the code. If Mastra stalls, the runtime is swappable — LangGraph.js is the most likely migration target — while pack-level Flow definitions remain unchanged. Re-evaluate at ~12-month cadence.
 - Mastra's enterprise features (RBAC, SSO, ACL) are commercially licensed. Core runtime is open source and is all we need for the Flow abstraction. Commercial license only relevant if we later adopt their enterprise tier, which is not the current plan.
 
+### Cross-cutting consequences
+
+- **Security.** T3 Critic Gate is a mandatory checkpoint for every user-facing string — clinical safety, PII leakage, dosage language all gate through one pack-registered rule set. Mastra as runtime means its audit posture is part of our trust surface; re-evaluate at the 12-month cadence already noted.
+- **Observability.** Flow + node + pack + cost tagging makes Braintrust and PostHog attribution one-to-one with the agent topology. Per-tier SLOs (R13) bind to this taxonomy directly — no extra tagging layer required.
+
 ## Follow-ups
 
 Future ADRs (numbers assigned when the work begins; listed here to keep the work visible):

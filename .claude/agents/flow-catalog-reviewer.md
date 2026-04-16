@@ -46,6 +46,15 @@ Review the Flow definition(s) named in the request. Decide: REGISTER / NEEDS WOR
 - If the flow touches symptoms, the critic rule set includes red-flag escalation and no-dosage.
 - If the flow proposes output beyond "ack + question," route the proposal to `clinical-safety-reviewer` before approving.
 
+## Cross-cutting: security + observability per Flow
+
+Per R8 (security) and R6 (observability) — operationalized in the Flow DSL, not siloed:
+
+- **Clinical-adjacent flow** (touches symptoms, meds, vet) must declare `piiHandling` with the right `contains` classes and `logsRedacted: true`. Missing `piiHandling` on such a flow → reject.
+- **T2+ flow** (spawns Deep Path workers) must declare `observability.expectedCostPerMessage` so cost-per-DAU tracking stays honest. Missing → reject.
+- **Any flow with ≥3 nodes** should declare `observability.braintrustDataset` linking to the golden-path eval. Missing → flag, don't auto-reject.
+- Per-node latency budgets are optional; if declared, they must respect the tier defaults in flow-catalog.md unless explicitly justified.
+
 ## Testing requirement
 
 Per [engineering-rules.md R4](../../docs/engineering-rules.md):

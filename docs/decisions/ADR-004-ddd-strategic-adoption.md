@@ -83,6 +83,11 @@ The chat-first + auto-extraction + timeline + diary + correlations pipeline is a
 - **Vocabulary creep.** Three DDD terms (Bounded Context, Ubiquitous Language, Domain Event) expand the terminology surface. Mitigated by the explicit rejection list above — future contributors see "no aggregate, no repository, no tactical DDD" in writing.
 - **Confusion with Mastra runtime events.** "Domain Event" (pack-level schema primitive) vs. Mastra workflow events (runtime signals). Docs scope the term clearly: Domain Events live in the pack's event schema; Mastra events stay Mastra's internal concept.
 
+### Cross-cutting consequences
+
+- **Security.** Ubiquitous Language glossary doubles as a PII-classification lens — every term's definition can mark whether it contains sensitive data (pet name = low, vet history = health PII). Domain Events become the canonical audit trail: if "who changed what, when" ever becomes a compliance requirement, the event stream IS the answer.
+- **Observability.** Domain Events give Braintrust and PostHog a stable event taxonomy independent of Flow/node names — evals and analytics survive Flow refactors. Glossary terms become the canonical vocabulary for dashboards and alert names.
+
 ## Follow-ups
 
 Future ADRs (numbers assigned when the work begins):

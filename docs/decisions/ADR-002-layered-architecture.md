@@ -83,6 +83,11 @@ None are pet-specific. ADR-001 stands.
 - Naming overhead. The kernel needs its own identifier eventually (see Q2 in [open-questions.md](../open-questions.md)).
 - Extractor parameterization is non-trivial. An event schema that's generic enough for pet-health, human-health, and travel needs careful design — this is real work in L1.
 
+### Cross-cutting consequences
+
+- **Security.** Inward-only dependencies narrow the blast radius of a pack-level compromise — the kernel cannot be reached by a misbehaving pack. Vendor SDKs (Anthropic, Convex, Clerk, Stripe) are isolated in L0 ports, so credential rotation and auth posture live in one place.
+- **Observability.** Per-layer boundaries make cost and error attribution clean: a Braintrust trace, Sentry error, or Convex query can be labeled by layer unambiguously.
+
 ## Follow-ups
 
 - [ADR-003](ADR-003-three-level-agent-framework.md): Three-level agent framework (Spine + Flow Catalog + Situation Classifier) — operationalizes how L0 runs L2 flows.

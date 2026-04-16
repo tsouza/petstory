@@ -29,6 +29,7 @@ Layering violations:
 
 Engineering-rule violations (see [docs/engineering-rules.md](../../docs/engineering-rules.md)):
 
+- **R0 (the veto)** — a proposal that adds ceremony (new artifact, new extension slot, new sub-agent, new rule, new config knob) without a concrete pain that currently earns it. When flagging R0, cite the missing pain and propose the cheaper alternative. R0 does not override clinical safety, security baseline (R8), type safety (R5), or the layered dependency rule.
 - R5 — `any` used without a `// reason:` comment; `as` assertion without justification; missing Zod validation at a boundary (user input, LLM output, MCP tool I/O, network, Convex document).
 - R8 — secret committed, env file with non-placeholders checked in, raw user message reaching Sentry, license in the GPL/AGPL family imported by app code.
 - R9 — hardcoded user-facing string in L2 or L3 that bypasses the translation layer; date/number/plural formatted without locale awareness.
@@ -71,6 +72,15 @@ Engineering-rule violations (see [docs/engineering-rules.md](../../docs/engineer
 - [ ] Any PR that adds, renames, or removes a term in the event schema, MCP tool surface, or copy bundle also updates `glossary.md`. Stale glossary is worse than no glossary.
 - [ ] Event types in the event schema use Domain Event naming conventions (`SomethingHappened` past-tense).
 - [ ] No tactical DDD patterns introduced: reject classes named `*Aggregate`, `*Repository`, `*Factory`, `*DomainService` (these patterns are explicitly out per ADR-004).
+
+## Cross-cutting: security + observability threaded through the pack contract
+
+Per R8 (security) and R6 (observability) — enforced where they live, not siloed in one rule:
+
+- [ ] **Every Domain Event declares a PII class** (`none | behavioral | health | contact | payment`). An event without this tag is rejected — log redactors, Sentry `beforeSend`, and Convex schema tags all depend on it.
+- [ ] Any PR that adds or renames a Domain Event updates the event's PII class accordingly.
+- [ ] MCP tools that return PII-bearing data declare the PII class in their output schema (Zod description or a dedicated metadata field).
+- [ ] The `Flow` fields `piiHandling` and `observability` exist where required (enforced by `flow-catalog-reviewer`; guardian forwards any cross-boundary issues).
 
 ## When a violation is ambiguous
 
