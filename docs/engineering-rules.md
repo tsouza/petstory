@@ -391,9 +391,73 @@ Every fact, decision, rule, or definition lives in exactly **one canonical locat
 
 **How to apply:** PR review rejects any restatement of an existing rule instead of a link. `architecture-guardian` gains a doc-duplication check: any identical 20+ word phrase appearing in two docs is flagged for consolidation (CLAUDE.md index entries exempted). Cross-doc links verified on every docs PR.
 
+### R20 — Library adoption: candidate search, minimum quality bar, build-vs-buy
+
+Before writing non-trivial functionality ourselves, search for a third-party library that fully addresses the need. Before adopting a library, run it through the quality bar below. If no library qualifies, build it ourselves. R20 is the discipline that separates "leverage an ecosystem" from "inherit someone else's burden."
+
+**Step 1 — Identify candidates.**
+
+A **candidate** is a third-party library that can **fully** address the need without extra hard work:
+
+- "Fully" means the happy path and the edge cases we care about — not "50% of what we need, we'll wrap the rest."
+- "Extra hard work" means writing significant adapters, monkey-patching, forking, or large shim layers around the library to make it fit.
+- If a lib requires force-fitting, it isn't a candidate. Build it ourselves.
+
+Search breadth: at least **2–3 candidates** for anything non-trivial. "The first Google result" is not a search. Check npm, GitHub, awesome-lists for the ecosystem.
+
+**Step 2 — Apply the minimum quality bar.**
+
+A candidate must pass **all** of these to stay in the running:
+
+- **License** — on the allowlist per R8: MIT, Apache-2.0, BSD, ISC, MPL-2.0. Reject GPL / AGPL / LGPL for app code. Reject source-available (Elastic License, SSPL, BSL, Commons Clause) for app code.
+- **Open source** — no proprietary libs unless the adoption is an ADR'd exception (stack-level choices like Clerk, Convex, Mastra, Stripe, which are services, not libraries).
+- **Actively developed** — at least one commit or release in the last ~4 weeks. A repo with no activity in 12+ months is a dead end; walk away even if it technically works today.
+- **Healthy adoption** — rough guides, not absolutes: critical-path libs ≥ 5k GitHub stars *and* > 50k weekly npm downloads; utility libs ≥ 1k stars *and* > 10k weekly downloads. Below these floors, the burden is on the PR to argue why.
+- **No unresolved critical advisories** — `npm audit`, Socket.dev, GitHub advisories all clean (or with a documented mitigation plan).
+- **Maintainer responsiveness** — median issue-close time and PR-review cadence readable on the repo. Months-long unanswered issue backlogs are a red flag.
+
+If zero candidates clear the bar: **build it ourselves, and the ADR/PR records the candidates rejected and why**.
+
+**Step 3 — Pick the best candidate.**
+
+Among those that pass the bar, choose by:
+
+1. **Best fit** — smallest shim layer needed to integrate.
+2. **Highest signals of life** — weekly download trend rising, not falling; maintainer activity; recent releases.
+3. **Smallest dependency footprint** — a library with 200 transitive deps costs more than the same capability in 10.
+4. **License preference** — prefer permissive (MIT, Apache-2.0) over weak-copyleft (MPL-2.0) when otherwise tied.
+5. **Best TypeScript story** — native TS or first-class `@types` package. Stale DT types are a tax.
+
+**Step 4 — Document the decision.**
+
+Before `pnpm add <library>`, the PR description (or ADR, if the adoption is architecturally significant) must include:
+
+- The need being solved (one sentence).
+- Candidates considered (at least 2 others, or "none found meeting the bar").
+- For each candidate: GitHub stars, weekly npm downloads, last-commit date, license, the primary reason accepted or rejected.
+- Why the chosen one is the best fit.
+
+**Exempted from per-PR re-evaluation** — tier-zero dependencies already adopted in ADR-001 or later ADRs (React, TypeScript, Node, Zod, Mastra, Claude Agent SDK, Convex client, Clerk, etc.). These were evaluated when adopted and don't need fresh justification every time they're used.
+
+**Why:**
+
+Picking the wrong library is the second-most expensive decision in a codebase, behind picking the wrong architecture. Swapping one out later costs roughly as much as building it from scratch. A dead library is a latent P1 — security patches that won't land, breaking upstream changes that break you, maintainer burnout you inherit. Force-fitting a library to do something it's not designed for usually produces worse code than writing it — glue, workarounds, mystery performance cliffs.
+
+**How to apply:**
+
+`architecture-guardian` flags any PR that adds a new entry to `dependencies` or `devDependencies` without the evaluation rationale in the PR body. `Socket.dev` + `license-checker` in CI block on advisory and license violations per R8/R14. Renovate bot reminds at major-version-bump time to re-verify the bar (R2).
+
+**Related rules:**
+
+- R1 (Research-first) — R20 is R1's specific protocol for the library case.
+- R2 (Latest stable) — governs version discipline once the library is adopted.
+- R8 (Security & privacy) — license allowlist and supply-chain scanning.
+- R16 (YAGNI) — don't pull in a library "just in case."
+- R18 (Rule of Three, internal abstractions) — R18 governs when *internal* code promotes up a layer; R20 governs when *external* code enters the dependency tree. Both answer "should this abstraction exist?" with evidence instead of intuition.
+
 ## Enforcement
 
-- `architecture-guardian` covers R5 (type safety at layer boundaries), R8 (license + secret checks), R9 (i18n layer leaks), R16 (speculative abstractions across layer boundaries), R17 (naming + signature lies), R18 (layer promotions require ≥3 concrete lower-layer uses; also flags abstractions that could be demoted down a layer), R19 (cross-doc duplication of rules or definitions).
+- `architecture-guardian` covers R5 (type safety at layer boundaries), R8 (license + secret checks), R9 (i18n layer leaks), R16 (speculative abstractions across layer boundaries), R17 (naming + signature lies), R18 (layer promotions require ≥3 concrete lower-layer uses; also flags abstractions that could be demoted down a layer), R19 (cross-doc duplication of rules or definitions), R20 (new dependency added without evaluation rationale in PR body).
 - `flow-catalog-reviewer` covers R4 (flow evals + UI coverage for flow-facing screens), R12 (flag-gated flows), R13 (flow-level SLOs), R15 (no placeholder flows; stubbed nodes rejected).
 - The R14 toolchain enforces R1–R12 and the automatable parts of R15–R17 (Biome rules, Knip, size budgets, TODO checker, JSDoc linting) once the scaffold graduates into a real repo. CI runs every check on every PR.
 - R13 reliability rules are enforced by on-call discipline + the error-budget policy + runbook requirements per alert. Not purely automatable.
