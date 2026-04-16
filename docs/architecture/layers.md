@@ -12,7 +12,7 @@ petstory.co is the first vertical built on a brand-neutral agent kernel. The nam
 |---|---|---|---|
 | L0 — Agent Kernel | Domain-agnostic runtime | Agent SDK harness wrapper, model router, prompt-cache manager, auth port, storage port, channel ports, observability ports, hook bus, Flow runtime, critic harness | No |
 | L1 — Conversation & Narrative Primitives | Domain-agnostic interaction shape | Chat-first loop, event extraction parameterized over a `DomainSchema`, auto-generated diary, proactive nudge scheduler, shared-access primitive, export/vault primitive | No |
-| L2 — Domain Pack | Vertical-specific, pluggable | Event schema, curated KB, domain Skills, domain MCP tools, critic rules, Flow Catalog, Situation Classifier, copy bundle | Yes |
+| L2 — Domain Pack | Vertical-specific, pluggable (a Bounded Context in DDD terms) | Event schema, curated KB, domain Skills, domain MCP tools, critic rules, Flow Catalog, Situation Classifier, copy bundle, Ubiquitous Language glossary | Yes |
 | L3 — Product Shell | Vertical-specific UI + brand | Brand tokens, screens, flows, product copy, pricing | Yes |
 
 L0 and L1 together are the **kernel** — brand-neutral, reusable across domains. L2 and L3 together are **the vertical** — petstory today, potentially many more tomorrow.
@@ -30,9 +30,9 @@ Practically this means:
 
 ## Domain Pack contract
 
-A Domain Pack must export these eight artifacts. The kernel validates the contract at boot.
+A Domain Pack must export these nine artifacts. The kernel validates the contract at boot.
 
-1. **Event schema** — the `DomainSchema` the kernel's event extractor is parameterized over (e.g. `meal | symptom | behavior | med | event | question | emotion` for pet-health).
+1. **Event schema** — the `DomainSchema` the kernel's event extractor is parameterized over. Event types are **Domain Events** in DDD terms (e.g. `MealRefused`, `SymptomObserved`, `MedicationAdministered` for pet-health). The timeline IS the event log; diary and correlations are read projections over this stream. See [ADR-004](../decisions/ADR-004-ddd-strategic-adoption.md).
 2. **Knowledge base** — curated structured data queryable via an MCP tool.
 3. **Skills** — markdown prompt assets for pack-specific workflows (`triagem-sintomas`, `correlacao-comportamento`).
 4. **MCP tools** — the domain API surface (`record_meal`, `flag_clinical_anomaly`, `query_medical_kb`).
@@ -40,8 +40,26 @@ A Domain Pack must export these eight artifacts. The kernel validates the contra
 6. **Flow Catalog** — named Flow definitions. See [flow-catalog.md](flow-catalog.md).
 7. **Situation Classifier** — rules and prompts that pick which Flow runs per message.
 8. **Copy bundle** — PT-BR (and later EN) user-facing strings keyed by flow + node.
+9. **Ubiquitous Language glossary** — `glossary.md` mapping each domain term to: EN technical name, PT-BR user-facing name, PT-BR clinical/domain-specific name, and a one-line definition. The canonical vocabulary for this Bounded Context. Stale glossary is worse than no glossary — updates are required whenever the event schema, MCP tool names, or copy bundle gain or rename a concept.
 
 A pack with any artifact missing is refused at startup.
+
+## DDD mapping (reference)
+
+For readers coming from the DDD literature, the layer model maps as follows (see [ADR-004](../decisions/ADR-004-ddd-strategic-adoption.md) for the full reasoning):
+
+| DDD concept | This project |
+|---|---|
+| Bounded Context | Domain Pack (L2) |
+| Generic Subdomain | Agent Kernel (L0) + Narrative Primitives (L1) |
+| Core Subdomain | Domain Pack (L2) |
+| Supporting Subdomain | Pack-internal modules that serve the core |
+| Anti-Corruption Layer | L0 ports (auth, storage, channel, LLM adapters) |
+| Ubiquitous Language | `glossary.md` per pack (artifact 9 above) |
+| Domain Event | Event types in the pack's event schema (artifact 1) |
+| Context Map | The Domain Pack contract itself + inter-pack mapping (authored when ≥ 2 packs exist) |
+
+We explicitly reject tactical DDD patterns (aggregates, repositories, domain-service DI classes, factories) — see ADR-004 for reasoning.
 
 ## Naming rule
 

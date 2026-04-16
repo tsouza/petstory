@@ -139,6 +139,12 @@ Our Flow DSL is a **thin typed wrapper** over Mastra workflows that adds pack-le
 
 Per-node agent harnessing stays on the Claude Agent SDK (per ADR-001). Composition: **Mastra workflow = graph runtime. Agent SDK = per-node agent harness.**
 
+## Flows and Domain Events
+
+Flows produce **Domain Events** from the pack's event schema (artifact 1 of the Domain Pack contract — see [layers.md](layers.md) and [ADR-004](../decisions/ADR-004-ddd-strategic-adoption.md)). WorkerNodes that mutate state do so by emitting typed Domain Events (`MealRefused`, `SymptomObserved`, etc.); the timeline, diary, and correlation projections are downstream read models over that event stream. This is the primary write/read split in the architecture — CQRS-shaped without the ceremony.
+
+Mastra's internal runtime events (step transitions, retries, suspensions) are distinct from Domain Events and stay scoped to the runtime. Domain Events are pack-level, stable, and semver'd alongside the Flow Catalog.
+
 ## How the wrapping works
 
 Flows are **declarative specs compiled to Mastra workflows at boot**, not direct Mastra API usage scattered through code.

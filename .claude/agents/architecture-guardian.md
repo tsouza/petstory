@@ -62,7 +62,14 @@ Engineering-rule violations (see [docs/engineering-rules.md](../../docs/engineer
 - [ ] No PT-BR strings in L0 / L1.
 - [ ] No vendor SDKs outside L0.
 - [ ] No cross-pack state access.
-- [ ] Domain Pack exports the full eight-artifact contract (schema, KB, skills, MCP tools, critic rules, Flow Catalog, Situation Classifier, copy bundle) if this is a pack manifest.
+- [ ] Domain Pack exports the full nine-artifact contract (schema, KB, skills, MCP tools, critic rules, Flow Catalog, Situation Classifier, copy bundle, Ubiquitous Language glossary) if this is a pack manifest.
+
+## Domain Pack DDD checks (per ADR-004)
+
+- [ ] `glossary.md` (Ubiquitous Language) is present in the pack.
+- [ ] Any PR that adds, renames, or removes a term in the event schema, MCP tool surface, or copy bundle also updates `glossary.md`. Stale glossary is worse than no glossary.
+- [ ] Event types in the event schema use Domain Event naming conventions (`SomethingHappened` past-tense).
+- [ ] No tactical DDD patterns introduced: reject classes named `*Aggregate`, `*Repository`, `*Factory`, `*DomainService` (these patterns are explicitly out per ADR-004).
 
 ## When a violation is ambiguous
 
