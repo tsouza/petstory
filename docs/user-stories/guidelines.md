@@ -3,7 +3,7 @@
 > Format adopted: **Job Stories** (Intercom/JTBD) + hybrid **Acceptance Criteria**
 > Last updated: 2026-04-16
 
-Rules in this doc use the `WR` prefix (Writing Rule) to stay distinct from Engineering Rules (R1–R19 in [`docs/engineering-rules.md`](docs/engineering-rules.md)) and Data Humanism rules (DH1–DH10 in [`docs/data-humanism.md`](docs/data-humanism.md)). See [`docs/user-stories.md`](docs/user-stories.md) for the project-level summary.
+Rules in this doc use the `WR` prefix (Writing Rule) to stay distinct from Engineering Rules (R1–R19 in [`../engineering-rules.md`](../engineering-rules.md)) and Data Humanism rules (DH1–DH10 in [`../data-humanism.md`](../data-humanism.md)). See [`../user-stories.md`](../user-stories.md) for the project-level summary.
 
 ---
 

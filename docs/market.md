@@ -28,7 +28,7 @@ PetStory's differentiator — "prontuário vivo" built from natural chat — rem
 
 - Domain: **petstory.co**
 - Primary audience: everyday pet owners (not pro breeders, not vets)
-- Secondary: shared access to pro caretakers (vets, sitters, trainers) via the Temporary Access primitive (see [`user-stories/US-TA.md`](user-stories/US-TA.md))
+- Secondary: shared access to pro caretakers (vets, sitters, trainers) via the Temporary Access primitive (see `docs/user-stories/US-TA.md` — planned)
 - Language: PT-BR launch; EN expansion post-MVP
 
 ## Liability surface
@@ -37,5 +37,5 @@ Medical advice is a legal risk. Mitigations:
 
 - AI suggests, never diagnoses (Data Humanism DH9)
 - Medical KB is curated from vetted sources only (AAHA, AVMA, licensed vet content)
-- Any mention of a red-flag symptom must escalate to "consulte um veterinário"
+- Any mention of a red-flag symptom must escalate to "consult a veterinarian" (PT-BR product copy uses "consulte um veterinário")
 - Sub-agent `clinical-safety-reviewer` gates user-facing medical text
