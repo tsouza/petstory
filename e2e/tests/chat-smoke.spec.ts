@@ -4,11 +4,9 @@ test.describe('chat (mocked in-memory adapter)', () => {
   test('user sends a message and sees the mocked assistant reply', async ({ page }) => {
     await page.goto('/');
 
-    // Header wordmark is rendered → the route mounted.
-    await expect(page.getByText('Dev preview · mocked replies')).toBeVisible();
-
-    // Empty state appears before any messages.
-    await expect(page.getByText('Olá!')).toBeVisible();
+    // Empty-state hero: the welcome heading is the mounting signal.
+    await expect(page.getByText('Olá.', { exact: true })).toBeVisible();
+    await expect(page.getByText('Como posso ajudar com o Brutus hoje?')).toBeVisible();
 
     const input = page.getByPlaceholder('Message petstory…');
     await input.click();

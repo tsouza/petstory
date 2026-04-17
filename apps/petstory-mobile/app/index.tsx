@@ -39,20 +39,19 @@ export default function ChatRoute() {
   const registry = useMemo(() => createRegistry(), []);
   return (
     <SafeAreaView className="flex-1 bg-app-bg" edges={['top']}>
-      <View className="px-5 pt-2 pb-3 border-b border-app-bg-elevated bg-app-bg">
-        <Text className="font-heading text-xl text-ink-900">
+      <View className="px-5 pt-3 pb-2 flex-row items-center">
+        <Text className="font-heading text-base text-ink-900">
           <Text className="font-heading font-medium">pet</Text>
           <Text className="font-heading font-bold">story</Text>
         </Text>
-        <Text className="font-body text-xs text-ink-500 mt-0.5">Dev preview · mocked replies</Text>
       </View>
       <ChatProvider port={adapter} petId={DEV_PET_ID}>
         <ChatScreen
           registry={registry}
           copy={{
             inputPlaceholder: 'Message petstory…',
-            emptyStateTitle: 'Olá!',
-            emptyStateSubtitle: 'Try: how is Brutus doing today?',
+            emptyStateTitle: 'Olá.',
+            emptyStateSubtitle: 'Como posso ajudar com o Brutus hoje?',
           }}
         />
       </ChatProvider>
