@@ -1,7 +1,6 @@
-# petstory.co — ultimate project frontend (per R23).
-# Every canonical task for testing, building, checking, dev-ing goes here.
+# petstory.co — canonical task runner (R23).
 # `just` itself is a system tool — install via `brew install just`, `cargo install just`,
-# or download from https://just.systems. See engineering-rules.md R23.
+# or download from https://just.systems.
 #
 # Tool invocations use `bunx` (explicit binary, never ambiguous with an npm script).
 # No root package.json scripts are relied on — everything resolves through Bun's bin dir.
