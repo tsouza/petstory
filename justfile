@@ -175,6 +175,28 @@ mobile-web host="localhost":
 mobile-web-build:
     cd apps/petstory-mobile && bunx expo export --platform web
 
+# Build + serve the mobile web bundle locally for e2e testing.
+# Produces the static bundle then starts a tiny file server bound to all interfaces.
+mobile-web-preview port="4173":
+    cd apps/petstory-mobile && bunx expo export --platform web
+    bunx serve apps/petstory-mobile/dist -l {{port}} --no-clipboard --single
+
+# -----------------------------------------------------------------------------
+# End-to-end tests (Playwright)
+# -----------------------------------------------------------------------------
+
+# Install Playwright browser binaries. Run once after clone + after major Playwright bumps.
+e2e-install:
+    bunx playwright install --with-deps chromium
+
+# Run Playwright e2e tests. Playwright's webServer config auto-launches `just mobile-web-preview`.
+e2e *args:
+    bunx playwright test {{args}}
+
+# Open the Playwright HTML report from the last run.
+e2e-report:
+    bunx playwright show-report
+
 # -----------------------------------------------------------------------------
 # Convex (backend)
 # -----------------------------------------------------------------------------
