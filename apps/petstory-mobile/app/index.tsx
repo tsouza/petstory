@@ -49,9 +49,11 @@ export default function ChatRoute() {
       <ChatProvider port={adapter} petId={DEV_PET_ID}>
         <ChatScreen
           registry={registry}
-          inputPlaceholder="Message petstory…"
-          emptyStateTitle="Olá!"
-          emptyStateSubtitle="Try: how is Brutus doing today?"
+          copy={{
+            inputPlaceholder: 'Message petstory…',
+            emptyStateTitle: 'Olá!',
+            emptyStateSubtitle: 'Try: how is Brutus doing today?',
+          }}
         />
       </ChatProvider>
     </SafeAreaView>

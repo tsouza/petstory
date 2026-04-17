@@ -5,6 +5,9 @@ import {
   CardPayloadSchema,
   ChatMessageSchema,
   ChatTurnSchema,
+  generateEventId,
+  generateMessageId,
+  generateTurnId,
   isTextCard,
   TextCardPayloadSchema,
 } from '../index';
@@ -94,5 +97,38 @@ describe('ChatMessageSchema', () => {
         createdAt: -1,
       }),
     ).toThrow();
+  });
+});
+
+describe('ID helpers', () => {
+  const UUID_SHAPE = /^(turn|msg|evt)_[0-9a-f-]{36}$/;
+
+  it('generateTurnId returns a turn_-prefixed uuid', () => {
+    const id = generateTurnId();
+    expect(id).toMatch(/^turn_[0-9a-f-]{36}$/);
+    expect(id).toMatch(UUID_SHAPE);
+  });
+
+  it('generateMessageId returns a msg_-prefixed uuid', () => {
+    expect(generateMessageId()).toMatch(/^msg_[0-9a-f-]{36}$/);
+  });
+
+  it('generateEventId returns an evt_-prefixed uuid', () => {
+    expect(generateEventId()).toMatch(/^evt_[0-9a-f-]{36}$/);
+  });
+
+  it('produces unique ids across 1000 calls (no collisions)', () => {
+    const ids = new Set<string>();
+    for (let i = 0; i < 1000; i += 1) ids.add(generateTurnId());
+    expect(ids.size).toBe(1000);
+  });
+
+  it('each helper uses its own prefix — prefixes never collide', () => {
+    const t = generateTurnId();
+    const m = generateMessageId();
+    const e = generateEventId();
+    expect(t.startsWith('turn_')).toBe(true);
+    expect(m.startsWith('msg_')).toBe(true);
+    expect(e.startsWith('evt_')).toBe(true);
   });
 });
