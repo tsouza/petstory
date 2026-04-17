@@ -14,7 +14,7 @@ pre-commit:
 commit-msg:
   commands:
     commitlint:
-      run: bun run commitlint --edit {1}
+      run: just commitlint {1}
 
 pre-push:
   parallel: true

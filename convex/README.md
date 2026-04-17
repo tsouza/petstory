@@ -10,9 +10,9 @@ Per [ADR-005](../docs/decisions/ADR-005-monorepo-structure-and-tooling.md), Conv
 
 ## Running locally
 
-1. Install dependencies: `bun install` at the repo root (per ADR-007).
+1. Install dependencies: `just install` at the repo root (per R23 + ADR-007).
 2. Set `CONVEX_DEPLOY_KEY` and `CLERK_JWT_ISSUER_DOMAIN` in `.env.local` (see R8 — never commit secrets).
-3. Run `bun run convex dev` to start the dev deployment. This creates the `_generated/` types directory (committed) and syncs on save.
+3. Run `just convex-dev` to start the dev deployment. This creates the `_generated/` types directory (committed) and syncs on save.
 
 ## Per-pack schema composition
 

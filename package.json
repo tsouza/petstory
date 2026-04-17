@@ -13,22 +13,6 @@
     "packages/*",
     "packages/packs/*"
   ],
-  "scripts": {
-    "build": "bun run turbo run build",
-    "lint": "bun run turbo run lint",
-    "test": "bun run turbo run test",
-    "typecheck": "bun run turbo run typecheck",
-    "eval": "bun run turbo run eval",
-    "clean": "bun run turbo run clean && rm -rf node_modules",
-    "format": "biome format --write .",
-    "check": "biome check .",
-    "knip": "knip",
-    "depcruise": "depcruise --config .dependency-cruiser.json packages apps",
-    "changeset": "changeset",
-    "commitlint": "commitlint",
-    "convex:dev": "convex dev",
-    "convex:deploy": "convex deploy"
-  },
   "dependencies": {
     "convex": "^1.20.0"
   },
