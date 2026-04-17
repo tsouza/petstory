@@ -34,7 +34,8 @@ import {
  */
 
 export interface BitNetLlmConfig {
-  /** Base URL of the OpenAI-compatible server. Default http://127.0.0.1:8080 */
+  /** Base URL of the OpenAI-compatible server. Default http://127.0.0.1:11434
+   *  (port matches Microsoft's official BitNet container). */
   readonly baseUrl?: string;
   /** Model id the server exposes (as reported by the `/v1/models` endpoint). */
   readonly model: string;
@@ -44,7 +45,7 @@ export interface BitNetLlmConfig {
   readonly fetch?: typeof fetch;
 }
 
-const DEFAULT_BASE_URL = 'http://127.0.0.1:8080';
+const DEFAULT_BASE_URL = 'http://127.0.0.1:11434';
 const DEFAULT_TIMEOUT_MS = 60_000;
 
 interface OpenAiChatRequestMessage {

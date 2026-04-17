@@ -44,7 +44,7 @@ describe('BitNetLlmAdapter', () => {
 
     expect(fetchFn).toHaveBeenCalledTimes(1);
     const [url, init] = fetchFn.mock.calls[0] ?? [];
-    expect(url).toBe('http://127.0.0.1:8080/v1/chat/completions');
+    expect(url).toBe('http://127.0.0.1:11434/v1/chat/completions');
     expect(init?.method).toBe('POST');
     const body = parseBody(init?.body as string);
     expect(body.model).toBe('bitnet-b1.58-2B-4T');

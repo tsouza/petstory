@@ -199,37 +199,78 @@ e2e-report:
 
 # -----------------------------------------------------------------------------
 # BitNet (local LLM for integration testing — not for product)
-# Vendored under vendor/bitnet/BitNet. Requires clang ≥ 18, cmake, python 3.9+.
-# See docs/testing/bitnet.md for the full setup + why we use it.
+#
+# Uses Microsoft's official container `mcr.microsoft.com/appsvc/docs/
+# sidecars/sample-experiment:bitnet-b1.58-2b-4t-gguf` — ships bitnet.cpp +
+# the b1.58-2B-4T GGUF pre-baked, exposes an OpenAI-compatible HTTP server
+# on port 11434. No local build, no clang/cmake/python venv dance.
+#
+# A legacy native-build path (scripts/bitnet/preflight.sh) is retained for
+# folks who want to hack on bitnet.cpp itself, but it currently hits an
+# upstream clang-18 compile error (see docs/testing/bitnet.md).
 # -----------------------------------------------------------------------------
 
-# Clone + build Microsoft's bitnet.cpp, download the b1.58-2B-4T model.
-# Idempotent — rerun to pick up upstream fixes.
+_BITNET_IMAGE := "mcr.microsoft.com/appsvc/docs/sidecars/sample-experiment:bitnet-b1.58-2b-4t-gguf"
+_BITNET_CONTAINER := "petstory-bitnet"
+_BITNET_INTERNAL_PORT := "11434"
+
+# Pull the official BitNet container. ~1.2 GB download; skip if already local.
 bitnet-install:
+    docker pull {{_BITNET_IMAGE}}
+
+# Start the BitNet server in the background. Maps the container's 11434 to
+# the given host port (default 11434). Idempotent — reuses a running
+# container if the name already exists.
+bitnet-serve port="11434":
     #!/usr/bin/env bash
     set -euo pipefail
-    mkdir -p vendor/bitnet
-    if [ ! -d vendor/bitnet/BitNet ]; then
-        git clone --recursive https://github.com/microsoft/BitNet.git vendor/bitnet/BitNet
-    else
-        cd vendor/bitnet/BitNet && git pull && git submodule update --init --recursive
+    if docker ps --format '{{{{.Names}}' | grep -q "^{{_BITNET_CONTAINER}}$"; then
+        echo "{{_BITNET_CONTAINER}} already running — reusing"
+        exit 0
     fi
-    cd vendor/bitnet/BitNet && python setup_env.py --hf-repo microsoft/bitnet-b1.58-2B-4T -q i2_s
+    if docker ps -a --format '{{{{.Names}}' | grep -q "^{{_BITNET_CONTAINER}}$"; then
+        docker rm {{_BITNET_CONTAINER}} >/dev/null
+    fi
+    docker run -d --rm \
+        --name {{_BITNET_CONTAINER}} \
+        -p {{port}}:{{_BITNET_INTERNAL_PORT}} \
+        {{_BITNET_IMAGE}} >/dev/null
+    # Wait up to 30s for the model to load + listen.
+    for _ in $(seq 1 30); do
+        if curl -fsS "http://127.0.0.1:{{port}}/" >/dev/null 2>&1; then
+            echo "bitnet listening on http://127.0.0.1:{{port}}"
+            exit 0
+        fi
+        sleep 1
+    done
+    echo "bitnet did not come up within 30s — check `docker logs {{_BITNET_CONTAINER}}`"
+    exit 1
 
-# Start the bitnet.cpp OpenAI-compatible HTTP server on the given port.
-# Model + quant come from the setup step above.
-bitnet-serve port="8080":
-    cd vendor/bitnet/BitNet && ./build/bin/llama-server \
-        -m models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf \
-        --host 127.0.0.1 --port {{port}} \
-        --ctx-size 4096
+# Stop the running BitNet container (no-op if not running).
+bitnet-stop:
+    #!/usr/bin/env bash
+    if docker ps --format '{{{{.Names}}' | grep -q "^{{_BITNET_CONTAINER}}$"; then
+        docker stop {{_BITNET_CONTAINER}} >/dev/null
+        echo "stopped {{_BITNET_CONTAINER}}"
+    else
+        echo "{{_BITNET_CONTAINER}} is not running"
+    fi
+
+# Tail logs from the running BitNet container.
+bitnet-logs:
+    docker logs -f --tail 200 {{_BITNET_CONTAINER}}
 
 # Quick smoke — POST a hello to the running server.
-bitnet-ping port="8080":
+bitnet-ping port="11434":
     curl -s http://127.0.0.1:{{port}}/v1/chat/completions \
         -H 'Content-Type: application/json' \
         -d '{"model":"bitnet-b1.58-2B-4T","messages":[{"role":"user","content":"say hi in 3 words"}],"max_tokens":20}' \
         | jq .
+
+# Legacy: native build path (hits an upstream clang-18 compile bug today).
+# Kept for folks who want to hack on bitnet.cpp directly.
+bitnet-native-preflight:
+    ./scripts/bitnet/preflight.sh vendor/bitnet
 
 # -----------------------------------------------------------------------------
 # Convex (backend)
