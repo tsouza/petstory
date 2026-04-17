@@ -7,7 +7,7 @@ Generate a developer handoff spec for `$ARGUMENTS`.
 
 The spec must cover:
 
-1. **Purpose** — which user story or stories this serves (link to `user-stories/US-*.md`)
+1. **Purpose** — which user story or stories this serves (link to `docs/user-stories/US-*.md`)
 2. **UX concept alignment** — how it fits the chat-first + diary concept (from `docs/ux-concept.md`)
 3. **Layout** — structure, hierarchy, spacing
 4. **Design tokens** — colors, typography, radii (from `docs/brand.md` — never invent)

@@ -16,6 +16,6 @@ Then:
 
 1. Read `.claude/skills/new-user-story/SKILL.md` and follow it step by step.
 2. Draft the story.
-3. Show the draft to the user and wait for approval before writing to `user-stories/US-<CAT>.md` and updating `user-stories/INDEX.md`.
+3. Show the draft to the user and wait for approval before writing to `docs/user-stories/US-<CAT>.md` and updating `docs/user-stories/INDEX.md`.
 
 Never skip the WR1–WR8 self-review or the INVEST+ gate.

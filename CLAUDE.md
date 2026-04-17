@@ -28,7 +28,7 @@ TL;DR: Expo (RN New Arch) + Expo Router SSR + NativeWind + React Native Reusable
 
 - **Vision** — [`docs/vision.md`](docs/vision.md)
 - **Market & financing** — [`docs/market.md`](docs/market.md)
-- **User stories** — [`user-stories/INDEX.md`](user-stories/INDEX.md) (123 stories across 16 categories). See also [`docs/user-stories.md`](docs/user-stories.md) for how we write them.
+- **User stories** — [`docs/user-stories/INDEX.md`](docs/user-stories/INDEX.md) (123 stories across 16 categories). See also [`docs/user-stories.md`](docs/user-stories.md) for how we write them.
 - **Open questions** — [`docs/open-questions.md`](docs/open-questions.md)
 
 ## How Thiago works

@@ -26,7 +26,7 @@ Decisions deliberately deferred. Revisit when the timing is right.
 
 **Raised:** 2026-04-16 during MVP prototype work.
 
-**Context:** The 123 user stories in `user-stories/` have no interaction flows, screen maps, or step-by-step "how the user goes through this" documentation.
+**Context:** The 123 user stories in `docs/user-stories/` have no interaction flows, screen maps, or step-by-step "how the user goes through this" documentation.
 
 **Why it's deliberate:** [`../user-story-guidelines.md`](../user-story-guidelines.md) WR5 says "Don't prescribe UI in the story." Job Stories (JTBD) keep stories at situation/motivation/outcome level. Acceptance criteria describe *behavior* ("≤ 2 taps"), never *interaction* ("user taps X, then sees Y").
 

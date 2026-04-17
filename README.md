@@ -56,9 +56,8 @@ packages/
   config/               shared base configs
   test-utils/           shared test helpers
 convex/                 shared backend (Convex cloud)
-docs/                   canonical docs + ADRs
+docs/                   canonical docs + ADRs (includes user-stories/ JTBD files)
 .claude/                sub-agents, skills, commands, conventions
-user-stories/           US-*.md files (JTBD)
 ```
 
 ## Contributing
