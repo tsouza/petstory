@@ -47,6 +47,7 @@ export {
   MessageAuthorSchema,
   TextCardPayloadSchema,
 } from './ports/chat';
+export { ConvexChatAdapter, type ConvexChatAdapterOptions } from './ports/chat-convex-adapter';
 export type { DomainEvent, PiiClass } from './ports/events';
 export { DomainEventSchema, EVENTS_TABLE, PiiClassSchema } from './ports/events';
 export type {

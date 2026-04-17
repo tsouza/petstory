@@ -17,6 +17,7 @@
     "@petstory/conversation": "workspace:*",
     "@petstory/kernel": "workspace:*",
     "@petstory/testing": "workspace:*",
+    "convex": "^1.20.0",
     "expo": "~52.0.0",
     "expo-asset": "~11.0.0",
     "expo-constants": "~17.0.0",

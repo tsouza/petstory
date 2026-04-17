@@ -276,16 +276,26 @@ bitnet-native-preflight:
 # Dev — one command to start every local process you need to iterate
 # -----------------------------------------------------------------------------
 
-# Start BitNet (docker, detached) + Expo web dev server (foreground, LAN).
-# Ctrl+C stops the foreground server; a trap then stops BitNet cleanly.
-# Ports: BitNet 11434, Metro 8081.
+# Start BitNet (docker, detached) + Convex dev (background) + Expo web dev
+# server (foreground, LAN). Ctrl+C stops the foreground server; a trap then
+# stops Convex + BitNet cleanly.
+# Ports: BitNet 11434, Convex via CONVEX_URL, Metro 8081.
+#
+# First run bootstraps Convex: `just convex-dev` will prompt to create a
+# deployment and write CONVEX_DEPLOYMENT to .env.local. Subsequent runs
+# connect silently. Set EXPO_PUBLIC_CONVEX_URL (from the deployment) so
+# the app wires ConvexChatAdapter instead of the echo fallback.
 dev host="lan":
     #!/usr/bin/env bash
     set -euo pipefail
     # Start BitNet first — its warm-up happens in parallel with Metro's boot.
     just bitnet-serve
-    # Ensure the container is stopped regardless of how this recipe exits.
-    trap 'echo; just bitnet-stop' EXIT INT TERM
+    # Background Convex — streams filesystem changes to the dev deployment,
+    # holds a WebSocket open for the client. Logs to convex.log for debug.
+    just convex-dev > convex.log 2>&1 &
+    CONVEX_PID=$!
+    # Ensure both background processes exit regardless of how this recipe ends.
+    trap 'echo; kill $CONVEX_PID 2>/dev/null || true; just bitnet-stop' EXIT INT TERM
     # Foreground Metro + Expo. Ctrl+C returns control; the trap runs.
     just mobile-web {{host}}
 
