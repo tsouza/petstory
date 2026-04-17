@@ -1,8 +1,9 @@
-<!-- R11 PR merge gates. Replace placeholder prose with your actual content; keep the checklists. -->
+<!-- Replace placeholder prose with your actual content; keep the checklists. -->
 
 ## What & why
 
-<!-- One paragraph: what this change does and the concrete pain it addresses (R0 — name the pain). -->
+<!-- One paragraph: what this change does and the concrete pain it addresses. -->
+
 
 ## Changes
 

@@ -5,12 +5,12 @@ Before your first commit, read [`CLAUDE.md`](CLAUDE.md) (project index) and [`do
 ## Setup
 
 ```bash
-just install         # bun install (ADR-007)
-just install-hooks   # lefthook hooks per R14 + R21 + R23
+just install         # bun install
+just install-hooks   # lefthook hooks
 just ci              # local CI sanity check
 ```
 
-`just --list` for every available task. Everything canonical goes through Just — never raw `bun run X` for documented workflows (R23).
+`just --list` for every available task. Everything canonical goes through Just — never raw `bun run X` for documented workflows.
 
 ## The R21 cycle
 

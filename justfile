@@ -1,4 +1,4 @@
-# petstory.co — canonical task runner (R23).
+# petstory.co — canonical task runner.
 # `just` itself is a system tool — install via `brew install just`, `cargo install just`,
 # or download from https://just.systems.
 #
@@ -16,7 +16,7 @@ default:
 # Install & bootstrap
 # -----------------------------------------------------------------------------
 
-# Install dependencies with Bun (ADR-007). Frozen-lockfile flag optional.
+# Install dependencies with Bun. Frozen-lockfile flag optional.
 install frozen="":
     @if [ "{{frozen}}" = "frozen" ] || [ "{{frozen}}" = "--frozen-lockfile" ]; then \
         bun install --frozen-lockfile; \
@@ -36,7 +36,7 @@ install-hooks:
 build:
     bunx turbo run build
 
-# Lint every workspace via Biome per R14.
+# Lint every workspace via Biome.
 lint:
     bunx turbo run lint
 
@@ -44,15 +44,15 @@ lint:
 typecheck:
     bunx turbo run typecheck
 
-# Run unit + integration tests (Vitest under Bun per R4 + ADR-007).
+# Run unit + integration tests (Vitest).
 test:
     bunx turbo run test
 
-# Run Braintrust agent evals (pack-level; no-op on packages without eval task per R4).
+# Run Braintrust agent evals (pack-level; no-op on packages without an eval task).
 eval:
     bunx turbo run eval
 
-# Affected-only runs (used by CI per R11). Pass args to target affected packages.
+# Affected-only runs (used by CI). Pass args to target affected packages.
 affected *args:
     bunx turbo run {{args}} --affected
 
@@ -72,11 +72,11 @@ format:
 check-staged:
     bunx biome check --staged --write --no-errors-on-unmatched
 
-# Knip — dead code, unused deps, unused exports (R14, R15).
+# Knip — dead code, unused deps, unused exports.
 knip:
     bunx knip --no-exit-code
 
-# Dependency-cruiser — ADR-002 layer boundary enforcement.
+# Dependency-cruiser — enforces the L0 → L1 → L2 → L3 boundary rule.
 depcruise:
     bunx depcruise --config .dependency-cruiser.json packages apps
 
@@ -84,13 +84,13 @@ depcruise:
 commitlint file:
     bunx commitlint --edit {{file}}
 
-# Validate current branch name against R21 regex.
+# Validate current branch name against the Conventional-Commits naming rule.
 verify-branch:
     #!/usr/bin/env bash
     branch="$(git rev-parse --abbrev-ref HEAD)"
     if [ "$branch" = "main" ]; then exit 0; fi
     if ! echo "$branch" | grep -qE '^(feat|fix|docs|chore|refactor|test|perf|build|ci|revert)/[a-z0-9-]+$'; then
-        echo "Branch '$branch' violates R21. Format: <type>/<short-kebab-desc>"
+        echo "Branch '$branch' must match <type>/<short-kebab-desc>."
         echo "Types: feat|fix|docs|chore|refactor|test|perf|build|ci|revert"
         exit 1
     fi
@@ -126,7 +126,7 @@ convex-deploy:
 # Versioning
 # -----------------------------------------------------------------------------
 
-# Create a new changeset for the next release (ADR-005 + Changesets).
+# Create a new changeset for the next release.
 changeset:
     bunx changeset
 

@@ -1,5 +1,5 @@
-# Gitleaks config per R8.
-# Runs in CI via gitleaks/gitleaks-action (.github/workflows/ci.yml gitleaks job).
+# Gitleaks config.
+# Runs in CI via gitleaks/gitleaks-action (see .github/workflows/ci.yml).
 # Local pre-commit scan deferred to avoid forcing every dev to install the gitleaks binary.
 
 title = "petstory.co gitleaks config"
