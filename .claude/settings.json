@@ -26,8 +26,9 @@
     ],
     "deny": [
       "Bash(rm -rf:*)",
-      "Bash(git push:*)",
       "Bash(git reset --hard:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
       "Edit(.env)",
       "Edit(.env.*)",
       "Read(.env)"
