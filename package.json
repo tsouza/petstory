@@ -19,7 +19,12 @@
     "knip": "knip",
     "depcruise": "depcruise --config .dependency-cruiser.json packages apps",
     "changeset": "changeset",
-    "commitlint": "commitlint"
+    "commitlint": "commitlint",
+    "convex:dev": "convex dev",
+    "convex:deploy": "convex deploy"
+  },
+  "dependencies": {
+    "convex": "^1.20.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0",
