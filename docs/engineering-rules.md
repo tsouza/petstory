@@ -164,7 +164,7 @@ WCAG 2.2 AA as the floor. axe checks in CI. Keyboard and screen-reader tested pe
 
 ### R10 — Conventional Commits + trunk-based + small PRs
 
-Conventional Commits 1.0 on every commit. Trunk-based development: short-lived branches, squash-merge to `main`. PRs target ≤ 400 lines of diff; exceptions justified in the PR body. Changesets or semantic-release for per-package version bumps (once the monorepo lands).
+Conventional Commits 1.0 on every commit. Trunk-based development: short-lived branches, squash-merge to `main`. PRs target ≤ 400 lines of diff; exceptions justified in the PR body. Changesets or semantic-release for per-package version bumps (once the monorepo lands). Branch naming convention is owned by R21.
 
 **Why:** small PRs review better and ship faster. Conventional Commits enable auto-generated changelogs and make future bisects and audits easy.
 
@@ -260,7 +260,7 @@ Prettier is not installed. Biome's formatter replaces it.
 
 **Git hooks — Lefthook.**
 
-Lefthook (Go, parallel, ~10× Husky) manages every git hook. Config lives in `lefthook.yml`. Parallel execution cuts pre-commit time roughly in half vs. sequential Husky.
+Lefthook (Go, parallel, ~10× Husky) manages every git hook. Config lives in `lefthook.yml`. Parallel execution cuts pre-commit time roughly in half vs. sequential Husky. A pre-push hook validates the branch name against R21's regex (`^(feat|fix|docs|chore|refactor|test|perf|build|ci|revert)/[a-z0-9-]+$`); implementation lands with the R14 phasing timeline.
 
 Hook stages:
 
@@ -513,17 +513,43 @@ Picking the wrong library is the second-most expensive decision in a codebase, b
 - R16 (YAGNI) — don't pull in a library "just in case."
 - R18 (Rule of Three, internal abstractions) — R18 governs when *internal* code promotes up a layer; R20 governs when *external* code enters the dependency tree. Both answer "should this abstraction exist?" with evidence instead of intuition.
 
-### R21 — Small-step iteration: plan, apply, commit, push, test, re-evaluate
+### R21 — Small-step iteration: branch, apply, commit, push, test, re-evaluate, merge
 
 Non-trivial work is broken into the smallest coherent units at **planning time**, and each unit runs through the full cycle before the next begins:
 
-1. **Apply** the change.
-2. **Commit** with a Conventional Commit subject (per R10).
-3. **Push** to remote.
-4. **Test** — CI runs the verification appropriate to the change, per R4 (unit, integration, component, visual, e2e, agent eval).
-5. **Re-evaluate** the plan — does the next step still make sense, or has something changed?
+1. **Branch** — create a short-lived branch off `main` using the naming convention below. Never work directly on `main`.
+2. **Apply** the change.
+3. **Commit** with a Conventional Commit subject (per R10).
+4. **Push** to remote.
+5. **Test** — CI runs the verification appropriate to the change, per R4 (unit, integration, component, visual, e2e, agent eval).
+6. **Re-evaluate** the plan — does the next step still make sense, or has something changed?
+7. **Merge** — squash-merge to `main` when green (per R10). Delete the branch.
 
-Then the next unit. Never skip steps. Never batch two unrelated units into one commit.
+Then the next unit on a new branch. Never skip steps. Never batch two unrelated units into one commit.
+
+**Branch naming convention:**
+
+Format: `<type>/<short-kebab-description>`, where `<type>` matches Conventional Commits types:
+
+- `feat/<desc>` — new feature
+- `fix/<desc>` — bug fix
+- `docs/<desc>` — documentation only
+- `chore/<desc>` — maintenance, deps, tooling
+- `refactor/<desc>` — refactor without behavior change
+- `test/<desc>` — test-only change
+- `perf/<desc>` — performance change
+- `build/<desc>` — build-system change
+- `ci/<desc>` — CI-only change
+- `revert/<desc>` — revert a prior commit
+
+Rules:
+
+- Description ≤ 50 chars, kebab-case, all lowercase.
+- When a ticket exists: `<type>/<ticket-id>-<short-desc>` (e.g. `feat/PS-123-add-symptom-flow`).
+- Forbidden: spaces, uppercase, issue-number-only names, author-initials-only names.
+- No long-lived branches — trunk-based per R10; branches merge back quickly.
+
+Validator regex for hook enforcement: `^(feat|fix|docs|chore|refactor|test|perf|build|ci|revert)/[a-z0-9-]+$` (matches optional ticket-id segment when present within the kebab-case description).
 
 **What counts as a "small step":**
 
