@@ -45,8 +45,15 @@
     "packages/conversation": {
       "name": "@petstory/conversation",
       "version": "0.0.0",
+      "dependencies": {
+        "@petstory/kernel": "workspace:*",
+        "zod": "^3.23.0",
+      },
       "devDependencies": {
         "@petstory/config": "workspace:*",
+        "@petstory/testing": "workspace:*",
+        "typescript": "^5.4.0",
+        "vitest": "^2.0.0",
       },
     },
     "packages/diary": {

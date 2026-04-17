@@ -7,12 +7,14 @@
   "exports": {
     "./tsconfig.base.json": "./tsconfig.base.json",
     "./vitest": "./vitest.base.ts",
-    "./lighthouserc.json": "./lighthouserc.json"
+    "./lighthouserc.json": "./lighthouserc.json",
+    "./tailwind.preset.js": "./tailwind.preset.js"
   },
   "files": [
     "tsconfig.base.json",
     "vitest.base.ts",
-    "lighthouserc.json"
+    "lighthouserc.json",
+    "tailwind.preset.js"
   ],
   "peerDependencies": {
     "typescript": "^5.4.0",
