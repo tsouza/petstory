@@ -21,7 +21,7 @@
       "automergeStrategy": "squash"
     },
     {
-      "description": "Major upgrades — manual review required (R2 + R20)",
+      "description": "Major upgrades — manual review required",
       "matchUpdateTypes": ["major"],
       "automerge": false,
       "addLabels": ["major-upgrade", "needs-review"]

@@ -623,6 +623,28 @@ Every canonical project task — testing, building, linting, typechecking, forma
 
 **Exception:** emergency debugging and deep-diagnostic invocations can use raw tools directly. R23 applies to the canonical, documented project interface, not to the investigator's scratch pad.
 
+### R24 — Cite rules sparingly, load-bearing only
+
+Rule references (`R1`, `R20`, `ADR-00X`) in code, configs, and docs appear only when **load-bearing** — where a reader would reasonably ask "why is this constraint here?" and the citation answers the question. Routine comments, step names, and config entries do not need rule citations.
+
+**Drop citations when:**
+
+- The line is self-explanatory ("Lint every workspace via Biome" does not need `per R14`).
+- The cite is a flourish rather than a pointer ("Setup Just (R23)" in a CI step name adds noise without clarifying anything).
+- A rule is upstream of the file and the file already obeys it (package.json does not need to cite R10 just because commits are Conventional).
+- Multiple citations stack into a list of IDs that a reader cannot usefully act on ("per R14 + R21 + R23").
+
+**Keep citations when:**
+
+- A non-obvious constraint has a specific rationale the reader would want to trace (e.g., "Node 22 stays as fallback for Metro + Convex CLI" — the ADR-007 cite answers why).
+- A decision overrides a common assumption (`reject tactical DDD per ADR-004`).
+- An audit trail matters (commit-msg hook citing `R10` where conventional-commits is enforced).
+- A section header exists precisely to anchor readers at a rule (e.g., a PR-template section `## Engineering rules — merge gates (R11)` is an intentional anchor, not flourish).
+
+**Exempt from R24:** the canonical rule definitions in this file carry their own IDs by definition; ADRs cross-reference each other as part of their decision-record structure. R24 polices citations leaked into code, CI, and non-canonical docs.
+
+**How to apply:** before writing `(R<X>)` / `per R<X>` / `per ADR-<YYY>` in a file, ask *"would the reader be confused without this?"* If no, drop it. When auditing, strip citations that add identifiers without answering a reader question.
+
 ### R22 — GRASP core principles + Open/Closed for reusable layers
 
 Two connected disciplines. Part A names four GRASP patterns already lived in this architecture (and explicitly declines the other five). Part B operationalizes the Open/Closed Principle on the layers that are meant to be reused across packs.

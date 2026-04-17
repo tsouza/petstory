@@ -1,5 +1,5 @@
-# Lefthook config per R14 + R21 + R23.
-# Hooks invoke just targets so the dev-loop command and the hook command stay identical.
+# Lefthook git hooks.
+# Each hook invokes a `just` target so the dev-loop command and the hook command stay identical.
 # Fresh clones need `just install-hooks` after `just install`.
 # Gitleaks runs in CI (GitHub Action), not locally, to avoid forcing every dev to install the Go binary.
 
