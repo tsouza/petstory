@@ -48,6 +48,15 @@ typecheck:
 test:
     bunx turbo run test
 
+# Thresholds live in packages/config/vitest.base.ts (80/80/75/80).
+# Run tests with coverage across every workspace.
+coverage:
+    bunx turbo run test -- --coverage
+
+# Run Vitest in watch mode on a specific workspace (e.g. `just watch kernel`).
+watch pkg:
+    bunx turbo run test --filter=@petstory/{{pkg}} -- --watch
+
 # Run Braintrust agent evals (pack-level; no-op on packages without an eval task).
 eval:
     bunx turbo run eval
@@ -106,6 +115,11 @@ ci: lint typecheck test knip depcruise
 # Auto-fix everything Biome can fix + re-run checks.
 fix: format
     bunx biome check --write .
+
+# Review the diff carefully — unsafe fixes can change behavior.
+# Same as `fix`, but also applies Biome's *unsafe* fixes (import reorg, dead-code removal, etc.).
+fix-unsafe: format
+    bunx biome check --write --unsafe .
 
 # Run all checks in parallel — good for a fast "is everything green" sanity check.
 verify: check typecheck
