@@ -16,8 +16,8 @@ env:
   TURBO_TELEMETRY_DISABLED: 1
 
 jobs:
-  ci:
-    name: Lint · Typecheck · Test
+  check:
+    name: Check
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -63,6 +63,7 @@ jobs:
 
   e2e:
     name: E2E (Playwright)
+    needs: check
     runs-on: ubuntu-latest
     permissions:
       contents: read
