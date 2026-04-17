@@ -26,6 +26,7 @@
       "Bash(git reset --hard:*)",
       "Bash(git push --force:*)",
       "Bash(git push -f:*)",
+      "Bash(bunx:*)",
       "Edit(.env)",
       "Edit(.env.*)",
       "Read(.env)"
