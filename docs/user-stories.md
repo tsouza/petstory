@@ -34,6 +34,7 @@ Full rules in [`user-stories/guidelines.md`](user-stories/guidelines.md). Prefix
 - **WR6** — Include multi-actor context when applicable.
 - **WR7** — Name the anxiety when it exists.
 - **WR8** — Different contexts → separate stories.
+- **WR9** — On implementation, produce a flow spec at `user-stories/flows/US-<CAT>-<NNN>.md`.
 
 ## Enforcement
 
@@ -51,6 +52,6 @@ Per [ADR-002](decisions/ADR-002-layered-architecture.md), petstory is the first 
 
 The tagging is a thinking aid, not a rename. It informs which packages the story gets implemented in when the monorepo lands, and it surfaces early which stories are reusable across future domains.
 
-## Known gap
+## Flow specs (WR9)
 
-User stories deliberately don't include interaction flows or screen maps (per WR5). That leaves a gap between US and code. See [open-questions.md](open-questions.md).
+Stories deliberately don't include interaction flows (WR5). The gap between story and code closes **just in time** — at implementation, the PR adds a flow spec at `user-stories/flows/US-<CAT>-<NNN>.md`. Convention and template live in [`user-stories/guidelines.md`](user-stories/guidelines.md) → WR9.
