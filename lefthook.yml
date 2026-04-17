@@ -1,0 +1,34 @@
+# Lefthook config per R14 and R21.
+# Runs only if `pnpm install` has completed; fresh clones need `pnpm lefthook install`.
+# Gitleaks runs in CI (GitHub Action), not locally, to avoid forcing every dev to install the Go binary.
+
+pre-commit:
+  parallel: true
+  commands:
+    biome-check:
+      glob: "*.{ts,tsx,js,jsx,json,jsonc}"
+      run: pnpm biome check --staged --write --no-errors-on-unmatched
+      stage_fixed: true
+
+commit-msg:
+  commands:
+    commitlint:
+      run: pnpm commitlint --edit {1}
+
+pre-push:
+  parallel: true
+  commands:
+    branch-name:
+      # R21 branch-naming convention
+      run: |
+        branch="$(git rev-parse --abbrev-ref HEAD)"
+        if [ "$branch" = "main" ]; then exit 0; fi
+        if ! echo "$branch" | grep -qE '^(feat|fix|docs|chore|refactor|test|perf|build|ci|revert)/[a-z0-9-]+$'; then
+          echo "Branch '$branch' violates R21. Format: <type>/<short-kebab-desc>"
+          echo "Types: feat|fix|docs|chore|refactor|test|perf|build|ci|revert"
+          exit 1
+        fi
+    typecheck:
+      run: pnpm turbo run typecheck --affected
+    knip:
+      run: pnpm knip --no-exit-code

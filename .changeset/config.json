@@ -1,0 +1,16 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3/schema.json",
+  "changelog": "@changesets/cli/changelog",
+  "commit": false,
+  "fixed": [],
+  "linked": [],
+  "access": "restricted",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": [
+    "@petstory/mobile",
+    "@petstory/web",
+    "@petstory/config",
+    "@petstory/test-utils"
+  ]
+}

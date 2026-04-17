@@ -1,0 +1,38 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "workspaces": {
+    ".": {
+      "ignoreBinaries": ["turbo", "pnpm", "lefthook"]
+    },
+    "packages/config": {
+      "entry": ["tsconfig.base.json", "vitest.base.ts", "lighthouserc.json"]
+    },
+    "packages/kernel": {
+      "entry": ["src/index.ts"]
+    },
+    "packages/conversation": {
+      "entry": ["src/index.ts"]
+    },
+    "packages/diary": {
+      "entry": ["src/index.ts"]
+    },
+    "packages/nudges": {
+      "entry": ["src/index.ts"]
+    },
+    "packages/shared-access": {
+      "entry": ["src/index.ts"]
+    },
+    "packages/ui": {
+      "entry": ["src/index.ts"]
+    },
+    "packages/test-utils": {
+      "entry": ["src/index.ts"]
+    },
+    "packages/packs/*": {
+      "entry": ["src/index.ts"]
+    },
+    "apps/*": {
+      "entry": ["src/index.{ts,tsx}", "app/**/*.{ts,tsx}"]
+    }
+  }
+}

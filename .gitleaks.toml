@@ -1,0 +1,18 @@
+# Gitleaks config per R8.
+# Runs in CI via gitleaks/gitleaks-action (.github/workflows/ci.yml gitleaks job).
+# Local pre-commit scan deferred to avoid forcing every dev to install the gitleaks binary.
+
+title = "petstory.co gitleaks config"
+
+# Extends gitleaks' bundled default rule set. Allowlist scoped to known-safe paths.
+
+[allowlist]
+description = "Known-safe paths and placeholders"
+paths = [
+  '''\.claude/settings\.local\.json''',
+  '''\.env\.example''',
+]
+regexes = [
+  # Example placeholders documented in .env.example are safe
+  '''your-[a-z-]+-here''',
+]
