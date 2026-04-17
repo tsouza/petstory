@@ -273,6 +273,23 @@ bitnet-native-preflight:
     ./scripts/bitnet/preflight.sh vendor/bitnet
 
 # -----------------------------------------------------------------------------
+# Dev — one command to start every local process you need to iterate
+# -----------------------------------------------------------------------------
+
+# Start BitNet (docker, detached) + Expo web dev server (foreground, LAN).
+# Ctrl+C stops the foreground server; a trap then stops BitNet cleanly.
+# Ports: BitNet 11434, Metro 8081.
+dev host="lan":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    # Start BitNet first — its warm-up happens in parallel with Metro's boot.
+    just bitnet-serve
+    # Ensure the container is stopped regardless of how this recipe exits.
+    trap 'echo; just bitnet-stop' EXIT INT TERM
+    # Foreground Metro + Expo. Ctrl+C returns control; the trap runs.
+    just mobile-web {{host}}
+
+# -----------------------------------------------------------------------------
 # Convex (backend)
 # -----------------------------------------------------------------------------
 
