@@ -29,13 +29,5 @@
     "sourceMap": true,
     "composite": false,
     "incremental": true
-  },
-  "exclude": [
-    "**/node_modules",
-    "**/dist",
-    "**/build",
-    "**/.expo",
-    "**/.next",
-    "**/coverage"
-  ]
+  }
 }
