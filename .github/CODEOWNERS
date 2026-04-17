@@ -1,0 +1,48 @@
+# Per-path ownership. Reviewers are auto-requested on PRs touching matching paths.
+# Solo maintainer for now — as the team grows, split by layer / pack.
+
+*                                   @tsouza
+
+# Canonical docs & ADRs
+/docs/                              @tsouza
+/docs/decisions/                    @tsouza
+/CLAUDE.md                          @tsouza
+/README.md                          @tsouza
+/CONTRIBUTING.md                    @tsouza
+/SECURITY.md                        @tsouza
+
+# Engineering rules + project conventions
+/docs/engineering-rules.md          @tsouza
+/.claude/                           @tsouza
+
+# Architectural kernel + primitives (L0 + L1)
+/packages/kernel/                   @tsouza
+/packages/conversation/             @tsouza
+/packages/diary/                    @tsouza
+/packages/nudges/                   @tsouza
+/packages/shared-access/            @tsouza
+
+# Domain packs (L2)
+/packages/packs/                    @tsouza
+
+# Shells (L3)
+/apps/                              @tsouza
+
+# UI primitives + shared configs + test utilities
+/packages/ui/                       @tsouza
+/packages/config/                   @tsouza
+/packages/test-utils/               @tsouza
+
+# Convex backend
+/convex/                            @tsouza
+
+# CI + dev tooling
+/.github/                           @tsouza
+/turbo.json                         @tsouza
+/biome.json                         @tsouza
+/lefthook.yml                       @tsouza
+/commitlint.config.js               @tsouza
+/knip.json                          @tsouza
+/.dependency-cruiser.json           @tsouza
+/renovate.json                      @tsouza
+/justfile                           @tsouza

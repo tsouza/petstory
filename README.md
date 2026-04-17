@@ -1,50 +1,70 @@
-# petstory.co — Claude Code scaffold
+# petstory.co
 
-Staging folder. Contents here are meant to be moved into the repo root once reviewed:
+> Intelligent pet-health app. Chat-first diary, auto-extracted events, proactive nudges, longitudinal correlation. Built on a brand-neutral agent kernel — pet-health is the first vertical on top of reusable layers.
 
+## Status
+
+Pre-code scaffold. Monorepo seeded, docs canonical, CI wired, no feature code yet. Flow Catalog v1 sketched in [`docs/architecture/flow-catalog.md`](docs/architecture/flow-catalog.md); pet-health pack exists as an empty shell with its Ubiquitous Language glossary.
+
+## Stack
+
+Expo (React Native New Arch) + Expo Router SSR · NativeWind + React Native Reusables · React Hook Form + Zustand · Clerk · Convex · Claude Agent SDK · Mastra (flow runtime) · Haiku/Sonnet/Opus tiered · Claude Managed Agents · Stripe/RevenueCat · Braintrust/Sentry/PostHog · Bun (local dev) · Turborepo · Changesets.
+
+Full rationale in [`docs/stack.md`](docs/stack.md) and [`docs/decisions/`](docs/decisions/).
+
+## Architecture
+
+Four layers with strict inward dependencies (`L3 → L2 → L1 → L0`):
+
+- **L0 — Agent Kernel** (domain-agnostic): ports, flow runtime, critic harness, pack loader.
+- **L1 — Conversation & Narrative Primitives** (domain-agnostic): chat-first loop, event extractor, diary, nudges, shared-access.
+- **L2 — Domain Pack** (vertical-specific): pet-health today; human-health, tripstory, etc. tomorrow.
+- **L3 — Product Shell**: Expo mobile + RN Web apps.
+
+See [`docs/architecture/layers.md`](docs/architecture/layers.md) and [`ADR-002`](docs/decisions/ADR-002-layered-architecture.md).
+
+Agent loop: three-level framework (Execution Spine + Flow Catalog + Situation Classifier) per [`ADR-003`](docs/decisions/ADR-003-three-level-agent-framework.md). Mastra is the Flow runtime, our Flow DSL is a thin typed wrapper that enforces pack-level invariants per [`ADR-007`](docs/decisions/ADR-007-bun-for-local-development.md).
+
+## Engineering rules
+
+23 non-negotiable rules in [`docs/engineering-rules.md`](docs/engineering-rules.md), phased by project stage. R0 (no over-engineering) is the veto rule above the others. Security (R8) and observability (R6) are cross-cutting concerns threaded through every decision.
+
+## Quick start
+
+**Prerequisites:** Bun 1.3+, Node 22 LTS (fallback for Metro + Convex CLI), [just](https://just.systems/).
+
+```bash
+just install         # bun install
+just install-hooks   # lefthook install
+just ci              # full local CI (lint + typecheck + test + knip + depcruise)
 ```
-claude-scaffold/CLAUDE.md      →  <repo>/CLAUDE.md
-claude-scaffold/.claude/       →  <repo>/.claude/
-claude-scaffold/.mcp.json      →  <repo>/.mcp.json
-claude-scaffold/docs/          →  <repo>/docs/
-```
 
-## What this is
-
-All the project knowledge that used to live in Cowork memory + our conversations, migrated into files Claude Code can load automatically. A fresh Claude Code session in the repo root will pick up `CLAUDE.md`, which indexes everything else.
+Every canonical task is a `just` target per R23 — `just --list` for the full menu.
 
 ## Layout
 
-- `CLAUDE.md` — always-loaded root index. Keep short.
-- `docs/` — canonical project knowledge (vision, stack, brand, UX concept, viz rules, data humanism, user stories, market, ADRs, open questions).
-- `.claude/agents/` — sub-agents that enforce project rules when invoked.
-- `.claude/skills/` — reusable workflows (SKILL.md per folder).
-- `.claude/commands/` — slash commands (`/review-viz`, `/new-us`, `/handoff`).
-- `.claude/CONVENTIONS.md` — how Thiago likes to collaborate (ways of working).
-- `.claude/settings.json` — tool permissions + project-scoped settings.
-- `.mcp.json` — MCP servers contributors should install (Expo, Convex when scaffolded).
+```
+apps/                   L3 shells (petstory-mobile, petstory-web)
+packages/
+  kernel/               L0 — agent kernel
+  conversation/         L1 — chat-first turn loop
+  diary/                L1 — auto-generated diary
+  nudges/               L1 — proactive nudges
+  shared-access/        L1 — invites + scope + duration
+  packs/pet-health/     L2 — first Domain Pack (+ glossary.md)
+  ui/                   L3 primitives
+  config/               shared base configs
+  test-utils/           shared test helpers
+convex/                 shared backend (Convex cloud)
+docs/                   canonical docs + ADRs
+.claude/                sub-agents, skills, commands, conventions
+user-stories/           US-*.md files (JTBD)
+```
 
-## After moving into the repo
+## Contributing
 
-1. Open the repo in Claude Code.
-2. Run `/review-viz some-file.jsx` to validate a visualization proposal.
-3. Run `/new-us` to scaffold a user story in the correct format.
-4. Use sub-agents explicitly: `use brand-guardian`, `use clinical-safety-reviewer`.
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the branch → commit → PR flow, Conventional Commits + branch naming (R10 + R21), testing expectations (R4), and the canonical `just` interface (R23).
 
-## Memory migration
+## License
 
-After this scaffold is merged, the following Cowork memory entries should be deleted (their content now lives in `docs/`):
-
-- `project_brand_guidelines.md` → `docs/brand.md`
-- `project_data_humanism_rules.md` → `docs/data-humanism.md`
-- `project_ux_concept.md` → `docs/ux-concept.md`
-- `project_dataviz_lay_users.md` → merged into `docs/viz-rules.md`
-- `feedback_viz_simplicity.md` → merged into `docs/viz-rules.md`
-- `project_pending_interaction_specs.md` → `docs/open-questions.md`
-
-Memory entries to keep (they describe *how to collaborate*, not project truth):
-
-- `feedback_literal_scope.md` — still valuable across all projects
-- `feedback_visual_iteration.md` — still valuable across all projects
-
-Those also get mirrored into `.claude/CONVENTIONS.md` so Claude Code picks them up inside this repo.
+No license granted. All rights reserved. This repository is public for transparency and collaboration with invited contributors; contact the owner for usage permissions beyond that.
