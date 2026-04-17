@@ -1,0 +1,14 @@
+{
+  "name": "@petstory/nudges",
+  "version": "0.0.0",
+  "private": true,
+  "description": "L1 — proactive nudge scheduler over the storage port. Domain-agnostic.",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "lint": "biome check . --max-diagnostics 0"
+  },
+  "devDependencies": {
+    "@petstory/config": "workspace:*"
+  }
+}

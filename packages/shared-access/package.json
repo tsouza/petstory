@@ -1,0 +1,14 @@
+{
+  "name": "@petstory/shared-access",
+  "version": "0.0.0",
+  "private": true,
+  "description": "L1 — temporary and permanent shared-access primitive (invites, scope, duration, revocation). Domain-agnostic.",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "lint": "biome check . --max-diagnostics 0"
+  },
+  "devDependencies": {
+    "@petstory/config": "workspace:*"
+  }
+}

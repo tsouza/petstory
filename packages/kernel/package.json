@@ -1,0 +1,14 @@
+{
+  "name": "@petstory/kernel",
+  "version": "0.0.0",
+  "private": true,
+  "description": "L0 — agent kernel: ports (LLM/storage/auth/channel/observability/payments), flow runtime, critic harness, hook bus, model router, prompt-cache, pack loader. Domain-agnostic.",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "lint": "biome check . --max-diagnostics 0"
+  },
+  "devDependencies": {
+    "@petstory/config": "workspace:*"
+  }
+}

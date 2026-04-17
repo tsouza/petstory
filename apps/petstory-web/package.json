@@ -1,0 +1,13 @@
+{
+  "name": "@petstory/web",
+  "version": "0.0.0",
+  "private": true,
+  "description": "L3 — Expo RN Web + marketing. Same Expo Router tree as mobile, SSR for SEO per ADR-006.",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check . --max-diagnostics 0"
+  },
+  "devDependencies": {
+    "@petstory/config": "workspace:*"
+  }
+}

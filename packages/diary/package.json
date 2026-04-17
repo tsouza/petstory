@@ -1,0 +1,14 @@
+{
+  "name": "@petstory/diary",
+  "version": "0.0.0",
+  "private": true,
+  "description": "L1 — auto-generated diary: projections over Domain Events, warm-prose narrator. Domain-agnostic.",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "lint": "biome check . --max-diagnostics 0"
+  },
+  "devDependencies": {
+    "@petstory/config": "workspace:*"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "@petstory/mobile",
+  "version": "0.0.0",
+  "private": true,
+  "description": "L3 — Expo React Native mobile app (iOS + Android). Consumes kernel + pet-health pack + ui per ADR-002 dependency rule.",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check . --max-diagnostics 0"
+  },
+  "devDependencies": {
+    "@petstory/config": "workspace:*"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "@petstory/conversation",
+  "version": "0.0.0",
+  "private": true,
+  "description": "L1 — chat-first turn loop and event extraction over DomainSchema. Domain-agnostic.",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "lint": "biome check . --max-diagnostics 0"
+  },
+  "devDependencies": {
+    "@petstory/config": "workspace:*"
+  }
+}

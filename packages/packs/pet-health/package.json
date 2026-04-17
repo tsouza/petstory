@@ -1,0 +1,15 @@
+{
+  "name": "@petstory/pack-pet-health",
+  "version": "0.0.0",
+  "private": true,
+  "description": "L2 — pet-health Domain Pack. Exports the 9 required artifacts per ADR-002 + ADR-004: event schema, KB, skills, MCP tools, critic rules, Flow Catalog, Situation Classifier, copy bundle, Ubiquitous Language glossary.",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "lint": "biome check . --max-diagnostics 0",
+    "eval": "echo 'Braintrust evals not yet wired' && exit 0"
+  },
+  "devDependencies": {
+    "@petstory/config": "workspace:*"
+  }
+}
