@@ -1,0 +1,25 @@
+{
+  "name": "petstory-co",
+  "version": "0.0.0",
+  "private": true,
+  "description": "petstory.co — layered agent monorepo (kernel + primitives + pet-health pack + shells)",
+  "packageManager": "pnpm@10.0.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck",
+    "eval": "turbo run eval",
+    "clean": "turbo run clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0",
+    "typescript": "^5.4.0"
+  },
+  "pnpm": {
+    "overrides": {}
+  }
+}

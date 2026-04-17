@@ -4,11 +4,43 @@
 # Claude Code local settings
 .claude/settings.local.json
 
-# Editor
-.vscode/
+# Editor — commit shared recommendations, ignore local state
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
 .idea/
 *.swp
 
 # Env
 .env
+.env.*
+!.env.example
 .env.local
+.env.*.local
+
+# Dependencies
+node_modules/
+
+# Build artifacts
+dist/
+build/
+.next/
+.expo/
+coverage/
+*.tsbuildinfo
+
+# Turborepo cache
+.turbo/
+
+# Changesets intermediate
+.changeset/pre.json
+
+# Logs
+npm-debug.log*
+pnpm-debug.log*
+*.log
+
+# OS / tmp
+*.tmp
+*.bak
