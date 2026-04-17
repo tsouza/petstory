@@ -52,3 +52,6 @@ apps/petstory-mobile/.expo/
 playwright-report/
 test-results/
 .playwright/
+
+# Vendored third-party code built locally (BitNet, etc.)
+vendor/

@@ -198,6 +198,40 @@ e2e-report:
     bunx playwright show-report
 
 # -----------------------------------------------------------------------------
+# BitNet (local LLM for integration testing — not for product)
+# Vendored under vendor/bitnet/BitNet. Requires clang ≥ 18, cmake, python 3.9+.
+# See docs/testing/bitnet.md for the full setup + why we use it.
+# -----------------------------------------------------------------------------
+
+# Clone + build Microsoft's bitnet.cpp, download the b1.58-2B-4T model.
+# Idempotent — rerun to pick up upstream fixes.
+bitnet-install:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    mkdir -p vendor/bitnet
+    if [ ! -d vendor/bitnet/BitNet ]; then
+        git clone --recursive https://github.com/microsoft/BitNet.git vendor/bitnet/BitNet
+    else
+        cd vendor/bitnet/BitNet && git pull && git submodule update --init --recursive
+    fi
+    cd vendor/bitnet/BitNet && python setup_env.py --hf-repo microsoft/bitnet-b1.58-2B-4T -q i2_s
+
+# Start the bitnet.cpp OpenAI-compatible HTTP server on the given port.
+# Model + quant come from the setup step above.
+bitnet-serve port="8080":
+    cd vendor/bitnet/BitNet && ./build/bin/llama-server \
+        -m models/BitNet-b1.58-2B-4T/ggml-model-i2_s.gguf \
+        --host 127.0.0.1 --port {{port}} \
+        --ctx-size 4096
+
+# Quick smoke — POST a hello to the running server.
+bitnet-ping port="8080":
+    curl -s http://127.0.0.1:{{port}}/v1/chat/completions \
+        -H 'Content-Type: application/json' \
+        -d '{"model":"bitnet-b1.58-2B-4T","messages":[{"role":"user","content":"say hi in 3 words"}],"max_tokens":20}' \
+        | jq .
+
+# -----------------------------------------------------------------------------
 # Convex (backend)
 # -----------------------------------------------------------------------------
 
