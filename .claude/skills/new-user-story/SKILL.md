@@ -93,6 +93,7 @@ Append to `docs/user-stories/US-<CAT>.md` following the file's existing structur
 
 In `docs/user-stories/INDEX.md`:
 
+- If this is the FIRST story in the cluster, convert the `File` column from the placeholder `` `US-<CAT>.md` `` (inline code) to a live link `[US-<CAT>.md](US-<CAT>.md)`
 - Bump the count for the cluster
 - Bump the `Total: 16 categories · NNN stories` line
 - Update the "Last updated" date at the top
