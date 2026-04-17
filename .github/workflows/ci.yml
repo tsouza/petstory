@@ -37,7 +37,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Setup Just (R23 — ultimate project frontend)
+      - name: Setup Just (R23)
         uses: extractions/setup-just@v2
         with:
           just-version: "1.46"
