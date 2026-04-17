@@ -19,6 +19,10 @@
 .env.local
 .env.*.local
 
+# direnv — per-repo GH_TOKEN + other local identity, never commit
+.envrc
+!.envrc.example
+
 # Dependencies
 node_modules/
 .bun/

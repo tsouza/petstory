@@ -1,0 +1,31 @@
+# Copy to `.envrc`, fill in the token, then run `direnv allow`.
+# Never commit `.envrc` — it's gitignored.
+#
+# ── GitHub identity ────────────────────────────────────────────────────────
+# Pinning GH_TOKEN here means `gh` in this directory always acts as your
+# tsouza/petstory identity, regardless of `gh auth status`'s "Active account".
+# No `gh auth switch` needed, no global state mutation — Claude (or any
+# tool) picks up the right identity just by being `cd`'d into the repo.
+#
+# Create a fine-grained PAT at:
+#   https://github.com/settings/personal-access-tokens/new
+#
+# Scope:
+#   - Resource owner: tsouza
+#   - Repository access: Only select repositories → tsouza/petstory
+#   - Repository permissions:
+#       • Contents: Read and write
+#       • Pull requests: Read and write
+#       • Metadata: Read-only (required)
+#   - Expiration: 90 days (rotate on a calendar reminder; shorter = safer)
+#
+# Paste the token below:
+export GH_TOKEN="github_pat_REPLACE_ME"
+
+# ── (Optional) Convex / BitNet / Anthropic envs can also live here ─────────
+# Uncomment + fill as you need them — gitignored along with GH_TOKEN.
+#
+# export EXPO_PUBLIC_CONVEX_URL="https://your-deployment.convex.cloud"
+# export CONVEX_DEPLOYMENT="dev:your-deployment"
+# export BITNET_BASE_URL="http://127.0.0.1:11434"
+# export ANTHROPIC_API_KEY="sk-ant-…"
