@@ -74,7 +74,7 @@ Pin to the latest stable majors of every runtime dep. Renovate bot handles minor
 
 ### R3 — Modern client patterns
 
-Expo RN New Architecture, React 19+ concurrent + Suspense, Reanimated 4 for animation, MMKV for storage, Convex reactive for data, Zod at every boundary. Web uses modern CSS primitives (Grid, container queries, logical properties, `@layer`). Pre-2023 patterns (class components, Redux-Thunk, SCSS preprocessor, Moment.js, Enzyme) require justification in the PR.
+Expo RN New Architecture, React 19+ concurrent + Suspense, Reanimated 4 for animation, MMKV for storage, Convex reactive for data, Zod at every boundary. UI stack per [ADR-006](decisions/ADR-006-ui-framework-picks.md): NativeWind for styling, React Native Reusables for components, React Hook Form + Zod for forms, Zustand for non-server state, Expo Router v55+ SSR for web/marketing (single-stack). Web uses modern CSS primitives (Grid, container queries, logical properties, `@layer`). Pre-2023 patterns (class components, Redux-Thunk, SCSS preprocessor, Moment.js, Enzyme) require justification in the PR.
 
 **Why:** old patterns accrue indirection and block later modernization. The team is small; keep one mental model.
 

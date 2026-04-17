@@ -22,7 +22,7 @@ Read these before proposing anything:
 
 See [`docs/stack.md`](docs/stack.md) and [`docs/decisions/ADR-001-stack.md`](docs/decisions/ADR-001-stack.md).
 
-TL;DR: Expo (RN New Arch) + Clerk + Convex + Claude Agent SDK + Haiku/Sonnet/Opus tiered + Claude Managed Agents for async + Stripe/RevenueCat + Braintrust/Sentry/PostHog.
+TL;DR: Expo (RN New Arch) + Expo Router SSR + NativeWind + React Native Reusables + React Hook Form + Zustand + Clerk + Convex + Claude Agent SDK + Mastra (flow runtime) + Haiku/Sonnet/Opus tiered + Claude Managed Agents for async + Stripe/RevenueCat + Braintrust/Sentry/PostHog.
 
 ## Product
 

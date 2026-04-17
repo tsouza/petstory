@@ -1,6 +1,6 @@
 # Stack
 
-Decided April 2026. See [decisions/ADR-001-stack.md](decisions/ADR-001-stack.md) for rationale and alternatives considered.
+Decided April 2026. See [ADR-001](decisions/ADR-001-stack.md) for the core-stack rationale and [ADR-006](decisions/ADR-006-ui-framework-picks.md) for the UI picks (styling, component primitives, forms, non-server state, web/marketing framework).
 
 ## Layering note (read this first)
 
@@ -10,7 +10,11 @@ Per [ADR-002](decisions/ADR-002-layered-architecture.md), every choice below is 
 
 | Layer | Choice |
 |---|---|
-| Client (mobile + web) | Expo SDK 52+ (React Native New Architecture) + Expo Router; RN Web for browser |
+| Client (mobile + web) | Expo SDK 52+ (React Native New Architecture) + Expo Router v55+ with experimental SSR; RN Web for browser |
+| Styling | NativeWind (Tailwind AOT for RN + RN Web) |
+| UI primitives | React Native Reusables (shadcn-for-RN, built on NativeWind; copy-paste, we own the code) |
+| Forms | React Hook Form + `@hookform/resolvers` + Zod |
+| Non-server state | Zustand |
 | Auth | Clerk |
 | Backend / DB / realtime / storage / vector | Convex |
 | Agent orchestration (per-node) | Claude Agent SDK (TypeScript), in-process MCP tools |
