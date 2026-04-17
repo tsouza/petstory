@@ -2,7 +2,7 @@
 
 > Format: Job Stories (JTBD) · Template: [`guidelines.md`](guidelines.md)
 > ID format: `US-{CAT}-{NNN}`
-> Last updated: 2026-04-16
+> Last updated: 2026-04-17
 
 ---
 
@@ -18,28 +18,28 @@ US - DR - 001
 
 ## Categories
 
-> Story files are authored on demand via the `new-user-story` skill. Filenames below are placeholders until the first story in each cluster lands — the `File` column becomes a live link at that point.
+> Stories live under `<CAT>/US-<CAT>-<NNN>.md` (one file per story). Clusters with no authored story yet show a `_NNN planned_` placeholder; clusters with at least one story show a live directory link. Authored via the `new-user-story` skill.
 
-| Code | Category | File | Stories | Scope |
-|------|----------|------|---------|-------|
-| DR | Daily Record | `US-DR.md` | 10 | Daily logging of meals, exercise, sleep, mood, weight, photos |
-| AN | Food & Nutrition | `US-AN.md` | 6 | Food switches, diets, food reactions, natural feeding |
-| SP | Symptoms & Concerns | `US-SP.md` | 14 | Vomiting, diarrhea, itching, limping, seizures, lesions, pain signs |
-| SV | Health & Veterinary | `US-SV.md` | 16 | Vaccines, medications, lab results, surgeries, physiotherapy, records |
-| LP | Reminders & Prevention | `US-LP.md` | 6 | Vaccine, dewormer, medication, and routine checkup reminders |
-| IA | AI & Insights | `US-IA.md` | 14 | Correlations, patterns, summaries, nudges, smart alerts |
-| TA | Temporary Access | `US-TA.md` | 5 | Temporary invite, permissions, revocation (cross-cutting primitive) |
-| MD | Multi-owner (Permanent) | `US-MD.md` | 5 | Co-owners, shared feed, split checklist, notifications |
-| CV | Vet Sharing | `US-CV.md` | 5 | Reports, PDF export, shareable link, vet notes |
-| MC | Milestones & Lifecycle | `US-MC.md` | 9 | Registration, birthday, neutering, age transitions, achievements |
-| PM | Loss & Memorial | `US-PM.md` | 4 | Passing, memorial, affective memories, frozen profile |
-| MP | Multiple Pets | `US-MP.md` | 5 | Multi-pet dashboard, adaptation, contagion, separate medications |
-| CE | Behavior & Emotional | `US-CE.md` | 7 | Anxiety, aggression, socialization, fears, destructive behavior |
-| SL | Life Situations | `US-SL.md` | 8 | Moving house, new baby, lost pet, emergency, terminal illness |
-| EG | Engagement | `US-EG.md` | 5 | Streaks, checklists, health milestones, affective memories |
-| OB | Onboarding | `US-OB.md` | 4 | Profile, routine, invite, history import |
+| Code | Category | Directory | Stories | Scope |
+|------|----------|-----------|---------|-------|
+| DR | Daily Record | [DR/](DR/) | 1 / 10 | Daily logging of meals, exercise, sleep, mood, weight, photos |
+| AN | Food & Nutrition | _6 planned_ | 0 / 6 | Food switches, diets, food reactions, natural feeding |
+| SP | Symptoms & Concerns | _14 planned_ | 0 / 14 | Vomiting, diarrhea, itching, limping, seizures, lesions, pain signs |
+| SV | Health & Veterinary | _16 planned_ | 0 / 16 | Vaccines, medications, lab results, surgeries, physiotherapy, records |
+| LP | Reminders & Prevention | _6 planned_ | 0 / 6 | Vaccine, dewormer, medication, and routine checkup reminders |
+| IA | AI & Insights | _14 planned_ | 0 / 14 | Correlations, patterns, summaries, nudges, smart alerts |
+| TA | Temporary Access | _5 planned_ | 0 / 5 | Temporary invite, permissions, revocation (cross-cutting primitive) |
+| MD | Multi-owner (Permanent) | _5 planned_ | 0 / 5 | Co-owners, shared feed, split checklist, notifications |
+| CV | Vet Sharing | _5 planned_ | 0 / 5 | Reports, PDF export, shareable link, vet notes |
+| MC | Milestones & Lifecycle | _9 planned_ | 0 / 9 | Registration, birthday, neutering, age transitions, achievements |
+| PM | Loss & Memorial | _4 planned_ | 0 / 4 | Passing, memorial, affective memories, frozen profile |
+| MP | Multiple Pets | _5 planned_ | 0 / 5 | Multi-pet dashboard, adaptation, contagion, separate medications |
+| CE | Behavior & Emotional | _7 planned_ | 0 / 7 | Anxiety, aggression, socialization, fears, destructive behavior |
+| SL | Life Situations | _8 planned_ | 0 / 8 | Moving house, new baby, lost pet, emergency, terminal illness |
+| EG | Engagement | _5 planned_ | 0 / 5 | Streaks, checklists, health milestones, affective memories |
+| OB | Onboarding | _4 planned_ | 0 / 4 | Profile, routine, invite, history import |
 
-**Total: 16 categories · 123 stories**
+**Total: 16 categories · 1 / 123 stories authored**
 
 ---
 
