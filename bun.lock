@@ -85,6 +85,7 @@
         "zod": "^3.23.0",
       },
       "devDependencies": {
+        "@expo/vector-icons": "^14.0.0",
         "@petstory/config": "workspace:*",
         "@petstory/testing": "workspace:*",
         "@types/react": "~18.3.12",
@@ -96,6 +97,7 @@
         "vitest": "^2.0.0",
       },
       "peerDependencies": {
+        "@expo/vector-icons": "^14.0.0",
         "nativewind": "^4.0.1",
         "react": "^19.0.0",
         "react-native": ">=0.76.0",

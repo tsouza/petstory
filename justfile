@@ -166,8 +166,10 @@ mobile-android:
     cd apps/petstory-mobile && bunx expo start --android
 
 # Run the mobile app in a web browser (RN Web via Metro).
-mobile-web:
-    cd apps/petstory-mobile && bunx expo start --web
+# Pass `lan` to bind to the local network IP (reachable from phone / other devices);
+# pass `tunnel` for an ngrok-style public URL. Default is localhost.
+mobile-web host="localhost":
+    cd apps/petstory-mobile && bunx expo start --web --host {{host}}
 
 # Static export of the mobile app's web build (writes to apps/petstory-mobile/dist).
 mobile-web-build:
