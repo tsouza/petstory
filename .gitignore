@@ -45,3 +45,10 @@ pnpm-debug.log*
 # OS / tmp
 *.tmp
 *.bak
+apps/petstory-mobile/dist/
+apps/petstory-mobile/.expo/
+
+# Playwright artifacts
+playwright-report/
+test-results/
+.playwright/

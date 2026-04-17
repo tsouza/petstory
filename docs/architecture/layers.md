@@ -87,7 +87,7 @@ packages/
     pet-health/              # L2
   ui/                        # L3 primitives (brand-aware, vertical-swappable)
   config/                    # shared base configs
-  test-utils/                # shared test helpers
+  testing/                   # shared test helpers (@petstory/testing)
 ```
 
 ## Anti-patterns that block merge

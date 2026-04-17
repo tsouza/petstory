@@ -4,7 +4,7 @@ import {
   LlmPortError,
   type LlmRequest,
   type LlmResponse,
-} from '../llm.js';
+} from '../llm';
 
 /** A single scripted outcome for the mock to emit on its next `complete()` call. */
 export type ScriptedResponse = LlmResponse | { readonly error: LlmError };

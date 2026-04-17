@@ -57,6 +57,14 @@ coverage:
 watch pkg:
     bunx turbo run test --filter=@petstory/{{pkg}} -- --watch
 
+# Run tests once against a single workspace (e.g. `just test-pkg kernel`).
+test-pkg pkg:
+    bunx turbo run test --filter=@petstory/{{pkg}}
+
+# Typecheck a single workspace (e.g. `just typecheck-pkg kernel`).
+typecheck-pkg pkg:
+    bunx turbo run typecheck --filter=@petstory/{{pkg}}
+
 # Run Braintrust agent evals (pack-level; no-op on packages without an eval task).
 eval:
     bunx turbo run eval
@@ -140,6 +148,54 @@ fix: format
 # Same as `fix`, but also applies Biome's *unsafe* fixes (import reorg, dead-code removal, etc.).
 fix-unsafe: format
     bunx biome check --write --unsafe .
+
+# -----------------------------------------------------------------------------
+# Expo apps (mobile = iOS/Android/web via RN, web = separate SSR app)
+# -----------------------------------------------------------------------------
+
+# Start the Expo dev server for the mobile app (interactive menu picks platform).
+mobile-start:
+    cd apps/petstory-mobile && bunx expo start
+
+# Launch the mobile app on an iOS simulator (requires Xcode).
+mobile-ios:
+    cd apps/petstory-mobile && bunx expo start --ios
+
+# Launch the mobile app on an Android emulator (requires Android Studio).
+mobile-android:
+    cd apps/petstory-mobile && bunx expo start --android
+
+# Run the mobile app in a web browser (RN Web via Metro).
+# Pass `lan` to bind to the local network IP (reachable from phone / other devices);
+# pass `tunnel` for an ngrok-style public URL. Default is localhost.
+mobile-web host="localhost":
+    cd apps/petstory-mobile && bunx expo start --web --host {{host}}
+
+# Static export of the mobile app's web build (writes to apps/petstory-mobile/dist).
+mobile-web-build:
+    cd apps/petstory-mobile && bunx expo export --platform web
+
+# Build + serve the mobile web bundle locally for e2e testing.
+# Produces the static bundle then starts a tiny file server bound to all interfaces.
+mobile-web-preview port="4173":
+    cd apps/petstory-mobile && bunx expo export --platform web
+    bunx serve apps/petstory-mobile/dist -l {{port}} --no-clipboard --single
+
+# -----------------------------------------------------------------------------
+# End-to-end tests (Playwright)
+# -----------------------------------------------------------------------------
+
+# Install Playwright browser binaries. Run once after clone + after major Playwright bumps.
+e2e-install:
+    bunx playwright install --with-deps chromium
+
+# Run Playwright e2e tests. Playwright's webServer config auto-launches `just mobile-web-preview`.
+e2e *args:
+    bunx playwright test {{args}}
+
+# Open the Playwright HTML report from the last run.
+e2e-report:
+    bunx playwright show-report
 
 # -----------------------------------------------------------------------------
 # Convex (backend)

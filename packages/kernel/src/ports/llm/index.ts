@@ -1,2 +1,2 @@
-export { AnthropicLlmAdapter, type AnthropicLlmConfig } from './anthropic-adapter.js';
-export { MockLlmAdapter, type MockLlmCall, type ScriptedResponse } from './mock-adapter.js';
+export { AnthropicLlmAdapter, type AnthropicLlmConfig } from './anthropic-adapter';
+export { MockLlmAdapter, type MockLlmCall, type ScriptedResponse } from './mock-adapter';

@@ -7,7 +7,7 @@ import {
   type LlmResponse,
   LlmResponseSchema,
   type ModelTier,
-} from '../llm.js';
+} from '../llm';
 
 /**
  * Tier → concrete Claude model ID. Pinned per ADR-001. Kernel major
