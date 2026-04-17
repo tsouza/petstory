@@ -28,19 +28,16 @@ export interface ChatScreenProps {
 }
 
 /**
- * Composite chat surface. Consumes the context set up by `ChatProvider`
- * and renders the message stream through a pack-registered `CardRegistry`.
+ * Composite chat surface. Two distinct layouts driven by message count:
  *
- * Behaviour:
- *  - Input auto-grows between 1 and ~5 lines; scrolls internally beyond.
- *  - Enter sends, Shift+Enter inserts a newline (web). On native platforms
- *    the soft-keyboard's return key behaves per OS defaults; users tap Send.
- *  - Focus stays on the input after sending so the user can type a
- *    follow-up immediately.
- *  - Auto-scrolls to the latest message on arrival.
- *  - Send failures surface as a dismissible banner above the composer
- *    with a Retry affordance; the banner auto-dismisses on the next
- *    successful send.
+ *  - **Hero** (empty): Claude/ChatGPT-style centered welcome — large
+ *    heading + subtitle with the composer directly below, vertically
+ *    centered in the viewport.
+ *  - **Stream** (populated): FlatList filling the space, composer pinned
+ *    to the bottom with a subtle divider.
+ *
+ * Both layouts share a single `Composer` subcomponent so the input pill,
+ * send button, and error banner are defined once.
  */
 export function ChatScreen({ registry, copy: copyOverride }: ChatScreenProps) {
   const copy = resolveChatScreenCopy(copyOverride);
@@ -99,36 +96,104 @@ export function ChatScreen({ registry, copy: copyOverride }: ChatScreenProps) {
     return () => clearTimeout(handle);
   }, [messages.length]);
 
-  const canSend = draft.trim().length > 0 && !sending;
+  const composerProps = {
+    copy,
+    draft,
+    setDraft,
+    sending,
+    isFocused,
+    setIsFocused,
+    error,
+    setError,
+    inputRef,
+    handleSend,
+    handleRetry,
+    handleKeyPress,
+  } satisfies Omit<ComposerProps, 'variant'>;
+
+  if (messages.length === 0) {
+    return (
+      <View className="flex-1 bg-app-bg items-center justify-center px-6">
+        <View className="w-full max-w-[640px]">
+          <Text className="font-heading font-bold text-ink-900 text-center text-[40px] leading-[48px] mb-3">
+            {copy.emptyStateTitle}
+          </Text>
+          <Text className="font-heading font-medium text-ink-500 text-center text-lg leading-7 mb-10">
+            {copy.emptyStateSubtitle}
+          </Text>
+          <Composer {...composerProps} variant="hero" />
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View className="flex-1 bg-app-bg">
-      {messages.length === 0 ? (
-        <View className="flex-1 items-center justify-center px-8">
-          <Text className="font-heading text-2xl font-medium text-ink-900 mb-2">
-            {copy.emptyStateTitle}
-          </Text>
-          <Text className="font-body text-base text-ink-500 text-center">
-            {copy.emptyStateSubtitle}
-          </Text>
-        </View>
-      ) : (
-        <FlatList
-          ref={listRef}
-          data={messages as ChatMessage[]}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <CardHost message={item} registry={registry} />}
-          contentContainerClassName="px-4 py-4"
-          onContentSizeChange={() => listRef.current?.scrollToEnd({ animated: false })}
-          showsVerticalScrollIndicator={false}
-        />
-      )}
+      <FlatList
+        ref={listRef}
+        data={messages as ChatMessage[]}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <CardHost message={item} registry={registry} />}
+        contentContainerClassName="px-4 py-4 max-w-[720px] w-full mx-auto"
+        onContentSizeChange={() => listRef.current?.scrollToEnd({ animated: false })}
+        showsVerticalScrollIndicator={false}
+      />
+      <View className="w-full max-w-[720px] mx-auto px-4 pt-3 pb-4 border-t border-app-bg-elevated bg-app-bg">
+        <Composer {...composerProps} variant="stream" />
+      </View>
+    </View>
+  );
+}
 
+// --- Composer --------------------------------------------------------------
+
+interface ComposerProps {
+  readonly copy: ChatScreenCopy;
+  readonly draft: string;
+  readonly setDraft: (value: string) => void;
+  readonly sending: boolean;
+  readonly isFocused: boolean;
+  readonly setIsFocused: (value: boolean) => void;
+  readonly error: ChatError | null;
+  readonly setError: (value: ChatError | null) => void;
+  readonly inputRef: React.RefObject<TextInput>;
+  readonly handleSend: () => Promise<void>;
+  readonly handleRetry: () => Promise<void>;
+  readonly handleKeyPress: (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => void;
+  readonly variant: 'hero' | 'stream';
+}
+
+function Composer({
+  copy,
+  draft,
+  setDraft,
+  sending,
+  isFocused,
+  setIsFocused,
+  error,
+  setError,
+  inputRef,
+  handleSend,
+  handleRetry,
+  handleKeyPress,
+  variant,
+}: ComposerProps) {
+  const canSend = draft.trim().length > 0 && !sending;
+  // Pill style — web-only `cursor` always; hero variant also gets a soft
+  // surrounding shadow for elevation. Native RN ignores both keys.
+  // biome-ignore lint/suspicious/noExplicitAny: reason: RN Web accepts cursor + boxShadow; native silently ignores unknown style keys.
+  const pillStyle: any = { cursor: 'text' };
+  if (variant === 'hero') {
+    pillStyle.boxShadow = '0 8px 24px -12px rgba(13, 27, 42, 0.12)';
+  }
+
+  return (
+    <View className="w-full">
       {error ? (
         <View
           accessibilityLiveRegion="polite"
           accessibilityRole="alert"
-          className="mx-4 mb-2 px-3 py-2 rounded-xl bg-danger/10 border border-danger flex-row items-center gap-2"
+          className="mb-2 px-3 py-2 rounded-xl bg-danger/10 border border-danger flex-row items-center gap-2"
         >
           <Feather name="alert-triangle" size={16} color="#E76F51" />
           <Text className="flex-1 text-ink-900 font-body text-[13px]" numberOfLines={2}>
@@ -156,13 +221,12 @@ export function ChatScreen({ registry, copy: copyOverride }: ChatScreenProps) {
         </View>
       ) : null}
 
-      <View className="flex-row items-end gap-2 px-4 pt-3 pb-4 border-t border-app-bg-elevated bg-app-bg">
+      <View className="flex-row items-end gap-2">
         <View
           className={`flex-1 bg-app-bg-card rounded-3xl px-4 py-2 border transition-colors ${
             isFocused ? 'border-teal-600' : 'border-app-bg-elevated'
           }`}
-          // biome-ignore lint/suspicious/noExplicitAny: reason: web-only cursor; RN native ignores unknown style keys.
-          style={{ cursor: 'text' } as any}
+          style={pillStyle}
         >
           <TextInput
             ref={inputRef}
@@ -176,9 +240,6 @@ export function ChatScreen({ registry, copy: copyOverride }: ChatScreenProps) {
             editable={!sending}
             multiline
             className="text-ink-900 font-body text-base min-h-[24px] max-h-[140px] py-1"
-            // `outlineStyle: 'none'` maps to CSS `outline: none` on RN Web;
-            // native RN silently ignores. Focus visibility is preserved via
-            // the teal border on the wrapper View above.
             // biome-ignore lint/suspicious/noExplicitAny: reason: outlineStyle isn't on RN's native TextStyle type.
             style={{ textAlignVertical: 'center', outlineStyle: 'none' } as any}
           />
