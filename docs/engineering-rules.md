@@ -587,6 +587,42 @@ Small steps surface problems early. A 1,000-line commit defers every failure unt
 - **Atomic operations** (large renames across a code surface, schema migrations, breaking interface changes) must land in one commit for correctness. When they must, they're still planned as a sequence (prep commit → atomic commit → follow-up commit) with a feature flag (R12) hiding intermediate state from users.
 - **Docs-only commits** may batch related small edits if they share one conceptual change (e.g. a single engineering-rules amendment touching the rule file + architecture-guardian + CLAUDE.md).
 
+### R23 — Justfile is the ultimate frontend
+
+Every canonical project task — testing, building, linting, typechecking, formatting, dead-code scanning, layer-boundary checks, branch-name validation, Convex dev/deploy, changesets, local CI — is exposed through the root `justfile` and invoked as `just <target>`.
+
+**Why:**
+
+- **Single entry point.** Contributors (and AI agents) never need to remember whether it's `bun run X` or `turbo run X` or a raw binary path. Muscle memory stays constant even if the underlying tool changes.
+- **Living documentation.** `just --list` prints every available task with its description. No drifting README examples.
+- **Tool-swap insurance.** If we ever move off Bun (ADR-007 flags the deprecate trigger), `just` targets hide the swap. Humans still type `just test`.
+- **CI / lefthook alignment.** CI workflows and git hooks invoke the same `just <target>` commands a developer runs locally. No "it works on my machine" diverging from "CI does it this other way."
+
+**What's in the Justfile:**
+
+- Test, lint, typecheck, build, eval targets (Turbo-backed).
+- Code-quality tools (`check`, `format`, `knip`, `depcruise`, `verify-branch`).
+- Composite targets — `just ci` (full local CI), `just fix` (auto-fix + format), `just verify` (quick sanity check).
+- Install flows (`just install`, `just install-hooks`).
+- Convex (`just convex-dev`, `just convex-deploy`).
+- Versioning (`just changeset`, `just version`).
+- Housekeeping (`just clean`).
+
+**What's NOT in the Justfile:**
+
+- Per-workspace Turbo scripts (Turbo invokes them via its own mechanism; workspaces still declare `test`/`lint`/`typecheck`/`build` in their `package.json`).
+- One-off debug commands (raw `bun run X` is fine for throwaway debugging; the rule applies to CANONICAL, documented invocations).
+
+**How to apply:**
+
+- New canonical tasks add a `just` target with a one-line doc comment. `just --list` picks it up automatically.
+- CI workflows call `just <target>`, not raw `bun run …` or `turbo run …`.
+- Lefthook hooks call `just <target>` where practical (`just check-staged`, `just verify-branch`, `just affected typecheck`, `just knip`).
+- Docs cite `just X` as the command to run.
+- `just` itself must be installed (once per machine) — `brew install just`, `cargo install just`, or download from [just.systems](https://just.systems). Documented in the repo README.
+
+**Exception:** emergency debugging and deep-diagnostic invocations can use raw tools directly. R23 applies to the canonical, documented project interface, not to the investigator's scratch pad.
+
 ### R22 — GRASP core principles + Open/Closed for reusable layers
 
 Two connected disciplines. Part A names four GRASP patterns already lived in this architecture (and explicitly declines the other five). Part B operationalizes the Open/Closed Principle on the layers that are meant to be reused across packs.
