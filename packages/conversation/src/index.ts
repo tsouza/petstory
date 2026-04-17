@@ -12,4 +12,9 @@ export {
   useChat,
 } from './chat-context';
 export { ChatScreen, type ChatScreenProps } from './chat-screen';
+export {
+  type ChatScreenCopy,
+  DEFAULT_CHAT_SCREEN_COPY,
+  resolveChatScreenCopy,
+} from './copy';
 export { renderTextCardForAuthor, TextCard, type TextCardProps } from './text-card';

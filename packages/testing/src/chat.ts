@@ -3,6 +3,8 @@ import {
   type ChatPort,
   type ChatTurn,
   ChatTurnSchema,
+  generateMessageId,
+  generateTurnId,
   type MessageListener,
   type TextCardPayload,
   type Unsubscribe,
@@ -14,9 +16,13 @@ import {
  *  - Unit tests over any component that consumes a ChatPort.
  *
  * The adapter keeps one message list per `petId`. On `sendTurn` it appends
- * the user echo, optionally drives a scripted reply producer, and notifies
- * every subscriber for that pet. There is no real LLM here — callers pass
- * in a `reply` function to produce the assistant's response text.
+ * the user echo, drives a scripted reply producer, and notifies every
+ * subscriber for that pet. There is no real LLM here — callers pass in a
+ * `reply` function to produce the assistant's response text.
+ *
+ * IDs are generated via the kernel's shared helpers (`turn_<uuid>`,
+ * `msg_<uuid>`) so they match the shape the real Convex adapter produces —
+ * nothing pipes test-shaped IDs into production code paths.
  */
 export interface InMemoryChatAdapterOptions {
   /**
@@ -31,11 +37,15 @@ export interface InMemoryChatAdapterOptions {
    */
   readonly now?: () => number;
   /**
-   * Id generator. Overridable in tests. Defaults to an ever-incrementing
-   * counter ("m-1", "m-2", …). Not cryptographically unique; only for local
-   * in-memory use.
+   * Message id generator. Overridable in tests for deterministic IDs.
+   * Defaults to `generateMessageId` (uuid-based).
    */
-  readonly nextId?: () => string;
+  readonly nextMessageId?: () => string;
+  /**
+   * Turn id generator. Overridable in tests for deterministic IDs.
+   * Defaults to `generateTurnId` (uuid-based).
+   */
+  readonly nextTurnId?: () => string;
 }
 
 export class InMemoryChatAdapter implements ChatPort {
@@ -43,26 +53,22 @@ export class InMemoryChatAdapter implements ChatPort {
   private readonly listeners = new Map<string, Set<MessageListener>>();
   private readonly reply: (turn: ChatTurn) => Promise<string> | string;
   private readonly now: () => number;
-  private readonly nextIdFn: () => string;
-  private counter = 0;
+  private readonly nextMessageId: () => string;
+  private readonly nextTurnId: () => string;
 
   constructor(options: InMemoryChatAdapterOptions = {}) {
     this.reply = options.reply ?? ((turn) => `You said: ${turn.text}`);
     this.now = options.now ?? (() => Date.now());
-    this.nextIdFn =
-      options.nextId ??
-      (() => {
-        this.counter += 1;
-        return `m-${this.counter}`;
-      });
+    this.nextMessageId = options.nextMessageId ?? generateMessageId;
+    this.nextTurnId = options.nextTurnId ?? generateTurnId;
   }
 
   async sendTurn(turn: ChatTurn): Promise<void> {
     const validated = ChatTurnSchema.parse(turn);
-    const turnId = `t-${this.nextIdFn()}`;
+    const turnId = this.nextTurnId();
 
     const userMessage: ChatMessage = {
-      id: this.nextIdFn(),
+      id: this.nextMessageId(),
       petId: validated.petId,
       turnId,
       author: 'user',
@@ -73,7 +79,7 @@ export class InMemoryChatAdapter implements ChatPort {
 
     const replyText = await this.reply(validated);
     const assistantMessage: ChatMessage = {
-      id: this.nextIdFn(),
+      id: this.nextMessageId(),
       petId: validated.petId,
       turnId,
       author: 'assistant',
@@ -120,9 +126,9 @@ export class InMemoryChatAdapter implements ChatPort {
  */
 export function mockChatMessage(partial?: Partial<ChatMessage>): ChatMessage {
   return {
-    id: partial?.id ?? 'm-test',
+    id: partial?.id ?? 'msg_test',
     petId: partial?.petId ?? 'pet-1',
-    turnId: partial?.turnId ?? 't-test',
+    turnId: partial?.turnId ?? 'turn_test',
     author: partial?.author ?? 'assistant',
     payload: partial?.payload ?? ({ kind: 'text', text: 'hi' } satisfies TextCardPayload),
     createdAt: partial?.createdAt ?? 0,

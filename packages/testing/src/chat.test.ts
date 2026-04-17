@@ -86,22 +86,40 @@ describe('InMemoryChatAdapter', () => {
     await expect(adapter.sendTurn({ petId: '', text: 'x' })).rejects.toThrow();
   });
 
-  it('uses the injected clock and id generator for determinism', async () => {
-    let counter = 100;
+  it('uses the injected clock and id generators for determinism', async () => {
+    let msgCounter = 100;
+    let turnCounter = 200;
     const adapter = new InMemoryChatAdapter({
       reply: () => 'r',
       now: () => 42,
-      nextId: () => {
-        counter += 1;
-        return String(counter);
+      nextMessageId: () => {
+        msgCounter += 1;
+        return `msg_${msgCounter}`;
+      },
+      nextTurnId: () => {
+        turnCounter += 1;
+        return `turn_${turnCounter}`;
       },
     });
     await adapter.sendTurn({ petId: 'p1', text: 'x' });
     const snapshot = adapter.snapshot('p1');
     expect(snapshot[0]?.createdAt).toBe(42);
     expect(snapshot[1]?.createdAt).toBe(42);
-    // Deterministic ids — two per sendTurn (turn + user-id + assistant-id).
-    expect(snapshot[0]?.id).toMatch(/^1\d\d$/);
+    expect(snapshot[0]?.id).toBe('msg_101');
+    expect(snapshot[1]?.id).toBe('msg_102');
+    expect(snapshot[0]?.turnId).toBe('turn_201');
+    expect(snapshot[1]?.turnId).toBe('turn_201');
+  });
+
+  it('defaults to uuid-shaped IDs via the kernel helpers', async () => {
+    const adapter = new InMemoryChatAdapter({ reply: () => 'r' });
+    await adapter.sendTurn({ petId: 'p1', text: 'x' });
+    const [user, asst] = adapter.snapshot('p1');
+    expect(user?.id).toMatch(/^msg_[0-9a-f-]{36}$/);
+    expect(asst?.id).toMatch(/^msg_[0-9a-f-]{36}$/);
+    expect(user?.turnId).toMatch(/^turn_[0-9a-f-]{36}$/);
+    // Both messages share the same turn.
+    expect(user?.turnId).toBe(asst?.turnId);
   });
 });
 

@@ -1,4 +1,32 @@
 export type {
+  CardRegistration,
+  CopyBundleRegistration,
+  CriticRuleRegistration,
+  EventSchemaRegistration,
+  FlowRegistration,
+  GlossaryRegistration,
+  KnowledgeBaseRegistration,
+  McpToolRegistration,
+  PackManifest,
+  SituationClassifierRegistration,
+  SkillRegistration,
+  ValidatedPackManifest,
+} from './pack/manifest';
+export {
+  CardRegistrationSchema,
+  CopyBundleRegistrationSchema,
+  CriticRuleRegistrationSchema,
+  EventSchemaRegistrationSchema,
+  FlowRegistrationSchema,
+  GlossaryRegistrationSchema,
+  KnowledgeBaseRegistrationSchema,
+  McpToolRegistrationSchema,
+  PackManifestSchema,
+  registerPack,
+  SituationClassifierRegistrationSchema,
+  SkillRegistrationSchema,
+} from './pack/manifest';
+export type {
   CardPayload,
   ChatMessage,
   ChatPort,
@@ -12,10 +40,15 @@ export {
   CardPayloadSchema,
   ChatMessageSchema,
   ChatTurnSchema,
+  generateEventId,
+  generateMessageId,
+  generateTurnId,
   isTextCard,
   MessageAuthorSchema,
   TextCardPayloadSchema,
 } from './ports/chat';
+export type { DomainEvent, PiiClass } from './ports/events';
+export { DomainEventSchema, EVENTS_TABLE, PiiClassSchema } from './ports/events';
 export type {
   CacheControl,
   LlmError,
@@ -46,3 +79,10 @@ export {
   type MockLlmCall,
   type ScriptedResponse,
 } from './ports/llm/index';
+export type {
+  StorageError,
+  StorageFilter,
+  StorageListener,
+  StoragePort,
+} from './ports/storage';
+export { StoragePortError } from './ports/storage';

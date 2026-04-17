@@ -86,3 +86,26 @@ export interface ChatPort {
    *  once immediately with the current snapshot and again on every change. */
   subscribeMessages(petId: string, listener: MessageListener): Unsubscribe;
 }
+
+// --- ID helpers ------------------------------------------------------------
+//
+// Shared ID generators used by every adapter — in-memory, Convex, cassette.
+// One source of truth means ID shapes don't drift across backends, and
+// consumers can match against the prefix if they need to differentiate.
+// Uses `crypto.randomUUID` which is available on every modern runtime
+// (Bun 1.0+, Node 19+, browsers, RN 0.76+).
+
+/** ID for a single chat turn (one user send + its assistant reply). */
+export function generateTurnId(): string {
+  return `turn_${crypto.randomUUID()}`;
+}
+
+/** ID for a single message row (user echo, assistant reply, system notice). */
+export function generateMessageId(): string {
+  return `msg_${crypto.randomUUID()}`;
+}
+
+/** ID for a single Domain Event row. */
+export function generateEventId(): string {
+  return `evt_${crypto.randomUUID()}`;
+}
