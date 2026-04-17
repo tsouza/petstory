@@ -601,8 +601,8 @@ Every canonical project task — testing, building, linting, typechecking, forma
 **What's in the Justfile:**
 
 - Test, lint, typecheck, build, eval targets (Turbo-backed).
-- Code-quality tools (`check`, `format`, `knip`, `depcruise`, `verify-branch`).
-- Composite targets — `just ci` (full local CI), `just fix` (auto-fix + format), `just verify` (quick sanity check).
+- Code-quality tools (`biome-check`, `format`, `knip`, `depcruise`, `verify-branch`).
+- Composite targets — `just check` (lint + typecheck + test, phase-by-phase), `just ci` (adds knip + depcruise), `just fix` / `just fix-unsafe` (auto-fix + format).
 - Install flows (`just install`, `just install-hooks`).
 - Convex (`just convex-dev`, `just convex-deploy`).
 - Versioning (`just changeset`, `just version`).
