@@ -4,5 +4,12 @@
     "rootDir": ".",
     "types": ["expo-router/types", "nativewind/types"]
   },
-  "include": ["app/**/*", "app.json", "**/*.d.ts", "nativewind-env.d.ts"]
+  "include": [
+    "app/**/*",
+    "app.json",
+    "**/*.d.ts",
+    "nativewind-env.d.ts",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+  ]
 }

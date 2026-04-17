@@ -9,20 +9,25 @@ export interface TextCardProps {
 }
 
 /**
- * Default text-card renderer — a chat bubble. L1 component; no pet
- * knowledge. Styling uses NativeWind tokens resolved at build time
- * against the consuming app's tailwind preset
- * (`@petstory/config/tailwind.preset.js`).
+ * Default text-card renderer — a chat bubble.
+ *
+ * - `accent`  → primary teal, white text, asymmetric rounded corner on the
+ *               sending side (right-bottom). Used for the current user.
+ * - `neutral` → elevated surface, ink-900 text, asymmetric corner on the
+ *               opposite side (left-bottom). Used for everyone else.
+ *
+ * L1 component; no pet knowledge. Styling uses NativeWind tokens resolved
+ * at build time against the consuming app's tailwind preset.
  */
 export function TextCard({ payload, variant = 'neutral' }: TextCardProps) {
-  const bubble =
-    variant === 'accent'
-      ? 'bg-teal-600 rounded-2xl rounded-br-sm'
-      : 'bg-app-bg-elevated rounded-2xl rounded-bl-sm';
-  const textColor = variant === 'accent' ? 'text-white' : 'text-ink-900';
+  const isAccent = variant === 'accent';
+  const bubble = isAccent
+    ? 'bg-teal-600 rounded-3xl rounded-br-md'
+    : 'bg-app-bg-card rounded-3xl rounded-bl-md border border-app-bg-elevated';
+  const textColor = isAccent ? 'text-white' : 'text-ink-900';
   return (
-    <View className={`${bubble} max-w-[80%] px-4 py-2 my-1`}>
-      <Text className={`${textColor} font-body text-base`}>{payload.text}</Text>
+    <View className={`${bubble} max-w-[78%] px-4 py-3 my-1`}>
+      <Text className={`${textColor} font-body text-[15px] leading-[22px]`}>{payload.text}</Text>
     </View>
   );
 }
