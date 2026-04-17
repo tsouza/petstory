@@ -21,6 +21,7 @@
 
 # Dependencies
 node_modules/
+.bun/
 
 # Build artifacts
 dist/

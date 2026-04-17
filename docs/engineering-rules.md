@@ -289,8 +289,8 @@ Hook stages:
 **Dependency management:**
 
 - **Renovate** bot configured with auto-merge for minor/patch of trusted packages, PR-only for majors, weekly schedule (Thursday upgrade cadence per R2).
-- **pnpm** with strict peer dependency resolution. No caret upgrades in the lockfile. Full monorepo conventions (workspace protocol, no phantom imports, shared configs, changesets for versioning) in [ADR-005](decisions/ADR-005-monorepo-structure-and-tooling.md).
-- **Workspace pinning** via pnpm overrides for shared TS/React/Zod/Mastra/Agent SDK versions.
+- **Bun** (per [ADR-007](decisions/ADR-007-bun-for-local-development.md)) as the local-dev package manager + script runtime, with `bun.lock` committed. Strict peer resolution via `bunfig.toml`. Node 22 stays as a fallback for Metro + Convex CLI. Full monorepo conventions (workspace protocol, no phantom imports, shared configs, changesets for versioning) in [ADR-005](decisions/ADR-005-monorepo-structure-and-tooling.md).
+- **Workspace pinning** via Bun overrides (and `resolutions` where needed) for shared TS/React/Zod/Mastra/Agent SDK versions.
 
 **Secrets & environment:**
 
@@ -488,7 +488,7 @@ Among those that pass the bar, choose by:
 
 **Step 4 — Document the decision.**
 
-Before `pnpm add <library>`, the PR description (or ADR, if the adoption is architecturally significant) must include:
+Before `bun add <library>`, the PR description (or ADR, if the adoption is architecturally significant) must include:
 
 - The need being solved (one sentence).
 - Candidates considered (at least 2 others, or "none found meeting the bar").

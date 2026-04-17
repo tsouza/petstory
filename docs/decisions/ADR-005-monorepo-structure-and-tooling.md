@@ -1,10 +1,12 @@
 # ADR-005 — Monorepo structure, tooling, and conventions
 
-**Status:** Accepted
+**Status:** Accepted (package-manager section superseded by [ADR-007](ADR-007-bun-for-local-development.md) — Bun replaces pnpm)
 **Date:** 2026-04-16
 **Deciders:** Thiago
 **Supersedes:** —
 **Depends on:** [ADR-001](ADR-001-stack.md), [ADR-002](ADR-002-layered-architecture.md), [ADR-003](ADR-003-three-level-agent-framework.md), [ADR-004](ADR-004-ddd-strategic-adoption.md)
+
+> **Update (2026-04-16 — same day):** The package-manager decision in this ADR (pnpm) was reversed by [ADR-007](ADR-007-bun-for-local-development.md). **Bun 1.3+ is now the local-dev package manager and script runtime.** The workspace layout, Turborepo, Changesets, shared configs, CI shape, and everything else in this ADR remain canonical. Read the pnpm-specific text below as historical context for the decision chain.
 
 ## Context
 

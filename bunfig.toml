@@ -1,0 +1,17 @@
+# Bun config per ADR-007.
+# Strict peer dependency posture carried over from the previous .npmrc (ADR-005).
+
+[install]
+# Fail installs on peer-dependency conflicts instead of silently papering over
+# (matches the R5 + R20 discipline of surfacing problems at install time).
+exact = false
+peer = true
+
+[install.scopes]
+# Placeholder for per-scope registry config if we ever need a private registry.
+# Real secrets live in Infisical/Doppler per R8.
+
+[test]
+# Vitest remains the test framework (ADR-007). `bun test` is not used until
+# migration earns its weight. This block kept empty intentionally; Vitest owns
+# test config in packages/config/vitest.base.ts.

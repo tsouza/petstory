@@ -11,8 +11,8 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 env:
+  BUN_VERSION: "1.3.10"
   NODE_VERSION: "22"
-  PNPM_VERSION: "10.0.0"
   TURBO_TELEMETRY_DISABLED: 1
 
 jobs:
@@ -27,34 +27,33 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          version: ${{ env.PNPM_VERSION }}
+          bun-version: ${{ env.BUN_VERSION }}
 
-      - name: Setup Node.js
+      - name: Setup Node.js (fallback for tools that require it)
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: bun install --frozen-lockfile
 
       - name: Lint
-        run: pnpm turbo run lint --affected
+        run: bun run turbo run lint --affected
 
       - name: Typecheck
-        run: pnpm turbo run typecheck --affected
+        run: bun run turbo run typecheck --affected
 
       - name: Test
-        run: pnpm turbo run test --affected
+        run: bun run turbo run test --affected
 
       - name: Knip (dead code + unused deps)
-        run: pnpm knip --no-exit-code
+        run: bun run knip --no-exit-code
 
       - name: Dependency-cruiser (layer boundaries per ADR-002)
-        run: pnpm depcruise --config .dependency-cruiser.json packages apps
+        run: bun run depcruise --config .dependency-cruiser.json packages apps
 
   gitleaks:
     name: Gitleaks

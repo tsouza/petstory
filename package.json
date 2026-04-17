@@ -3,17 +3,23 @@
   "version": "0.0.0",
   "private": true,
   "description": "petstory.co — layered agent monorepo (kernel + primitives + pet-health pack + shells)",
-  "packageManager": "pnpm@10.0.0",
+  "packageManager": "bun@1.3.10",
   "engines": {
+    "bun": ">=1.3",
     "node": ">=22"
   },
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "packages/packs/*"
+  ],
   "scripts": {
-    "build": "turbo run build",
-    "lint": "turbo run lint",
-    "test": "turbo run test",
-    "typecheck": "turbo run typecheck",
-    "eval": "turbo run eval",
-    "clean": "turbo run clean && rm -rf node_modules",
+    "build": "bun run turbo run build",
+    "lint": "bun run turbo run lint",
+    "test": "bun run turbo run test",
+    "typecheck": "bun run turbo run typecheck",
+    "eval": "bun run turbo run eval",
+    "clean": "bun run turbo run clean && rm -rf node_modules",
     "format": "biome format --write .",
     "check": "biome check .",
     "knip": "knip",
@@ -37,8 +43,5 @@
     "turbo": "^2.0.0",
     "typescript": "^5.4.0",
     "vitest": "^2.0.0"
-  },
-  "pnpm": {
-    "overrides": {}
   }
 }

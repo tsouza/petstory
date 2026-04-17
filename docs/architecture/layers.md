@@ -71,7 +71,7 @@ The kernel's public name is open — see [open-questions.md Q2](../open-question
 
 ## Reference repo layout (target)
 
-Canonical layout in [ADR-005](../decisions/ADR-005-monorepo-structure-and-tooling.md) — pnpm + Turborepo + Changesets, `apps/` and `packages/` split, shared base configs in `packages/config/`. The architectural layers (L0–L3) map to workspaces as follows; see ADR-005 for tooling, naming, versioning, and CI details.
+Canonical layout in [ADR-005](../decisions/ADR-005-monorepo-structure-and-tooling.md) + [ADR-007](../decisions/ADR-007-bun-for-local-development.md) — Bun + Turborepo + Changesets, `apps/` and `packages/` split, shared base configs in `packages/config/`. The architectural layers (L0–L3) map to workspaces as follows; see the ADRs for tooling, naming, versioning, and CI details.
 
 ```
 apps/
