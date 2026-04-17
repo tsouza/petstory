@@ -156,7 +156,7 @@ Secrets live in Infisical or Doppler, never in code, lockfiles, env files checke
 
 ### R9 — Accessibility + i18n from day one
 
-WCAG 2.2 AA as the floor. axe checks in CI. Keyboard and screen-reader tested per release (VoiceOver iOS, TalkBack Android, NVDA web). Dynamic type + dark mode first-class. All user-facing copy flows through the translation layer using ICU MessageFormat — locale-aware dates, numbers, and plurals from day one. Zero hardcoded strings in L2 Domain Packs or L3 Product Shells. PT-BR launches; EN follows per [market.md](market.md).
+WCAG 2.2 AA as the floor. axe checks in CI. Keyboard and screen-reader tested per release (VoiceOver iOS, TalkBack Android, NVDA web). Dynamic type + dark mode first-class. All user-facing copy flows through the translation layer using ICU MessageFormat — locale-aware dates, numbers, and plurals from day one. Zero hardcoded strings in L2 Domain Packs or L3 Product Shells. PT-BR launches first; EN follows post-MVP.
 
 **Why:** the user base includes older tutors with assistive tech; health apps have higher accessibility expectations than games. i18n layer added post-launch is always broken copy for the first audience that needs it.
 
@@ -421,8 +421,6 @@ Every fact, decision, rule, or definition lives in exactly **one canonical locat
 
 | Topic | Canonical home |
 |---|---|
-| Vision | `docs/vision.md` |
-| Market, financing, competition | `docs/market.md` |
 | Stack choices | `docs/stack.md` + `docs/decisions/ADR-001` |
 | Layered architecture | `docs/architecture/layers.md` + `ADR-002` |
 | Agent framework, tiers, Flow DSL | `docs/architecture/flow-catalog.md` + `ADR-003` |
