@@ -29,7 +29,7 @@ Ask the user (if unclear):
 
 ### 2. Pick the ID
 
-Read `docs/user-stories/US-<CAT>.md` for that cluster. Find the next free NNN. Use format `US-<CAT>-<NNN>` zero-padded to 3 digits.
+List `docs/user-stories/<CAT>/` (one file per story) for that cluster. Find the next free NNN. Use format `US-<CAT>-<NNN>` zero-padded to 3 digits. If the cluster directory doesn't exist yet, create it — this is the cluster's first story.
 
 ### 3. Draft the story
 
@@ -85,17 +85,17 @@ Check every box before appending:
 - [ ] Situational
 - [ ] Emotionally calibrated
 
-### 6. Write to the cluster file
+### 6. Write the story file
 
-Append to `docs/user-stories/US-<CAT>.md` following the file's existing structure. Preserve any front-matter of the cluster file.
+Write a new file at `docs/user-stories/<CAT>/US-<CAT>-<NNN>.md` (one file per story). The body is a single H1 heading (`# US-<CAT>-<NNN> — <title>`) followed by the YAML block in a fenced code block. Follow the shape of the existing sibling stories in the cluster.
 
 ### 7. Update INDEX
 
 In `docs/user-stories/INDEX.md`:
 
-- If this is the FIRST story in the cluster, convert the `File` column from the placeholder `` `US-<CAT>.md` `` (inline code) to a live link `[US-<CAT>.md](US-<CAT>.md)`
-- Bump the count for the cluster
-- Bump the `Total: 16 categories · NNN stories` line
+- If this is the FIRST story in the cluster, convert the `Directory` column from the placeholder `_NNN planned_` to a live link `[<CAT>/](<CAT>/)`
+- Bump the `Stories` column for the cluster from `X / Y` to `X+1 / Y`
+- Bump the total count line at the bottom of the table
 - Update the "Last updated" date at the top
 
 ### 8. Verify
