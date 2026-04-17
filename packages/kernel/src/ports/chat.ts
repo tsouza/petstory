@@ -92,20 +92,42 @@ export interface ChatPort {
 // Shared ID generators used by every adapter — in-memory, Convex, cassette.
 // One source of truth means ID shapes don't drift across backends, and
 // consumers can match against the prefix if they need to differentiate.
-// Uses `crypto.randomUUID` which is available on every modern runtime
-// (Bun 1.0+, Node 19+, browsers, RN 0.76+).
+//
+// `crypto.randomUUID` is available on every modern runtime (Bun 1.0+, Node
+// 19+, React Native 0.76+) — BUT in browsers it's gated behind Secure
+// Context. That means it works on `https://…` and `localhost`, and is
+// `undefined` everywhere else, including plain-HTTP LAN-IP access like
+// `http://192.168.x.x:8081` used for on-device testing.
+//
+// We can't require HTTPS in dev, so we fall back to a v4-UUID-shaped
+// Math.random generator when `crypto.randomUUID` isn't callable. The
+// fallback is not cryptographically secure — it's sufficient for chat
+// row IDs (no security boundary), not for tokens or keys.
+
+const UUID_TEMPLATE = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+
+function safeRandomUUID(): string {
+  if (typeof globalThis.crypto?.randomUUID === 'function') {
+    return globalThis.crypto.randomUUID();
+  }
+  return UUID_TEMPLATE.replace(/[xy]/g, (c) => {
+    const r = Math.floor(Math.random() * 16);
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
 
 /** ID for a single chat turn (one user send + its assistant reply). */
 export function generateTurnId(): string {
-  return `turn_${crypto.randomUUID()}`;
+  return `turn_${safeRandomUUID()}`;
 }
 
 /** ID for a single message row (user echo, assistant reply, system notice). */
 export function generateMessageId(): string {
-  return `msg_${crypto.randomUUID()}`;
+  return `msg_${safeRandomUUID()}`;
 }
 
 /** ID for a single Domain Event row. */
 export function generateEventId(): string {
-  return `evt_${crypto.randomUUID()}`;
+  return `evt_${safeRandomUUID()}`;
 }
