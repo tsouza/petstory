@@ -2,12 +2,47 @@
   "name": "@petstory/mobile",
   "version": "0.0.0",
   "private": true,
+  "main": "expo-router/entry",
   "description": "L3 — Expo React Native mobile app (iOS + Android). Consumes kernel + pet-health pack + ui per ADR-002 dependency rule.",
   "scripts": {
+    "start": "expo start",
+    "ios": "expo start --ios",
+    "android": "expo start --android",
+    "web": "expo start --web",
     "typecheck": "tsc --noEmit",
     "lint": "biome check . --max-diagnostics 0"
   },
+  "dependencies": {
+    "@expo/metro-runtime": "~4.0.1",
+    "@petstory/conversation": "workspace:*",
+    "@petstory/kernel": "workspace:*",
+    "@petstory/testing": "workspace:*",
+    "expo": "~52.0.0",
+    "expo-asset": "~11.0.0",
+    "expo-constants": "~17.0.0",
+    "expo-font": "~13.0.0",
+    "expo-linking": "~7.0.0",
+    "expo-router": "~4.0.0",
+    "expo-splash-screen": "~0.29.0",
+    "expo-status-bar": "~2.0.0",
+    "expo-system-ui": "~4.0.0",
+    "nativewind": "^4.2.0",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-native": "0.76.5",
+    "react-native-gesture-handler": "~2.20.0",
+    "react-native-reanimated": "~3.16.0",
+    "react-native-safe-area-context": "4.12.0",
+    "react-native-screens": "~4.4.0",
+    "react-native-web": "~0.19.13",
+    "react-native-worklets": "~0.1.0"
+  },
   "devDependencies": {
-    "@petstory/config": "workspace:*"
+    "@babel/core": "^7.25.0",
+    "@petstory/config": "workspace:*",
+    "@types/react": "~18.3.12",
+    "babel-preset-expo": "~12.0.0",
+    "tailwindcss": "~3.4.17",
+    "typescript": "^5.4.0"
   }
 }

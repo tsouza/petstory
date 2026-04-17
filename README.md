@@ -54,7 +54,7 @@ packages/
   packs/pet-health/     L2 — first Domain Pack (+ glossary.md)
   ui/                   L3 primitives
   config/               shared base configs
-  test-utils/           shared test helpers
+  testing/              @petstory/testing — shared test helpers
 convex/                 shared backend (Convex cloud)
 docs/                   canonical docs + ADRs (includes user-stories/ JTBD files)
 .claude/                sub-agents, skills, commands, conventions

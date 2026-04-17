@@ -123,6 +123,51 @@ Story B: When I'm at work and the pet sitter tells me my dog vomited,
          I want to see what was recorded and ask follow-up questions.
 ```
 
+### WR9 — On implementation, produce a flow spec
+
+WR5 keeps the story free of UI. That leaves a gap between story and code. We close it **just in time**: when a PR implements (or begins implementing) a story, it adds a companion flow spec at `docs/user-stories/flows/US-<CAT>-<NNN>.md`. The flow lives forever in the repo and is reviewed alongside the implementation.
+
+**When to write it:** either the same PR as the code, or a preceding design-only PR — author's call per story. A one-screen flow bundles with the code; a multi-screen or branching flow is cleaner as a separate design PR reviewed first.
+
+**Format (minimal):**
+
+```markdown
+# US-<CAT>-<NNN> — <story title>
+
+> Story: [INDEX row](../INDEX.md) · PR: #<n>
+
+## Context recap
+
+One or two lines on the situation/motivation/outcome.
+
+## Actors
+
+owner · co-owner · temp-guest · vet · system (only those involved)
+
+## Happy path
+
+1. Step one (what the user does, what the system shows)
+2. Step two
+3. ...
+
+## Edge cases / branches
+
+- Offline → …
+- Permission denied → …
+
+## Screens touched
+
+List of screens/components the flow traverses. Links to RNR components when identified.
+
+## Open questions
+
+Things surfaced during implementation that need a product call.
+```
+
+**When to add a Mermaid diagram:** only for non-linear flows (branching, multi-actor, or error-heavy). Linear flows stay prose-only — no ceremony for simple cases.
+
+**WR9 does not replace WR5.** The story itself still describes only situation/motivation/outcome. The flow spec is a separate artifact that emerges at implementation time, not at story-writing time.
+
 ---
 
 ## Acceptance Criteria
