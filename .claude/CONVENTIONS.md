@@ -46,3 +46,35 @@ See [docs/data-humanism.md](../docs/data-humanism.md) DH10 — conversational, w
 ## On disagreement
 
 Push back when the choice is wrong. Constructive pushback > submissive agreement. Senior engineer; wants honest review, not validation theater.
+
+## Status updates via ntfy.sh
+
+Keep Thiago posted on project events via **[`ntfy.sh/petstory-dev`](https://ntfy.sh/petstory-dev)**. This is a one-way push channel — Claude posts, Thiago reads when convenient.
+
+**Post on:**
+
+- A commit lands on `main` (hash + one-line summary).
+- A multi-step task completes (audit pass, ADR lands, seeding phase done, etc.).
+- A blocker surfaces or a decision is needed — use `Priority: high` so it notifies immediately.
+- A milestone hits (first package green in CI, first Flow passing evals, etc.).
+
+**Don't post on:**
+
+- Every tool call, every file edit, or mid-task intermediate state.
+- Research-phase findings — those are part of the conversation, not the status stream.
+- Anything involving secrets, raw user data, or internal credentials (R8 applies — ntfy topics are public to anyone who subscribes).
+
+**How (manual posting for now):**
+
+```bash
+curl -s \
+  -H "Title: <one-line title>" \
+  -H "Tags: <emoji-tag>" \
+  -H "Priority: default|high" \
+  -d "<body>" \
+  https://ntfy.sh/petstory-dev
+```
+
+Tags follow ntfy's emoji-shortcode vocabulary (`white_check_mark` for done, `rocket` for ship, `warning` for blocker, `hammer_and_wrench` for in-progress, `loudspeaker` for decision needed).
+
+**Reliable automation is a future upgrade.** When manual posting proves unreliable, a PostToolUse hook in `.claude/settings.json` can fire automatically on `git commit` Bash calls. Not set up now per R0 — start with the convention, automate when pain earns it.
