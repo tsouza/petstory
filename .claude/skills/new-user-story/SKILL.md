@@ -9,7 +9,7 @@ Create a new user story without drift from the project's format.
 
 ## Prerequisites
 
-- [user-story-guidelines.md](../../../user-story-guidelines.md)
+- [guidelines.md](../../../docs/user-stories/guidelines.md)
 - [docs/user-stories/INDEX.md](../../../docs/user-stories/INDEX.md)
 - [docs/user-stories.md](../../../docs/user-stories.md)
 
@@ -59,7 +59,7 @@ notes: |
 related: [<US-IDs>]
 ```
 
-For stories with conditional logic or multi-path behavior, use Given-When-Then scenarios instead of / in addition to the checklist. See [user-story-guidelines.md](../../../user-story-guidelines.md) Format 2.
+For stories with conditional logic or multi-path behavior, use Given-When-Then scenarios instead of / in addition to the checklist. See [guidelines.md](../../../docs/user-stories/guidelines.md) Format 2.
 
 ### 4. Self-review against WR1–WR8
 

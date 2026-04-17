@@ -1,6 +1,6 @@
 # PetStory — User Stories Index
 
-> Format: Job Stories (JTBD) · Template: [`../user-story-guidelines.md`](../user-story-guidelines.md)
+> Format: Job Stories (JTBD) · Template: [`guidelines.md`](guidelines.md)
 > ID format: `US-{CAT}-{NNN}`
 > Last updated: 2026-04-16
 

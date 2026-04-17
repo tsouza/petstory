@@ -6,7 +6,6 @@
       "Write(docs/**)",
       "Write(claude-scaffold/**)",
       "Edit(docs/**)",
-      "Edit(user-story-guidelines.md)",
       "Edit(*.md)",
       "Edit(*.jsx)",
       "Edit(*.html)",

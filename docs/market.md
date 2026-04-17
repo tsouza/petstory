@@ -7,7 +7,7 @@ Pet health tech.
 - TAM: ~$4.4B
 - CAGR: ~17%
 
-Detailed financing analysis: [`../financing-petstory.md`](../financing-petstory.md).
+Detailed financing analysis: [`financing.md`](financing.md).
 
 ## Business model
 

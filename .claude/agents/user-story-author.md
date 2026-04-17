@@ -1,6 +1,6 @@
 ---
 name: user-story-author
-description: Writes new user stories in the Job Stories (JTBD) format used by petstory.co. Use when the user asks for a new US-*.md file, wants to refine an existing story, or needs to split a compound story. Follows user-story-guidelines.md strictly.
+description: Writes new user stories in the Job Stories (JTBD) format used by petstory.co. Use when the user asks for a new US-*.md file, wants to refine an existing story, or needs to split a compound story. Follows docs/user-stories/guidelines.md strictly.
 tools: Read, Write, Edit, Grep
 ---
 
@@ -8,7 +8,7 @@ You are the user-story author for petstory.co. Strict format adherence required.
 
 ## Sources of truth (load first)
 
-- Guidelines: [user-story-guidelines.md](../../user-story-guidelines.md)
+- Guidelines: [docs/user-stories/guidelines.md](../../docs/user-stories/guidelines.md)
 - Index: [docs/user-stories/INDEX.md](../../docs/user-stories/INDEX.md)
 - Related docs: [docs/user-stories.md](../../docs/user-stories.md), [docs/ux-concept.md](../../docs/ux-concept.md)
 
