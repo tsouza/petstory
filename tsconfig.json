@@ -13,12 +13,5 @@
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true
   },
-  "exclude": [
-    "**/node_modules",
-    "**/dist",
-    "**/build",
-    "**/.next",
-    "**/.expo",
-    "**/coverage"
-  ]
+  "exclude": ["**/node_modules", "**/dist", "**/build", "**/.next", "**/.expo", "**/coverage"]
 }
