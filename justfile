@@ -69,8 +69,8 @@ affected *args:
 # Code quality & static analysis
 # -----------------------------------------------------------------------------
 
-# Biome check (format + lint diagnostics). Non-destructive.
-check:
+# Biome format + lint diagnostics on the root (non-destructive; no Turbo).
+biome-check:
     bunx biome check .
 
 # Biome format the whole repo in place.
@@ -108,8 +108,28 @@ verify-branch:
 # Composite targets
 # -----------------------------------------------------------------------------
 
+# Lint + typecheck + test, with a visible header per phase.
+check:
+    @echo "▶ [1/3] lint"
+    @just lint
+    @echo "▶ [2/3] typecheck"
+    @just typecheck
+    @echo "▶ [3/3] test"
+    @just test
+    @echo "✓ check passed"
+
 # Full local CI equivalent. Run before pushing to spot regressions locally.
-ci: lint typecheck test knip depcruise
+ci:
+    @echo "▶ [1/5] lint"
+    @just lint
+    @echo "▶ [2/5] typecheck"
+    @just typecheck
+    @echo "▶ [3/5] test"
+    @just test
+    @echo "▶ [4/5] knip"
+    @just knip
+    @echo "▶ [5/5] depcruise"
+    @just depcruise
     @echo "✓ local CI passed"
 
 # Auto-fix everything Biome can fix + re-run checks.
@@ -120,9 +140,6 @@ fix: format
 # Same as `fix`, but also applies Biome's *unsafe* fixes (import reorg, dead-code removal, etc.).
 fix-unsafe: format
     bunx biome check --write --unsafe .
-
-# Run all checks in parallel — good for a fast "is everything green" sanity check.
-verify: check typecheck
 
 # -----------------------------------------------------------------------------
 # Convex (backend)
