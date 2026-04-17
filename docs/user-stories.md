@@ -2,9 +2,9 @@
 
 ## Where they live
 
-- Index: [`../user-stories/INDEX.md`](../user-stories/INDEX.md)
+- Index: [`user-stories/INDEX.md`](user-stories/INDEX.md)
 - Template / writing guidelines: [`../user-story-guidelines.md`](../user-story-guidelines.md)
-- Individual files: `../user-stories/US-{CAT}-{NNN}.md` (one per category cluster)
+- Individual files: `user-stories/US-{CAT}-{NNN}.md` (one per category cluster)
 
 ## Current state
 

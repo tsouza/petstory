@@ -4,10 +4,8 @@
     "allow": [
       "Read(**)",
       "Write(docs/**)",
-      "Write(user-stories/**)",
       "Write(claude-scaffold/**)",
       "Edit(docs/**)",
-      "Edit(user-stories/**)",
       "Edit(user-story-guidelines.md)",
       "Edit(*.md)",
       "Edit(*.jsx)",

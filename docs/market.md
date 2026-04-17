@@ -28,7 +28,7 @@ PetStory's differentiator — "prontuário vivo" built from natural chat — rem
 
 - Domain: **petstory.co**
 - Primary audience: everyday pet owners (not pro breeders, not vets)
-- Secondary: shared access to pro caretakers (vets, sitters, trainers) via the Temporary Access primitive (see [`../user-stories/US-TA.md`](../user-stories/US-TA.md))
+- Secondary: shared access to pro caretakers (vets, sitters, trainers) via the Temporary Access primitive (see [`user-stories/US-TA.md`](user-stories/US-TA.md))
 - Language: PT-BR launch; EN expansion post-MVP
 
 ## Liability surface

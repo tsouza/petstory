@@ -41,9 +41,8 @@ packages/
   ui/                       # L3 primitives (brand-aware, pack-neutral)
   config/                   # shared tsconfig, biome, eslint, lefthook, lighthouse presets
   test-utils/               # shared Vitest/Playwright helpers, fixtures, MSW handlers
-docs/                       # documentation (outside workspaces)
+docs/                       # documentation (outside workspaces; includes user-stories/ JTBD files)
 .claude/                    # sub-agents, skills, commands (outside workspaces)
-user-stories/               # US-*.md files (outside workspaces)
 user-story-guidelines.md
 README.md
 CLAUDE.md

@@ -431,7 +431,7 @@ Every fact, decision, rule, or definition lives in exactly **one canonical locat
 | Data Humanism pillars + 10 rules | `docs/data-humanism.md` |
 | Viz simplicity rules | `docs/viz-rules.md` |
 | UX concept (chat-first + diary + nudges) | `docs/ux-concept.md` |
-| User stories (individual) | `user-stories/US-*.md` |
+| User stories (individual) | `docs/user-stories/US-*.md` |
 | User stories (how-to-write) | `docs/user-stories.md` |
 | Open questions | `docs/open-questions.md` |
 | How Thiago works | `.claude/CONVENTIONS.md` |

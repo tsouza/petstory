@@ -10,7 +10,7 @@ Create a new user story without drift from the project's format.
 ## Prerequisites
 
 - [user-story-guidelines.md](../../../user-story-guidelines.md)
-- [user-stories/INDEX.md](../../../user-stories/INDEX.md)
+- [docs/user-stories/INDEX.md](../../../docs/user-stories/INDEX.md)
 - [docs/user-stories.md](../../../docs/user-stories.md)
 
 ## Step-by-step
@@ -29,7 +29,7 @@ Ask the user (if unclear):
 
 ### 2. Pick the ID
 
-Read `user-stories/US-<CAT>.md` for that cluster. Find the next free NNN. Use format `US-<CAT>-<NNN>` zero-padded to 3 digits.
+Read `docs/user-stories/US-<CAT>.md` for that cluster. Find the next free NNN. Use format `US-<CAT>-<NNN>` zero-padded to 3 digits.
 
 ### 3. Draft the story
 
@@ -87,11 +87,11 @@ Check every box before appending:
 
 ### 6. Write to the cluster file
 
-Append to `user-stories/US-<CAT>.md` following the file's existing structure. Preserve any front-matter of the cluster file.
+Append to `docs/user-stories/US-<CAT>.md` following the file's existing structure. Preserve any front-matter of the cluster file.
 
 ### 7. Update INDEX
 
-In `user-stories/INDEX.md`:
+In `docs/user-stories/INDEX.md`:
 
 - Bump the count for the cluster
 - Bump the `Total: 16 categories · NNN stories` line
