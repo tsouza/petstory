@@ -1,3 +1,21 @@
+export type {
+  CardPayload,
+  ChatMessage,
+  ChatPort,
+  ChatTurn,
+  MessageAuthor,
+  MessageListener,
+  TextCardPayload,
+  Unsubscribe,
+} from './ports/chat.js';
+export {
+  CardPayloadSchema,
+  ChatMessageSchema,
+  ChatTurnSchema,
+  isTextCard,
+  MessageAuthorSchema,
+  TextCardPayloadSchema,
+} from './ports/chat.js';
 export {
   AnthropicLlmAdapter,
   type AnthropicLlmConfig,

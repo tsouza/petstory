@@ -91,8 +91,8 @@
         "@petstory/config": "workspace:*",
       },
     },
-    "packages/test-utils": {
-      "name": "@petstory/test-utils",
+    "packages/testing": {
+      "name": "@petstory/testing",
       "version": "0.0.0",
       "dependencies": {
         "@petstory/kernel": "workspace:*",
@@ -100,6 +100,7 @@
       "devDependencies": {
         "@petstory/config": "workspace:*",
         "typescript": "^5.4.0",
+        "vitest": "^2.0.0",
       },
     },
     "packages/ui": {
@@ -335,7 +336,7 @@
 
     "@petstory/shared-access": ["@petstory/shared-access@workspace:packages/shared-access"],
 
-    "@petstory/test-utils": ["@petstory/test-utils@workspace:packages/test-utils"],
+    "@petstory/testing": ["@petstory/testing@workspace:packages/testing"],
 
     "@petstory/ui": ["@petstory/ui@workspace:packages/ui"],
 

@@ -57,6 +57,14 @@ coverage:
 watch pkg:
     bunx turbo run test --filter=@petstory/{{pkg}} -- --watch
 
+# Run tests once against a single workspace (e.g. `just test-pkg kernel`).
+test-pkg pkg:
+    bunx turbo run test --filter=@petstory/{{pkg}}
+
+# Typecheck a single workspace (e.g. `just typecheck-pkg kernel`).
+typecheck-pkg pkg:
+    bunx turbo run typecheck --filter=@petstory/{{pkg}}
+
 # Run Braintrust agent evals (pack-level; no-op on packages without an eval task).
 eval:
     bunx turbo run eval
