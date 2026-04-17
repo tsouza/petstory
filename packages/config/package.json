@@ -1,0 +1,20 @@
+{
+  "name": "@petstory/config",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Shared base configs for the petstory.co monorepo (per ADR-005). Workspaces extend from these.",
+  "exports": {
+    "./tsconfig.base.json": "./tsconfig.base.json",
+    "./vitest": "./vitest.base.ts",
+    "./lighthouserc.json": "./lighthouserc.json"
+  },
+  "files": [
+    "tsconfig.base.json",
+    "vitest.base.ts",
+    "lighthouserc.json"
+  ],
+  "peerDependencies": {
+    "typescript": "^5.4.0",
+    "vitest": "^2.0.0"
+  }
+}
