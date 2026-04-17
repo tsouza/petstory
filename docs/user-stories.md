@@ -3,7 +3,7 @@
 ## Where they live
 
 - Index: [`user-stories/INDEX.md`](user-stories/INDEX.md)
-- Template / writing guidelines: [`../user-story-guidelines.md`](../user-story-guidelines.md)
+- Template / writing guidelines: [`user-stories/guidelines.md`](user-stories/guidelines.md)
 - Individual files: `user-stories/US-{CAT}-{NNN}.md` (one per category cluster)
 
 ## Current state
@@ -24,7 +24,7 @@ Acceptance criteria format: **Checklist by default**, **Given-When-Then for cond
 
 ## The writing rules (summary)
 
-Full rules in [`../user-story-guidelines.md`](../user-story-guidelines.md). Prefixed `WR` (Writing Rule) to stay distinct from Engineering Rules (R1–R19 in [engineering-rules.md](engineering-rules.md)) and Data Humanism rules (DH1–DH10 in [data-humanism.md](data-humanism.md)). TL;DR:
+Full rules in [`user-stories/guidelines.md`](user-stories/guidelines.md). Prefixed `WR` (Writing Rule) to stay distinct from Engineering Rules (R1–R19 in [engineering-rules.md](engineering-rules.md)) and Data Humanism rules (DH1–DH10 in [data-humanism.md](data-humanism.md)). TL;DR:
 
 - **WR1** — Real situation, not a feature in disguise.
 - **WR2** — Include emotional context when relevant.

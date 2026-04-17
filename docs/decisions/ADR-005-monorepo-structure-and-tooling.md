@@ -43,7 +43,6 @@ packages/
   test-utils/               # shared Vitest/Playwright helpers, fixtures, MSW handlers
 docs/                       # documentation (outside workspaces; includes user-stories/ JTBD files)
 .claude/                    # sub-agents, skills, commands (outside workspaces)
-user-story-guidelines.md
 README.md
 CLAUDE.md
 ```
