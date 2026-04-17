@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import {
   type CardPayload,
@@ -130,5 +130,39 @@ describe('ID helpers', () => {
     expect(t.startsWith('turn_')).toBe(true);
     expect(m.startsWith('msg_')).toBe(true);
     expect(e.startsWith('evt_')).toBe(true);
+  });
+
+  it('falls back to a Math.random UUID when crypto.randomUUID is unavailable (non-secure browser context)', () => {
+    // Simulates a browser served over plain HTTP on a LAN IP: `crypto` exists
+    // but `randomUUID` is undefined. The helper must still produce a
+    // v4-UUID-shaped string. We spy on the property descriptor since Node
+    // exposes globalThis.crypto via a getter.
+    const spy = vi
+      // biome-ignore lint/suspicious/noExplicitAny: reason: test-only — spying on the global crypto.randomUUID
+      .spyOn(globalThis.crypto as any, 'randomUUID')
+      .mockImplementation(() => {
+        throw new TypeError('crypto.randomUUID is not a function');
+      });
+    try {
+      // The helper's typeof check prefers the function path, so we have to
+      // delete the property for the fallback to fire. spyOn restores cleanly.
+      const originalRandomUUID = globalThis.crypto.randomUUID;
+      // biome-ignore lint/suspicious/noExplicitAny: reason: simulating a browser where randomUUID isn't exposed
+      (globalThis.crypto as any).randomUUID = undefined;
+      try {
+        const id = generateTurnId();
+        expect(id).toMatch(
+          /^turn_[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+        );
+        const ids = new Set<string>();
+        for (let i = 0; i < 1000; i += 1) ids.add(generateMessageId());
+        expect(ids.size).toBe(1000);
+      } finally {
+        // biome-ignore lint/suspicious/noExplicitAny: reason: restore
+        (globalThis.crypto as any).randomUUID = originalRandomUUID;
+      }
+    } finally {
+      spy.mockRestore();
+    }
   });
 });
