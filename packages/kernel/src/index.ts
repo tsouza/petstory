@@ -75,6 +75,8 @@ export {
 export {
   AnthropicLlmAdapter,
   type AnthropicLlmConfig,
+  BitNetLlmAdapter,
+  type BitNetLlmConfig,
   MockLlmAdapter,
   type MockLlmCall,
   type ScriptedResponse,

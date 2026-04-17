@@ -198,6 +198,98 @@ e2e-report:
     bunx playwright show-report
 
 # -----------------------------------------------------------------------------
+# BitNet (local LLM for integration testing — not for product)
+#
+# Uses Microsoft's official container `mcr.microsoft.com/appsvc/docs/
+# sidecars/sample-experiment:bitnet-b1.58-2b-4t-gguf` — ships bitnet.cpp +
+# the b1.58-2B-4T GGUF pre-baked, exposes an OpenAI-compatible HTTP server
+# on port 11434. No local build, no clang/cmake/python venv dance.
+#
+# A legacy native-build path (scripts/bitnet/preflight.sh) is retained for
+# folks who want to hack on bitnet.cpp itself, but it currently hits an
+# upstream clang-18 compile error (see docs/testing/bitnet.md).
+# -----------------------------------------------------------------------------
+
+_BITNET_IMAGE := "mcr.microsoft.com/appsvc/docs/sidecars/sample-experiment:bitnet-b1.58-2b-4t-gguf"
+_BITNET_CONTAINER := "petstory-bitnet"
+_BITNET_INTERNAL_PORT := "11434"
+
+# Pull the official BitNet container. ~1.2 GB download; skip if already local.
+bitnet-install:
+    docker pull {{_BITNET_IMAGE}}
+
+# Start the BitNet server in the background. Maps the container's 11434 to
+# the given host port (default 11434). Idempotent — reuses a running
+# container if the name already exists.
+bitnet-serve port="11434":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if docker ps --format '{{{{.Names}}' | grep -q "^{{_BITNET_CONTAINER}}$"; then
+        echo "{{_BITNET_CONTAINER}} already running — reusing"
+        exit 0
+    fi
+    if docker ps -a --format '{{{{.Names}}' | grep -q "^{{_BITNET_CONTAINER}}$"; then
+        docker rm {{_BITNET_CONTAINER}} >/dev/null
+    fi
+    docker run -d --rm \
+        --name {{_BITNET_CONTAINER}} \
+        -p {{port}}:{{_BITNET_INTERNAL_PORT}} \
+        {{_BITNET_IMAGE}} >/dev/null
+    # Wait up to 30s for the model to load + listen.
+    for _ in $(seq 1 30); do
+        if curl -fsS "http://127.0.0.1:{{port}}/" >/dev/null 2>&1; then
+            echo "bitnet listening on http://127.0.0.1:{{port}}"
+            exit 0
+        fi
+        sleep 1
+    done
+    echo "bitnet did not come up within 30s — check `docker logs {{_BITNET_CONTAINER}}`"
+    exit 1
+
+# Stop the running BitNet container (no-op if not running).
+bitnet-stop:
+    #!/usr/bin/env bash
+    if docker ps --format '{{{{.Names}}' | grep -q "^{{_BITNET_CONTAINER}}$"; then
+        docker stop {{_BITNET_CONTAINER}} >/dev/null
+        echo "stopped {{_BITNET_CONTAINER}}"
+    else
+        echo "{{_BITNET_CONTAINER}} is not running"
+    fi
+
+# Tail logs from the running BitNet container.
+bitnet-logs:
+    docker logs -f --tail 200 {{_BITNET_CONTAINER}}
+
+# Quick smoke — POST a hello to the running server.
+bitnet-ping port="11434":
+    curl -s http://127.0.0.1:{{port}}/v1/chat/completions \
+        -H 'Content-Type: application/json' \
+        -d '{"model":"bitnet-b1.58-2B-4T","messages":[{"role":"user","content":"say hi in 3 words"}],"max_tokens":20}' \
+        | jq .
+
+# Legacy: native build path (hits an upstream clang-18 compile bug today).
+# Kept for folks who want to hack on bitnet.cpp directly.
+bitnet-native-preflight:
+    ./scripts/bitnet/preflight.sh vendor/bitnet
+
+# -----------------------------------------------------------------------------
+# Dev — one command to start every local process you need to iterate
+# -----------------------------------------------------------------------------
+
+# Start BitNet (docker, detached) + Expo web dev server (foreground, LAN).
+# Ctrl+C stops the foreground server; a trap then stops BitNet cleanly.
+# Ports: BitNet 11434, Metro 8081.
+dev host="lan":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    # Start BitNet first — its warm-up happens in parallel with Metro's boot.
+    just bitnet-serve
+    # Ensure the container is stopped regardless of how this recipe exits.
+    trap 'echo; just bitnet-stop' EXIT INT TERM
+    # Foreground Metro + Expo. Ctrl+C returns control; the trap runs.
+    just mobile-web {{host}}
+
+# -----------------------------------------------------------------------------
 # Convex (backend)
 # -----------------------------------------------------------------------------
 
