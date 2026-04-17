@@ -7,7 +7,7 @@ export type {
   MessageListener,
   TextCardPayload,
   Unsubscribe,
-} from './ports/chat.js';
+} from './ports/chat';
 export {
   CardPayloadSchema,
   ChatMessageSchema,
@@ -15,14 +15,7 @@ export {
   isTextCard,
   MessageAuthorSchema,
   TextCardPayloadSchema,
-} from './ports/chat.js';
-export {
-  AnthropicLlmAdapter,
-  type AnthropicLlmConfig,
-  MockLlmAdapter,
-  type MockLlmCall,
-  type ScriptedResponse,
-} from './ports/llm/index.js';
+} from './ports/chat';
 export type {
   CacheControl,
   LlmError,
@@ -34,7 +27,7 @@ export type {
   LlmStopReason,
   LlmUsage,
   ModelTier,
-} from './ports/llm.js';
+} from './ports/llm';
 export {
   CacheControlSchema,
   LlmMessageSchema,
@@ -45,4 +38,11 @@ export {
   LlmStopReasonSchema,
   LlmUsageSchema,
   ModelTierSchema,
-} from './ports/llm.js';
+} from './ports/llm';
+export {
+  AnthropicLlmAdapter,
+  type AnthropicLlmConfig,
+  MockLlmAdapter,
+  type MockLlmCall,
+  type ScriptedResponse,
+} from './ports/llm/index';

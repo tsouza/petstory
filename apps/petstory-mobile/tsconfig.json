@@ -1,8 +1,8 @@
 {
   "extends": "@petstory/config/tsconfig.base.json",
   "compilerOptions": {
-    "rootDir": "./src",
-    "outDir": "./dist"
+    "rootDir": ".",
+    "types": ["expo-router/types", "nativewind/types"]
   },
-  "include": ["src/**/*", "app/**/*"]
+  "include": ["app/**/*", "app.json", "**/*.d.ts", "nativewind-env.d.ts"]
 }

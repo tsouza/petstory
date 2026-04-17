@@ -1,12 +1,13 @@
 import type { ChatMessage } from '@petstory/kernel';
 import { type ReactNode, useCallback, useState } from 'react';
 import { FlatList, Pressable, Text, TextInput, View } from 'react-native';
-import { CardHost } from './card-host.js';
-import type { CardRegistry } from './card-registry.js';
-import { useChat } from './chat-context.js';
+import type { CardContext } from './card-host';
+import { CardHost } from './card-host';
+import type { CardRegistry } from './card-registry';
+import { useChat } from './chat-context';
 
 export interface ChatScreenProps {
-  readonly registry: CardRegistry<ReactNode>;
+  readonly registry: CardRegistry<ReactNode, CardContext>;
   /** Placeholder text for the input. App supplies localized copy. */
   readonly inputPlaceholder?: string;
   /** Label for the send button. App supplies localized copy. */

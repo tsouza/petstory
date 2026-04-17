@@ -6,7 +6,7 @@ import {
   type LlmRequest,
   type LlmResponse,
   MockLlmAdapter,
-} from '../index.js';
+} from '../index';
 
 // --- Helpers ---------------------------------------------------------------
 

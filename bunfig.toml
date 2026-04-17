@@ -2,7 +2,13 @@
 # Strict peer dependency posture carried over from the previous .npmrc.
 
 [install]
-# Fail installs on peer-dependency conflicts instead of silently papering over —
-# conflicts you don't see at install time are conflicts you hit in prod.
 exact = false
-peer = true
+# Flat/hoisted node_modules so Metro + Babel + Tailwind's Node require.resolve
+# traversal works. Bun's default isolated linker breaks Expo bundling because
+# transitive plugins (babel-preset-expo → @babel/plugin-transform-react-jsx,
+# react-native-worklets, etc.) live under .bun cache paths Metro can't find.
+linker = "hoisted"
+# Auto-install peer dependencies — required for the Expo/Metro/Babel plugin
+# cascade to resolve. The strict `peer = true` posture we had earlier blocked
+# too many transitive plugins from landing in node_modules.
+auto = true

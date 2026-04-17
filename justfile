@@ -150,6 +150,30 @@ fix-unsafe: format
     bunx biome check --write --unsafe .
 
 # -----------------------------------------------------------------------------
+# Expo apps (mobile = iOS/Android/web via RN, web = separate SSR app)
+# -----------------------------------------------------------------------------
+
+# Start the Expo dev server for the mobile app (interactive menu picks platform).
+mobile-start:
+    cd apps/petstory-mobile && bunx expo start
+
+# Launch the mobile app on an iOS simulator (requires Xcode).
+mobile-ios:
+    cd apps/petstory-mobile && bunx expo start --ios
+
+# Launch the mobile app on an Android emulator (requires Android Studio).
+mobile-android:
+    cd apps/petstory-mobile && bunx expo start --android
+
+# Run the mobile app in a web browser (RN Web via Metro).
+mobile-web:
+    cd apps/petstory-mobile && bunx expo start --web
+
+# Static export of the mobile app's web build (writes to apps/petstory-mobile/dist).
+mobile-web-build:
+    cd apps/petstory-mobile && bunx expo export --platform web
+
+# -----------------------------------------------------------------------------
 # Convex (backend)
 # -----------------------------------------------------------------------------
 
