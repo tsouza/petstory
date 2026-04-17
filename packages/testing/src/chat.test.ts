@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { InMemoryChatAdapter, mockChatMessage } from './chat.js';
+import { InMemoryChatAdapter, mockChatMessage } from './chat';
 
 describe('InMemoryChatAdapter', () => {
   it('appends user echo + assistant reply on sendTurn', async () => {

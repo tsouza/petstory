@@ -7,7 +7,7 @@ import {
   ChatTurnSchema,
   isTextCard,
   TextCardPayloadSchema,
-} from '../index.js';
+} from '../index';
 
 describe('ChatTurnSchema', () => {
   it('accepts a well-formed turn', () => {

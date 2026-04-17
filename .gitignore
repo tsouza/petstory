@@ -45,3 +45,5 @@ pnpm-debug.log*
 # OS / tmp
 *.tmp
 *.bak
+apps/petstory-mobile/dist/
+apps/petstory-mobile/.expo/

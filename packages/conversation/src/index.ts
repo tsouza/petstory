@@ -1,10 +1,15 @@
-export { CardHost, type CardHostProps, unknownKindFallback } from './card-host.js';
-export { type CardEntry, CardRegistry, type CardRenderer, textCardEntry } from './card-registry.js';
+export {
+  type CardContext,
+  CardHost,
+  type CardHostProps,
+  unknownKindFallback,
+} from './card-host';
+export { type CardEntry, CardRegistry, type CardRenderer, textCardEntry } from './card-registry';
 export {
   type ChatContextValue,
   ChatProvider,
   type ChatProviderProps,
   useChat,
-} from './chat-context.js';
-export { ChatScreen, type ChatScreenProps } from './chat-screen.js';
-export { TextCard, type TextCardProps } from './text-card.js';
+} from './chat-context';
+export { ChatScreen, type ChatScreenProps } from './chat-screen';
+export { renderTextCardForAuthor, TextCard, type TextCardProps } from './text-card';

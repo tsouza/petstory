@@ -1,5 +1,6 @@
 import type { TextCardPayload } from '@petstory/kernel';
 import { Text, View } from 'react-native';
+import type { CardContext } from './card-host';
 
 export interface TextCardProps {
   readonly payload: TextCardPayload;
@@ -24,4 +25,13 @@ export function TextCard({ payload, variant = 'neutral' }: TextCardProps) {
       <Text className={`${textColor} font-body text-base`}>{payload.text}</Text>
     </View>
   );
+}
+
+/**
+ * A renderer function suitable for passing to `textCardEntry` that picks
+ * the visual variant based on the message author — user turns get the
+ * accent bubble, everything else gets the neutral one.
+ */
+export function renderTextCardForAuthor(payload: TextCardPayload, context: CardContext) {
+  return <TextCard payload={payload} variant={context.author === 'user' ? 'accent' : 'neutral'} />;
 }

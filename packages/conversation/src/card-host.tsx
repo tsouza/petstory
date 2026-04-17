@@ -1,21 +1,31 @@
 import type { ChatMessage } from '@petstory/kernel';
 import type { ReactNode } from 'react';
 import { Text, View } from 'react-native';
-import type { CardRegistry } from './card-registry.js';
+import type { CardRegistry } from './card-registry';
+
+/**
+ * The context every registered card renderer in a chat registry receives.
+ * Lets renderers branch on author (e.g. style a bubble differently when
+ * it's the user's own echo).
+ */
+export type CardContext = Readonly<Pick<ChatMessage, 'author' | 'createdAt' | 'turnId'>>;
 
 export interface CardHostProps {
   readonly message: ChatMessage;
-  readonly registry: CardRegistry<ReactNode>;
+  readonly registry: CardRegistry<ReactNode, CardContext>;
 }
 
 /**
- * Render a single message: dispatch the payload through the registry,
- * wrap in an author-aware row so user messages align right and others
- * align left. The registry only sees the payload — layout concerns
- * (author alignment) stay here.
+ * Render a single message: dispatch through the registry with the
+ * message's author + timestamps as context, wrap in an author-aware row
+ * so user messages align right and others align left.
  */
 export function CardHost({ message, registry }: CardHostProps): ReactNode {
-  const content = registry.dispatch(message.payload);
+  const content = registry.dispatch(message.payload, {
+    author: message.author,
+    createdAt: message.createdAt,
+    turnId: message.turnId,
+  });
   const align = message.author === 'user' ? 'items-end' : 'items-start';
   return <View className={`w-full ${align}`}>{content}</View>;
 }
