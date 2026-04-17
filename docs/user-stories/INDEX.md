@@ -18,24 +18,26 @@ US - DR - 001
 
 ## Categories
 
+> Story files are authored on demand via the `new-user-story` skill. Filenames below are placeholders until the first story in each cluster lands — the `File` column becomes a live link at that point.
+
 | Code | Category | File | Stories | Scope |
 |------|----------|------|---------|-------|
-| DR | Daily Record | [US-DR.md](US-DR.md) | 10 | Daily logging of meals, exercise, sleep, mood, weight, photos |
-| AN | Food & Nutrition | [US-AN.md](US-AN.md) | 6 | Food switches, diets, food reactions, natural feeding |
-| SP | Symptoms & Concerns | [US-SP.md](US-SP.md) | 14 | Vomiting, diarrhea, itching, limping, seizures, lesions, pain signs |
-| SV | Health & Veterinary | [US-SV.md](US-SV.md) | 16 | Vaccines, medications, lab results, surgeries, physiotherapy, records |
-| LP | Reminders & Prevention | [US-LP.md](US-LP.md) | 6 | Vaccine, dewormer, medication, and routine checkup reminders |
-| IA | AI & Insights | [US-IA.md](US-IA.md) | 14 | Correlations, patterns, summaries, nudges, smart alerts |
-| TA | Temporary Access | [US-TA.md](US-TA.md) | 5 | Temporary invite, permissions, revocation (cross-cutting primitive) |
-| MD | Multi-owner (Permanent) | [US-MD.md](US-MD.md) | 5 | Co-owners, shared feed, split checklist, notifications |
-| CV | Vet Sharing | [US-CV.md](US-CV.md) | 5 | Reports, PDF export, shareable link, vet notes |
-| MC | Milestones & Lifecycle | [US-MC.md](US-MC.md) | 9 | Registration, birthday, neutering, age transitions, achievements |
-| PM | Loss & Memorial | [US-PM.md](US-PM.md) | 4 | Passing, memorial, affective memories, frozen profile |
-| MP | Multiple Pets | [US-MP.md](US-MP.md) | 5 | Multi-pet dashboard, adaptation, contagion, separate medications |
-| CE | Behavior & Emotional | [US-CE.md](US-CE.md) | 7 | Anxiety, aggression, socialization, fears, destructive behavior |
-| SL | Life Situations | [US-SL.md](US-SL.md) | 8 | Moving house, new baby, lost pet, emergency, terminal illness |
-| EG | Engagement | [US-EG.md](US-EG.md) | 5 | Streaks, checklists, health milestones, affective memories |
-| OB | Onboarding | [US-OB.md](US-OB.md) | 4 | Profile, routine, invite, history import |
+| DR | Daily Record | `US-DR.md` | 10 | Daily logging of meals, exercise, sleep, mood, weight, photos |
+| AN | Food & Nutrition | `US-AN.md` | 6 | Food switches, diets, food reactions, natural feeding |
+| SP | Symptoms & Concerns | `US-SP.md` | 14 | Vomiting, diarrhea, itching, limping, seizures, lesions, pain signs |
+| SV | Health & Veterinary | `US-SV.md` | 16 | Vaccines, medications, lab results, surgeries, physiotherapy, records |
+| LP | Reminders & Prevention | `US-LP.md` | 6 | Vaccine, dewormer, medication, and routine checkup reminders |
+| IA | AI & Insights | `US-IA.md` | 14 | Correlations, patterns, summaries, nudges, smart alerts |
+| TA | Temporary Access | `US-TA.md` | 5 | Temporary invite, permissions, revocation (cross-cutting primitive) |
+| MD | Multi-owner (Permanent) | `US-MD.md` | 5 | Co-owners, shared feed, split checklist, notifications |
+| CV | Vet Sharing | `US-CV.md` | 5 | Reports, PDF export, shareable link, vet notes |
+| MC | Milestones & Lifecycle | `US-MC.md` | 9 | Registration, birthday, neutering, age transitions, achievements |
+| PM | Loss & Memorial | `US-PM.md` | 4 | Passing, memorial, affective memories, frozen profile |
+| MP | Multiple Pets | `US-MP.md` | 5 | Multi-pet dashboard, adaptation, contagion, separate medications |
+| CE | Behavior & Emotional | `US-CE.md` | 7 | Anxiety, aggression, socialization, fears, destructive behavior |
+| SL | Life Situations | `US-SL.md` | 8 | Moving house, new baby, lost pet, emergency, terminal illness |
+| EG | Engagement | `US-EG.md` | 5 | Streaks, checklists, health milestones, affective memories |
+| OB | Onboarding | `US-OB.md` | 4 | Profile, routine, invite, history import |
 
 **Total: 16 categories · 123 stories**
 
