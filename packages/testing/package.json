@@ -1,8 +1,8 @@
 {
-  "name": "@petstory/test-utils",
+  "name": "@petstory/testing",
   "version": "0.0.0",
   "private": true,
-  "description": "Shared test helpers — fixtures, MSW handlers, Flow DSL test harness, LLM mock helpers. Consumed via workspace:* by every package's test suite.",
+  "description": "Shared testing package — fixtures, MSW handlers, Flow DSL test harness, LLM + chat mock adapters. Consumed via workspace:* by every package's test suite.",
   "type": "module",
   "exports": {
     ".": "./src/index.ts"
@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@petstory/config": "workspace:*",
-    "typescript": "^5.4.0"
+    "typescript": "^5.4.0",
+    "vitest": "^2.0.0"
   }
 }

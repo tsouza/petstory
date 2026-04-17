@@ -40,7 +40,7 @@ packages/
     pet-health/             # L2 — the pet-health Domain Pack
   ui/                       # L3 primitives (brand-aware, pack-neutral)
   config/                   # shared tsconfig, biome, eslint, lefthook, lighthouse presets
-  test-utils/               # shared Vitest/Playwright helpers, fixtures, MSW handlers
+  testing/                  # @petstory/testing — shared Vitest/Playwright helpers, fixtures, MSW handlers
 docs/                       # documentation (outside workspaces; includes user-stories/ JTBD files)
 .claude/                    # sub-agents, skills, commands (outside workspaces)
 README.md
@@ -163,4 +163,4 @@ Future ADRs (numbers assigned when the work begins):
 - Monorepo seeding — the initial `pnpm init`, first workspace stub, first turbo task. Lands when the first real code lands.
 - Remote cache strategy — Vercel hosted vs. self-hosted. Decide when multi-developer or when Vercel quota becomes a concern.
 - Publishing strategy — when the kernel spins out as a standalone product or when we need to share code with a partner.
-- Test-utils split — if `packages/test-utils` grows enough to warrant internal sub-packages (e.g. `test-utils/flow-fixtures`, `test-utils/mcp-mocks`).
+- Testing-package split — if `packages/testing` grows enough to warrant internal sub-packages (e.g. `testing/flow-fixtures`, `testing/mcp-mocks`).

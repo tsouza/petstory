@@ -7,10 +7,5 @@
   "access": "restricted",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": [
-    "@petstory/mobile",
-    "@petstory/web",
-    "@petstory/config",
-    "@petstory/test-utils"
-  ]
+  "ignore": ["@petstory/mobile", "@petstory/web", "@petstory/config", "@petstory/testing"]
 }
