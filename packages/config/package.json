@@ -2,6 +2,7 @@
   "name": "@petstory/config",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "description": "Shared base configs for the petstory.co monorepo. Workspaces extend from these.",
   "exports": {
     "./tsconfig.base.json": "./tsconfig.base.json",
